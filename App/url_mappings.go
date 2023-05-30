@@ -1,7 +1,7 @@
 package app
 
 import (
-	userController "mvc-go/controllers/user"
+	//userController "HotelArquiSoft/controller/user"
 
 	log "github.com/sirupsen/logrus"
 )
@@ -9,9 +9,5 @@ import (
 func mapUrls() {
 
 	// Users Mapping
-	router.GET("/user/:id", userController.GetUserById)
-	router.GET("/user", userController.GetUsers)
-	router.POST("/user", userController.UserInsert)
-
 	log.Info("Finishing mappings configurations")
 }

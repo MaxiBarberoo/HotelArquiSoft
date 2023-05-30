@@ -2,7 +2,7 @@ package controller
 
 import (
 	"HotelArquiSoft/dto"
-	service "mvc-go/services"
+	service "HotelArquiSoft/services"
 	"net/http"
 	"strconv"
 
@@ -14,7 +14,7 @@ func GetAdmin(c *gin.Context) {
 	log.Debug("Admin id to load: " + c.Param("id"))
 
 	id, _ := strconv.Atoi(c.Param("id"))
-	var adminDto dto.AdminDetailDto
+	var adminDto dto.AdminDto
 
 	adminDto, err := service.AdminService.GetAdminById(id)
 
