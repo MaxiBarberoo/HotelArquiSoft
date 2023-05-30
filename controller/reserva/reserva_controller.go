@@ -3,10 +3,11 @@ package controller
 import (
 	"HotelArquiSoft/dto"
 	service "HotelArquiSoft/services"
-	"github.com/gin-gonic/gin"
-	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
+
+	"github.com/gin-gonic/gin"
+	log "github.com/sirupsen/logrus"
 )
 
 func GetReservaById(c *gin.Context) {
