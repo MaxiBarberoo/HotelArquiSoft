@@ -48,7 +48,7 @@ func InsertHotel(c *gin.Context) {
 		return
 	}
 
-	hotelDto, er := service.HotelService.InsertHotels(hotelDto)
+	hotelDto, er := service.HotelService.InsertHotel(hotelDto)
 	// Error del Insert
 	if er != nil {
 		c.JSON(er.Status(), er)
