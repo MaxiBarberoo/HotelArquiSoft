@@ -2,6 +2,7 @@ package hotel
 
 import (
 	"HotelArquiSoft/model"
+
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 )

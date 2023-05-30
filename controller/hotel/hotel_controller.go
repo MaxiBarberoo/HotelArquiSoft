@@ -26,7 +26,7 @@ func GetHotelById(c *gin.Context) {
 }
 
 func GetHotels(c *gin.Context) {
-	var hotelsDto dto.hotelsDto
+	var hotelsDto dto.HotelsDto
 	hotelsDto, err := service.HotelService.GetHotels()
 
 	if err != nil {

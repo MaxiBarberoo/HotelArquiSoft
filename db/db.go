@@ -42,6 +42,8 @@ func StartDbEngine() {
 	// We need to migrate all classes model.
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Admins{})
+	db.AutoMigrate(&model.Reservas{})
+	db.AutoMigrate(&model.Hotels{})
 
 	log.Info("Finishing Migration Database Tables")
 }

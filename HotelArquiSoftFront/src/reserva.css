@@ -1,0 +1,101 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: 'Source Sans Pro', sans-serif;
+}
+
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 80px;
+    background: #fff;
+    box-shadow: 0 4px 25px -22px black;
+    z-index: 10;
+}
+
+body {
+    overflow-x: hidden;
+    width: 100%;
+    margin: 0 auto;
+    max-width: 100%;
+    background-color: #95190d;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.div1 {
+    max-width: 1200px;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+}
+
+.logo {
+    height: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.imgLogo {
+    width: 70px;
+    height: 70px;
+}
+
+
+.menú {
+    height: 80px;
+    margin-right: 60px;
+}
+
+.menú nav {
+    height: 100%;
+}
+
+.menú nav ul {
+    height: 100%;
+    display: flex;
+    list-style: none;
+}
+
+.menú nav ul li {
+    height: 100%;
+    margin: 0px 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.páginaSeleccionada:before {
+    content: '';
+    width: 100%;
+    height: 4px;
+    background: #375995;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.menú nav ul li a {
+    color: #777777;
+    font-size: 18px;
+    transition: color 300ms;
+    font-family: Rockwell;
+}
+
+.menú nav ul li a:hover {
+    color: #375995;
+}
+
+.menú .textoSeleccionado {
+    color: #375995;
+}
+
+.menú nav ul li a i {
+    display: none;
+}
