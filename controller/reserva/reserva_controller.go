@@ -2,6 +2,7 @@ package controller
 
 import (
 	"HotelArquiSoft/dto"
+	service "HotelArquiSoft/services"
 	"github.com/gin-gonic/gin"
 	log "github.com/sirupsen/logrus"
 	"net/http"
@@ -46,7 +47,7 @@ func ReservaInsert(c *gin.Context) {
 		return
 	}
 
-	reservaDto, er := service.ReservaService.InsertHotle(reservaDto)
+	reservaDto, er := service.ReservaService.InsertReserva(reservaDto)
 	// Error del Insert
 	if er != nil {
 		c.JSON(er.Status(), er)
