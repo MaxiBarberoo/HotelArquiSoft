@@ -2,6 +2,7 @@ package hotel
 
 import (
 	"HotelArquiSoft/model"
+
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 )
@@ -37,6 +38,6 @@ func InsertUser(hotel model.Hotel) model.Hotel {
 
 		log.Error("")
 	}
-	log.Debug("Hotel Created: ", hotel.Id)
+	log.Debug("Hotel Created: ", hotel.ID)
 	return hotel
 }
