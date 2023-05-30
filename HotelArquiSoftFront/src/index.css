@@ -11,7 +11,7 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    height: 80px;
+    height: 200px;
     background: #fff;
     box-shadow: 0 4px 25px -22px black;
     z-index: 10;
@@ -28,7 +28,7 @@ body {
 }
 
 .div1 {
-    max-width: 1200px;
+    max-width: 1600px;
     margin: auto;
     display: flex;
     justify-content: space-between;
@@ -36,19 +36,20 @@ body {
 }
 
 .logo {
-    height: 80px;
+    height: 200px;
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .imgLogo {
-    width: 70px;
-    height: 70px;
+    width: 200px;
+    height: 200px;
 }
 
 
 .menú {
-    height: 80px;
+    height: 90px;
     margin-right: 60px;
 }
 
@@ -75,27 +76,104 @@ body {
     content: '';
     width: 100%;
     height: 4px;
-    background: #375995;
+    background: #95190d;
     position: absolute;
     top: 0;
     left: 0;
 }
 
 .menú nav ul li a {
-    color: #777777;
+    color: #95190d;
     font-size: 18px;
     transition: color 300ms;
     font-family: Rockwell;
 }
 
 .menú nav ul li a:hover {
-    color: #375995;
+    color: #630e03;
 }
 
 .menú .textoSeleccionado {
-    color: #375995;
+    color: #95190d;
 }
 
 .menú nav ul li a i {
     display: none;
+}
+
+.líneaRecta {
+    border-top: 2px solid grey;
+}
+
+/* Linea membrete LISTO*/
+
+.líneaPunteada {
+    border-top: 1px dashed grey;
+}
+
+.títuloDePágina {
+    font-family: Rockwell;
+    display: inline-block;
+    text-align: left;
+    vertical-align: 100%;
+    color: #95190d;
+    text-shadow: 1px 1px 30px rgb(255, 255, 255), 2px 5px 2px rgb(177, 176, 176);
+}
+
+h1 {
+    color: #95190d;
+    font-size: 200%;
+    font-family: Baristo;
+}
+
+.contenedor-botones {
+    display: grid;
+    width: 100%;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    margin: 8em 18% 7%;
+}
+
+.boton-uno {
+    display: inline-flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 80px;
+    background: #ffffff;
+    color: #2c2c2e;
+    font-family: Rockwell;
+    font-size: 20px;
+    text-decoration: none;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: .3s ease all;
+    border-radius: 5px;
+    position: relative;
+    overflow: hidden;
+}
+
+.boton-uno::after {
+    content: "";
+    width: 100%;
+    height: 80px;
+    background-color: #7fd895;
+    position: absolute;
+    z-index: 1;
+    top: -80px;
+    left: 0;
+    transition: .3s ease-in-out all;
+}
+
+.boton-uno:hover::after {
+    top: 0;
+}
+
+.boton-uno span {
+    position: relative;
+    z-index: 2;
+    transition: .3s ease all;
 }
