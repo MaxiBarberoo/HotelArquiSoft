@@ -1,10 +1,10 @@
 package services
 
 import (
+	e "HotelArquiSoft/Utils"
 	reservaClient "HotelArquiSoft/clients/reserva"
 	"HotelArquiSoft/dto"
 	"HotelArquiSoft/model"
-	e "HotelArquiSoft/utils"
 )
 
 type reservaService struct{}
@@ -72,4 +72,3 @@ func (s *reservaService) InsertReserva(reservaDto dto.ReservaDto) (dto.ReservaDt
 
 	return reservaDto, nil
 }
-
