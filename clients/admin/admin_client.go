@@ -30,9 +30,5 @@ func InsertAdmin(admin model.Admin) model.Admin {
 		log.Error("")
 	}
 	log.Debug("Admin Created: ", admin.ID)
-<<<<<<< HEAD
-
-=======
->>>>>>> 6a081fd08874f7ae249b2cdd28b49cfb09637103
 	return admin
 }
