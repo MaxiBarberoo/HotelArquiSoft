@@ -60,7 +60,6 @@ func (s *hotelService) InsertHotel(hotelDto dto.HotelDto) (dto.HotelDto, e.ApiEr
 
 	hotelDto.Name = hotel.Nombre
 	hotelDto.CantHabitaciones = hotel.CantHab
-	hotelDto.CantHabitacionesDisp = hotel.CantHabDis
 
 	hotelDto.Id = hotel.ID
 

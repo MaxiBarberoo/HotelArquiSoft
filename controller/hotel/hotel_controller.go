@@ -37,7 +37,7 @@ func GetHotels(c *gin.Context) {
 	c.JSON(http.StatusOK, hotelsDto)
 }
 
-func InsertHotel(c *gin.Context) {
+func HotelInsert(c *gin.Context) {
 	var hotelDto dto.HotelDto
 	err := c.BindJSON(&hotelDto)
 
