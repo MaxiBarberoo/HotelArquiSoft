@@ -3,6 +3,7 @@ package services
 import (
 	userClient "HotelArquiSoft/clients/user"
 	"HotelArquiSoft/dto"
+	"HotelArquiSoft/model"
 	e "HotelArquiSoft/utils"
 )
 
@@ -39,7 +40,7 @@ func (s *userService) GetUserById(id int) (dto.UserDto, e.ApiError) {
 
 func (s *userService) GetUsers() (dto.UsersDto, e.ApiError) {
 
-	var users model.Users = userCliente.GetUsers()
+	var users model.Users = userClient.GetUsers()
 	var usersDto dto.UsersDto
 
 	for _, user := range users {
