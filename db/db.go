@@ -1,7 +1,6 @@
 package db
 
 import (
-	adminClient "HotelArquiSoft/clients/admin"
 	userClient "HotelArquiSoft/clients/user"
 	"HotelArquiSoft/model"
 
@@ -35,13 +34,11 @@ func init() {
 
 	// We need to add all CLients that we build
 	userClient.Db = db
-	adminClient.Db = db
 }
 
 func StartDbEngine() {
 	// We need to migrate all classes model.
 	db.AutoMigrate(&model.User{})
-	db.AutoMigrate(&model.Admins{})
 	db.AutoMigrate(&model.Reservas{})
 	db.AutoMigrate(&model.Hotels{})
 
