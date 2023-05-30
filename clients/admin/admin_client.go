@@ -2,7 +2,6 @@ package clients
 
 import (
 	"HotelArquiSoft/model"
-<<<<<<< HEAD
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 
@@ -25,17 +24,17 @@ func GetAdmins() model.Admin {
 	return admins
 }
 
-func InsertAdmin(admin model.Admin) model.Admin{
-	result:= Db.Create(&admin)
-	if(result.Error != nil){
+func InsertAdmin(admin model.Admin) model.Admin {
+	result := Db.Create(&admin)
+	if (result.Error != nil) {
 		log.Error("")
 	}
-	log.Debug("Admin Created: ",admin.Id)
-=======
-	log "github.com/sirupsen/logrus"
-)
+	log.Debug("Admin Created: ", admin.Id)
 
-//var Db *gorm.DB
+	log
+	"github.com/sirupsen/logrus"
+}
+
 
 func GetAdminById(id int) model.Admin {
 	var admin model.Admin
@@ -57,10 +56,10 @@ func InsertAdmin(admin model.Admin) model.Admin {
 	result := Db.Create(&admin)
 
 	if result.Error != nil {
-		//TODO Manage Errors
+
 		log.Error("")
 	}
 	log.Debug("Admin Created: ", admin.Id)
->>>>>>> 228bb09fdc9d5c9d646205be451ea9294f245d31
+
 	return admin
 }
