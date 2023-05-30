@@ -20,15 +20,15 @@ func GetHotelById(id int) model.Hotel {
 	return hotel
 }
 
-func GetUsers() model.Hotel {
-	var hotel model.Hotel
-	Db.Find(&hotel)
-	log.Debug("Hotel: ", hotel)
-	return hotel
+func GetHotels() model.Hotels {
+	var hotels model.Hotels
+	Db.Find(&hotels)
+	log.Debug("Hotels: ", hotels)
+	return hotels
 
 }
 
-func InsertUser(hotel model.Hotel) model.Hotel {
+func InsertHotel(hotel model.Hotel) model.Hotel {
 	result := Db.Create(&hotel)
 
 	if result.Error != nil {
@@ -37,6 +37,6 @@ func InsertUser(hotel model.Hotel) model.Hotel {
 
 		log.Error("")
 	}
-	log.Debug("Hotel Created: ", hotel.Id)
+	log.Debug("Hotel Created: ", hotel.ID)
 	return hotel
 }

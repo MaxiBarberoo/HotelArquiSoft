@@ -1,6 +1,7 @@
 package db
 
 import (
+	adminClient "HotelArquiSoft/clients/admin"
 	userClient "HotelArquiSoft/clients/user"
 	"HotelArquiSoft/model"
 

@@ -2,6 +2,7 @@ package clients
 
 import (
 	"HotelArquiSoft/model"
+	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -19,11 +20,11 @@ func GetUserById(id int) model.User {
 	return user
 }
 
-func GetUsers() model.User {
-	var user model.User
-	Db.Find(&user)
-	log.Debug("User: ", user)
-	return user
+func GetUsers() model.Users {
+	var users model.Users
+	Db.Find(&users)
+	log.Debug("User: ", users)
+	return users
 
 }
 
@@ -36,6 +37,6 @@ func InsertUser(user model.User) model.User {
 
 		log.Error("")
 	}
-	log.Debug("User Created: ", user.Id)
+	log.Debug("User Created: ", user.ID)
 	return user
 }
