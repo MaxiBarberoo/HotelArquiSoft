@@ -2,10 +2,6 @@ package clients
 
 import (
 	"HotelArquiSoft/model"
-<<<<<<< HEAD
-=======
-
->>>>>>> 6a081fd08874f7ae249b2cdd28b49cfb09637103
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 )
@@ -23,14 +19,7 @@ func GetUserById(id int) model.User {
 func GetUsers() model.Users {
 	var users model.Users
 	Db.Find(&users)
-<<<<<<< HEAD
 	log.Debug("User: ", users)
-	return users
-=======
-
-	log.Debug("Users: ", users)
->>>>>>> 6a081fd08874f7ae249b2cdd28b49cfb09637103
-
 	return users
 }
 
