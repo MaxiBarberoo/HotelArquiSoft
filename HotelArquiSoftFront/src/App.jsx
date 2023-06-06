@@ -1,18 +1,10 @@
-//creo la funcion y le digo lo que tiene que renderizar
+import './App.css'
 
-export function App() {
+function App() {
 
-    return (
-
-<article>
-        <div>
-
-            <h1>RESERVAR</h1>
-
-        </div>
-
-</article>
-
-
-    )
+  return (
+   <></>
+  )
 }
+
+export default App
