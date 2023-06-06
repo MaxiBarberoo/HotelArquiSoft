@@ -1,6 +1,7 @@
 import './App.css'
 import Hoteles from "../Componentes/Hoteles.jsx";
 
+
 function App() {
 
   return (
@@ -8,6 +9,7 @@ function App() {
      <Hoteles
      nombreHotel='Holanda'
      />
+
    </div>
   )
 }

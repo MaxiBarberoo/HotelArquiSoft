@@ -11,6 +11,7 @@ function Hoteles(props) {
              <p className='cantidad-piezas'>
                  Cantidad de habitaciones: 2.
              </p>
+         </div>
              <div className='fecha-desde'>
                  <p className='texto-fecha-desde'>
                      Fecha de ingreso:
@@ -22,7 +23,6 @@ function Hoteles(props) {
                  <input type='date' className='fecha-hasta-reserva' />
              </div>
 
-         </div>
       </div>
     );
 }
