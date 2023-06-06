@@ -1,6 +1,8 @@
 package db
 
 import (
+	hotelClient "HotelArquiSoft/clients/hotel"
+	reservaClient "HotelArquiSoft/clients/reserva"
 	userClient "HotelArquiSoft/clients/user"
 	"HotelArquiSoft/model"
 
@@ -17,8 +19,8 @@ var (
 func init() {
 	// DB Connections Paramters
 	DBName := "HotelArquiSoft"
-	DBUser := "ABGMM"
-	DBPass := ""
+	DBUser := "root"
+	DBPass := "root"
 	//DBPass := os.Getenv("MVC_DB_PASS")
 	DBHost := "localhost"
 	// ------------------------
@@ -34,6 +36,9 @@ func init() {
 
 	// We need to add all CLients that we build
 	userClient.Db = db
+	hotelClient.Db = db
+	reservaClient.Db = db
+
 }
 
 func StartDbEngine() {

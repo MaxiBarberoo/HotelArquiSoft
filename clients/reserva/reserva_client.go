@@ -3,6 +3,8 @@ package clients
 import (
 	"HotelArquiSoft/model"
 
+	"time"
+
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
 )
@@ -32,4 +34,19 @@ func InsertReserva(reserva model.Reserva) model.Reserva {
 	log.Debug("Reserva Created: ", reserva.ID)
 
 	return reserva
+}
+
+func GetRooms(fecha time.Time, reserva model.Reserva) int {
+	var count int
+
+	err := Db.Select("COUNT(reservas.id)").
+		Joins("JOIN hotels ON reservas.hotel_id = ?", reserva.HotelId).
+		Where("? >= reservas.fecha_in AND ? <= reservas.fecha_out", fecha).
+		Count(&count).Error
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	return count
 }

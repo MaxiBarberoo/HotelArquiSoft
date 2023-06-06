@@ -4,8 +4,8 @@ import "time"
 
 type Reserva struct {
 	ID       int
-	FechaIn  time.Time `gorm:"type:DATETIME"`
-	FechaOut time.Time `gorm:"type:DATETIME"`
+	FechaIn  time.Time `gorm:"type:DATE"`
+	FechaOut time.Time `gorm:"type:DATE"`
 	UserId   int       `gorm:"foreignKey"`
 	HotelId  int       `gorm:"foreignKey"`
 }

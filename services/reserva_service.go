@@ -13,6 +13,7 @@ type reservaServiceInterface interface {
 	GetReservaById(id int) (dto.ReservaDto, e.ApiError)
 	GetReservas() (dto.ReservasDto, e.ApiError)
 	InsertReserva(reservaDto dto.ReservaDto) (dto.ReservaDto, e.ApiError)
+	GetRooms(ReservaDto dto.ReservaDto, Hotel model.Hotel) bool
 }
 
 var (
@@ -71,4 +72,29 @@ func (s *reservaService) InsertReserva(reservaDto dto.ReservaDto) (dto.ReservaDt
 	reservaDto.Id = reserva.ID
 
 	return reservaDto, nil
+}
+
+func (s *reservaService) GetRooms(reservaDto dto.ReservaDto, Hotel model.Hotel) bool {
+	fecha := reservaDto.FechaIngreso
+
+	var reserva model.Reserva
+
+	reserva.FechaIn = reservaDto.FechaIngreso
+	reserva.FechaOut = reservaDto.FechaEgreso
+	reserva.HotelId = reservaDto.HotelId
+	reserva.UserId = reservaDto.UserId
+
+	reservaDto.Id = reserva.ID
+
+	duracion := reservaDto.FechaEgreso.Sub(fecha)
+
+	dias := int(duracion.Hours() / 24)
+
+	for i := 0; i < dias; i++ {
+		if reservaClient.GetRooms(fecha, reserva) > Hotel.CantHab {
+			return false
+		}
+		fecha = fecha.AddDate(0, 0, 1)
+	}
+	return true
 }
