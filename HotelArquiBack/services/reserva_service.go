@@ -1,10 +1,10 @@
 package services
 
 import (
-	e "HotelArquiSoft/Utils"
-	reservaClient "HotelArquiSoft/clients/reserva"
-	"HotelArquiSoft/dto"
-	"HotelArquiSoft/model"
+	e "HotelArquiSoft/HotelArquiBack/Utils"
+	reservaClient "HotelArquiSoft/HotelArquiBack/clients/reserva"
+	"HotelArquiSoft/HotelArquiBack/dto"
+	"HotelArquiSoft/HotelArquiBack/model"
 )
 
 type reservaService struct{}

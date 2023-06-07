@@ -1,10 +1,10 @@
 package db
 
 import (
-	hotelClient "HotelArquiSoft/clients/hotel"
-	reservaClient "HotelArquiSoft/clients/reserva"
-	userClient "HotelArquiSoft/clients/user"
-	"HotelArquiSoft/model"
+	hotelClient "HotelArquiSoft/HotelArquiBack/clients/hotel"
+	reservaClient "HotelArquiSoft/HotelArquiBack/clients/reserva"
+	userClient "HotelArquiSoft/HotelArquiBack/clients/user"
+	"HotelArquiSoft/HotelArquiBack/model"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"

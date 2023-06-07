@@ -1,8 +1,8 @@
 package app
 
 import (
-	//userController "HotelArquiSoft/controller/user"
-	reservaController "HotelArquiSoft/controller/reserva"
+	//userController "HotelArquiSoft/HotelArquiBack/controller/user"
+	reservaController "HotelArquiSoft/HotelArquiBack/controller/reserva"
 
 	log "github.com/sirupsen/logrus"
 )

@@ -1,7 +1,7 @@
 package clients
 
 import (
-	"HotelArquiSoft/model"
+	"HotelArquiSoft/HotelArquiBack/model"
 
 	"time"
 

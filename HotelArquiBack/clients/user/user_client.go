@@ -1,7 +1,7 @@
 package clients
 
 import (
-	"HotelArquiSoft/model"
+	"HotelArquiSoft/HotelArquiBack/model"
 
 	"github.com/jinzhu/gorm"
 	log "github.com/sirupsen/logrus"
