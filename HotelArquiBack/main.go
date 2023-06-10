@@ -1,7 +1,7 @@
 package main
 
 import (
-	app "HotelArquiSoft/HotelArquiBack/App"
+	app "HotelArquiSoft/HotelArquiBack/app"
 	"HotelArquiSoft/HotelArquiBack/db"
 )
 
