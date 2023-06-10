@@ -12,19 +12,19 @@ func mapUrls() {
 
 	// Users Mapping
 	router.GET("/reservas", reservaController.GetReservas)
-	router.GET("/reserva/:rooms", reservaController.GetRooms)
-	router.GET("/reserva/:id", reservaController.GetReservaById)
-	router.GET("/reserva/:reservauser", reservaController.GetReservasByUser)
+	router.GET("/reservas/rooms", reservaController.GetRooms)
+	router.GET("/reservas/:id", reservaController.GetReservaById)
+	router.GET("/reservas/reservauser", reservaController.GetReservasByUser)
 	router.GET("/users", userController.GetUsers)
-	router.GET("/user/:email", userController.GetUserByEmail)
-	router.GET("/user/:id", userController.GetUserById)
-	router.GET("/user/:auth", userController.UserAuth)
+	router.GET("/users/email", userController.GetUserByEmail)
+	router.GET("/users/:id", userController.GetUserById)
+	router.GET("/users/auth", userController.UserAuth)
 	router.GET("/hotels", hotelController.GetHotels)
-	router.GET("/hotel/:id", hotelController.GetHotelById)
+	router.GET("/hotels/:id", hotelController.GetHotelById)
 
-	router.POST("/user", userController.UserInsert)
-	router.POST("/reserva", reservaController.ReservaInsert)
-	router.POST("/hotel", hotelController.HotelInsert)
+	router.POST("/users", userController.UserInsert)
+	router.POST("/reservas", reservaController.ReservaInsert)
+	router.POST("/hotels", hotelController.HotelInsert)
 
 	log.Info("Finishing mappings configurations")
 }
