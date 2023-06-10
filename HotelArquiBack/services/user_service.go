@@ -5,6 +5,7 @@ import (
 	userClient "HotelArquiSoft/HotelArquiBack/clients/user"
 	"HotelArquiSoft/HotelArquiBack/dto"
 	"HotelArquiSoft/HotelArquiBack/model"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type userService struct{}
@@ -13,6 +14,8 @@ type userServiceInterface interface {
 	GetUserById(id int) (dto.UserDto, e.ApiError)
 	GetUsers() (dto.UsersDto, e.ApiError)
 	InsertUser(userDto dto.UserDto) (dto.UserDto, e.ApiError)
+	GetUserByEmail(email string) (dto.UserDto, e.ApiError)
+	UserAuth(userDto dto.UserDto) bool
 }
 
 var (
@@ -36,6 +39,22 @@ func (s *userService) GetUserById(id int) (dto.UserDto, e.ApiError) {
 	userDto.LastName = user.LastName
 	userDto.Tipo = user.Tipo
 
+	return userDto, nil
+}
+
+func (s *userService) GetUserByEmail(email string) (dto.UserDto, e.ApiError) {
+	var user model.User = userClient.GetUserByEmail(email)
+	var userDto dto.UserDto
+
+	if user.Email == "" {
+		return userDto, e.NewBadRequestApiError("user not found")
+	}
+
+	userDto.FirstName = user.FirstName
+	userDto.LastName = user.LastName
+	userDto.Tipo = user.Tipo
+	userDto.Id = user.ID
+	userDto.UserEmail = user.Email
 	return userDto, nil
 }
 
@@ -69,4 +88,20 @@ func (s *userService) InsertUser(userDto dto.UserDto) (dto.UserDto, e.ApiError) 
 	userDto.Id = user.ID
 
 	return userDto, nil
+}
+
+func (s *userService) UserAuth(userDto dto.UserDto) bool {
+
+	user, err := s.GetUserByEmail(userDto.UserEmail)
+	if err != nil {
+		return false
+	}
+
+	err1 := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userDto.Password))
+
+	if err1 != nil {
+		return false
+	}
+
+	return true
 }
