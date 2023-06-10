@@ -1,5 +1,5 @@
     import React from "react"; //para usar react en el componente
-    import '../../hojas-de-estilo/Hoteles.css';
+    import '../../src/styleSheet/Hoteles.css';
 
     function Hoteles(props) {
         return (
