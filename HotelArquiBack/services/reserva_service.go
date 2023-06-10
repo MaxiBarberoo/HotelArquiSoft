@@ -14,6 +14,7 @@ type reservaServiceInterface interface {
 	GetReservas() (dto.ReservasDto, e.ApiError)
 	InsertReserva(reservaDto dto.ReservaDto) (dto.ReservaDto, e.ApiError)
 	GetRooms(ReservaDto dto.ReservaDto) bool
+	GetReservasByUser(userId int) (dto.ReservasDto, e.ApiError)
 }
 
 var (
@@ -99,4 +100,23 @@ func (s *reservaService) GetRooms(reservaDto dto.ReservaDto) bool {
 		fecha = fecha.AddDate(0, 0, 1)
 	}
 	return true
+}
+
+func (s *reservaService) GetReservasByUser(userId int) (dto.ReservasDto, e.ApiError) {
+
+	var reservas model.Reservas = reservaClient.GetReservasByUser(userId)
+	var reservasDto dto.ReservasDto
+
+	for _, reserva := range reservas {
+		var reservaDto dto.ReservaDto
+
+		reservaDto.FechaIngreso = reserva.FechaIn
+		reservaDto.FechaEgreso = reserva.FechaOut
+		reservaDto.HotelId = reserva.HotelId
+		reservaDto.UserId = reserva.UserId
+
+		reservasDto = append(reservasDto, reservaDto)
+	}
+
+	return reservasDto, nil
 }

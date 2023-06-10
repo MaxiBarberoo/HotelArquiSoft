@@ -50,3 +50,10 @@ func GetRooms(fecha time.Time, reserva model.Reserva) int {
 
 	return count
 }
+
+func GetReservasByUser(userId int) model.Reservas {
+	var reservas model.Reservas
+	Db.Where("UserId = ?", userId).Find(&reservas)
+	log.Debug("Reservas: ", reservas)
+	return reservas
+}
