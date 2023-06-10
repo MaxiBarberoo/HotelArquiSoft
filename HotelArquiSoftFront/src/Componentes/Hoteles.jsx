@@ -13,7 +13,7 @@
                   {/* eslint-disable-next-line react/prop-types */}
                   <p className='nombre-hotel1'> <strong>{props.nombreHotel}</strong> </p>
                   {/* eslint-disable-next-line react/prop-types */}
-                  <p className='cantidad-piezas'>{props.piezas}</p>
+                  <p className='cantidad-piezas' >Cantidad de habitaciones: {props.piezas}</p>
              </div>
           </div>
         );
