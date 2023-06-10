@@ -77,3 +77,18 @@ func GetRooms(c *gin.Context) {
 		"disponibilidad": "false",
 	})
 }
+
+func GetReservasByUser(c *gin.Context) {
+	log.Debug("User id to load: " + c.Param("user_id"))
+
+	userId, _ := strconv.Atoi(c.Param("user_id"))
+
+	var reservasDto dto.ReservasDto
+	reservasDto, err := service.ReservaService.GetReservasByUser(userId)
+
+	if err != nil {
+		c.JSON(err.Status(), err)
+		return
+	}
+	c.JSON(http.StatusOK, reservasDto)
+}
