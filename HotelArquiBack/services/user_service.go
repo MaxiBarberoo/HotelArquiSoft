@@ -37,7 +37,9 @@ func (s *userService) GetUserById(id int) (dto.UserDto, e.ApiError) {
 
 	userDto.FirstName = user.FirstName
 	userDto.LastName = user.LastName
+	userDto.UserEmail = user.Email
 	userDto.Tipo = user.Tipo
+	userDto.Id = user.ID
 
 	return userDto, nil
 }
@@ -83,7 +85,10 @@ func (s *userService) InsertUser(userDto dto.UserDto) (dto.UserDto, e.ApiError) 
 	user.FirstName = userDto.FirstName
 	user.LastName = userDto.LastName
 	user.Password = userDto.Password
+	user.Email = userDto.UserEmail
 	user.Tipo = userDto.Tipo
+
+	user = userClient.InsertUser(user)
 
 	userDto.Id = user.ID
 

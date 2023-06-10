@@ -70,6 +70,8 @@ func (s *reservaService) InsertReserva(reservaDto dto.ReservaDto) (dto.ReservaDt
 	reserva.HotelId = reservaDto.HotelId
 	reserva.UserId = reservaDto.UserId
 
+	reserva = reservaClient.InsertReserva(reserva)
+
 	reservaDto.Id = reserva.ID
 
 	return reservaDto, nil
