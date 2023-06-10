@@ -20,7 +20,7 @@ func init() {
 	// DB Connections Paramters
 	DBName := "HotelArquiSoft"
 	DBUser := "root"
-	DBPass := "root"
+	DBPass := "arquisoft1"
 	//DBPass := os.Getenv("MVC_DB_PASS")
 	DBHost := "localhost"
 	// ------------------------
