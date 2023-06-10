@@ -1,8 +1,8 @@
 package controller
 
 import (
-	"HotelArquiSoft/dto"
-	service "HotelArquiSoft/services"
+	"HotelArquiSoft/HotelArquiBack/dto"
+	service "HotelArquiSoft/HotelArquiBack/services"
 	"net/http"
 	"strconv"
 
@@ -56,4 +56,24 @@ func ReservaInsert(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusCreated, reservaDto)
+}
+
+func GetRooms(c *gin.Context) {
+
+	var reservaDto dto.ReservaDto
+	err := c.BindJSON(&reservaDto)
+	if err != nil {
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+	if service.ReservaService.GetRooms(reservaDto) {
+		c.JSON(http.StatusAccepted, gin.H{
+			"disponibilidad": "true",
+		})
+	}
+
+	c.JSON(http.StatusAccepted, gin.H{
+		"disponibilidad": "false",
+	})
 }

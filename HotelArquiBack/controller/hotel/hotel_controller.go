@@ -1,8 +1,8 @@
 package hotel
 
 import (
-	"HotelArquiSoft/dto"
-	service "HotelArquiSoft/services"
+	"HotelArquiSoft/HotelArquiBack/dto"
+	service "HotelArquiSoft/HotelArquiBack/services"
 	"net/http"
 	"strconv"
 

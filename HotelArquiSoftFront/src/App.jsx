@@ -1,6 +1,7 @@
     import './App.css'
     import Hoteles from './Componentes/Hoteles.jsx'
 
+<<<<<<< HEAD
     function App() {
         return (
        <div className = 'App'>
@@ -16,6 +17,20 @@
                  nombreHotel='HOTEL PALACE'
                  image='2'
                  piezas= '5'
+=======
+
+function App() {
+
+  return (
+   <div className = 'App'>
+     <Hoteles
+     nombreHotel='Holanda'
+     />
+
+   </div>
+  )
+}
+>>>>>>> 016cf1a77b348f01ae0ad75e75da15f5e8995549
 
                  />
              <Hoteles

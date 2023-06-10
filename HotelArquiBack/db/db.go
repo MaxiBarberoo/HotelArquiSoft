@@ -1,8 +1,10 @@
 package db
 
 import (
-	userClient "HotelArquiSoft/clients/user"
-	"HotelArquiSoft/model"
+	hotelClient "HotelArquiSoft/HotelArquiBack/clients/hotel"
+	reservaClient "HotelArquiSoft/HotelArquiBack/clients/reserva"
+	userClient "HotelArquiSoft/HotelArquiBack/clients/user"
+	"HotelArquiSoft/HotelArquiBack/model"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -17,8 +19,8 @@ var (
 func init() {
 	// DB Connections Paramters
 	DBName := "HotelArquiSoft"
-	DBUser := "ABGMM"
-	DBPass := ""
+	DBUser := "root"
+	DBPass := "root"
 	//DBPass := os.Getenv("MVC_DB_PASS")
 	DBHost := "localhost"
 	// ------------------------
@@ -34,6 +36,9 @@ func init() {
 
 	// We need to add all CLients that we build
 	userClient.Db = db
+	hotelClient.Db = db
+	reservaClient.Db = db
+
 }
 
 func StartDbEngine() {
