@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FormularioLogin from './FormularioLogin';
 
-function BotonLogin() {
+function BotonLogin({ handleLogin }) {
   const [isOpen, setIsOpen] = useState(false);
 
   const openPopup = () => {
@@ -18,7 +18,7 @@ function BotonLogin() {
 
       {isOpen && (
         <div className="popup">
-          <FormularioLogin />
+          <FormularioLogin handleLogin={handleLogin}/>
           <button onClick={closePopup}>Cerrar</button>
         </div>
       )}
