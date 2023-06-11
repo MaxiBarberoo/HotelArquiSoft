@@ -25,6 +25,8 @@ function Hoteles(props) {
     } else {
       // Lógica de reserva
       alert("¡Reserva realizada con éxito!");
+      setFechaDesde(null);
+      setFechaHasta(null);
     }
   };
 
@@ -39,7 +41,7 @@ function Hoteles(props) {
         <p className="nombre-hotel1">
           <strong>{props.nombreHotel}</strong>
         </p>
-        <p className="cantidad-piezas">{props.piezas}</p>
+        <p className="cantidad-piezas">Habitaciones: {props.piezas}</p>
       </div>
       <div className="contenedor-inputs-fechas">
         <p>Desde: </p>

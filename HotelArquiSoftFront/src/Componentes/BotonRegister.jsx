@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import FormularioRegister from './FormularioRegister';
 
-function RegisterPopup() {
+function BotonRegister() {
   const [isOpen, setIsOpen] = useState(false);
 
   const openPopup = () => {
@@ -15,7 +15,6 @@ function RegisterPopup() {
   return (
     <>
       <button onClick={openPopup}>Registrarse</button>
-
       {isOpen && (
         <div className="popup">
           <FormularioRegister />
@@ -26,4 +25,4 @@ function RegisterPopup() {
   );
 }
 
-export default RegisterPopup;
+export default BotonRegister;

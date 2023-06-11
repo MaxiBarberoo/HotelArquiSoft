@@ -15,8 +15,8 @@ function App() {
     <div className = 'App'>
         <div>
            <h1>ENCONTRA LA MEJOR OPCION</h1>
-           <BotonLogin handleLogin={handleLogin}/>
-           <BotonRegister />
+           {!isLoggedIn && <BotonLogin handleLogin={handleLogin} />}
+           {!isLoggedIn && <BotonRegister />}
            <Hoteles
                 nombreHotel='HOTEL LUXURY'
                 image='1'

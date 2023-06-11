@@ -1,46 +1,27 @@
 import React, { useState } from 'react';
 
-function FormularioRegister({ setIsRegistered }) {
+function FormularioRegister() {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-  const [email, setEmail] = useState('');
+  const [user_email, setEmail] = useState('');
 
   const handleRegister = (e) => {
     e.preventDefault();
-    // Aquí puedes realizar la lógica de verificación de registro
-    // Por ejemplo, puedes validar los campos y enviar los datos al servidor
-
-    // Si el registro es exitoso, puedes establecer el estado de registro a true
-    setIsRegistered(true);
+    setUsername('');
+    setEmail('');
+    setPassword('');
+    alert("Se ha registrado correctamente");
   };
 
   return (
     <form onSubmit={handleRegister}>
       <h3>Registrarse</h3>
-      <label htmlFor="username">Nombre de usuario:</label>
-      <input
-        type="text"
-        id="username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-
-      <label htmlFor="password">Contraseña:</label>
-      <input
-        type="password"
-        id="password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
-
-      <label htmlFor="email">Correo electrónico:</label>
-      <input
-        type="email"
-        id="email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-
+      <p>Nombre de usuario:</p>
+      <input type="text" className='campoUsuario' value={username} onChange={(e) => setUsername(e.target.value)}/>
+      <p>Contraseña:</p>
+      <input type="password" className='campoContraseña' value={password} onChange={(e) => setPassword(e.target.value)}/>
+      <p>Correo electrónico:</p>
+      <input type="email" className='campoEmail' value={user_email} onChange={(e) => setEmail(e.target.value)}/>
       <button type="submit">Registrarse</button>
     </form>
   );
