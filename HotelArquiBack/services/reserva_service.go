@@ -54,7 +54,7 @@ func (s *reservaService) GetReservas() (dto.ReservasDto, e.ApiError) {
 		reservaDto.FechaEgreso = reserva.FechaOut
 		reservaDto.HotelId = reserva.HotelId
 		reservaDto.UserId = reserva.UserId
-
+		reservaDto.Id = reserva.ID
 		reservasDto = append(reservasDto, reservaDto)
 	}
 
@@ -116,7 +116,6 @@ func (s *reservaService) GetReservasByUser(userId int) (dto.ReservasDto, e.ApiEr
 		reservaDto.FechaEgreso = reserva.FechaOut
 		reservaDto.HotelId = reserva.HotelId
 		reservaDto.UserId = reserva.UserId
-
 		reservasDto = append(reservasDto, reservaDto)
 	}
 
