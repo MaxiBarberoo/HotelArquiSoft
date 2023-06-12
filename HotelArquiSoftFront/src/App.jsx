@@ -29,7 +29,7 @@ function App() {
            <h1>ENCONTRA LA MEJOR OPCION</h1>
            {!isLoggedIn && <BotonLogin handleLogin={handleLogin} />}
            {!isLoggedIn && <BotonRegister />}
-           {hotels.map(hotel => (
+           {!isAdmin && hotels.map(hotel => (
           <Hoteles
             key={hotel.id}
             nombreHotel={hotel.name}
