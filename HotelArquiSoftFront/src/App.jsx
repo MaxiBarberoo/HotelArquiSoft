@@ -8,11 +8,14 @@ function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
     const [hotels, setHotels] = useState([]);
-
+    const [userId, setUserId] = useState(null);
     const handleLogin = (tipoUsuario) => {
         setIsLoggedIn(true);
         setIsAdmin(tipoUsuario === 1);
     };
+    const handleUserId = (userId) => {
+      setUserId(userId);
+    }
 
     useEffect(() => {
         // Realizar la solicitud GET para obtener la lista de hoteles
@@ -26,7 +29,7 @@ function App() {
     <div className = 'App'>
         <div>
            <h1>ENCONTRA LA MEJOR OPCION</h1>
-           {!isLoggedIn && <BotonLogin handleLogin={handleLogin} />}
+           {!isLoggedIn && <BotonLogin handleLogin={handleLogin} handleUserId={handleUserId} />}
            {!isLoggedIn && <BotonRegister />}
            {hotels.map(hotel => (
           <Hoteles

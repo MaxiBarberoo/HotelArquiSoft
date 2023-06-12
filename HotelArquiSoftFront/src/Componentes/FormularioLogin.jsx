@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function FormularioLogin({ handleLogin }) {
+function FormularioLogin({ handleLogin, handleUserId }) {
   const [User_email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
 
@@ -22,8 +22,10 @@ function FormularioLogin({ handleLogin }) {
       .then((data) => {
         if (data.autenticacion==="true") {
           const tipoUsuario = data.tipo; // Obtener el tipo de usuario autenticado desde la respuesta
+          const userId = data.user_id;
           // Llamar a la función handleLogin pasando el tipo de usuario como argumento
           handleLogin(tipoUsuario);
+          handleUserId(userId);
 
           alert('Autenticación exitosa');
         } else {
