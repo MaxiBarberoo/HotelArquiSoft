@@ -39,9 +39,10 @@ func InsertReserva(reserva model.Reserva) model.Reserva {
 func GetRooms(fecha time.Time, reserva model.Reserva) int {
 	var count int
 
-	err := Db.Select("COUNT(reservas.id)").
-		Joins("JOIN hotels ON reservas.hotel_id = ?", reserva.HotelId).
-		Where("? >= reservas.fecha_in AND ? <= reservas.fecha_out", fecha).
+	err := Db.Table("reservas").
+		Select("COUNT(reservas.id)").
+		Joins("JOIN hotels ON reservas.hotel_id = hotels.id").
+		Where("? >= reservas.fecha_in AND ? <= reservas.fecha_out", fecha, fecha).
 		Count(&count).Error
 
 	if err != nil {

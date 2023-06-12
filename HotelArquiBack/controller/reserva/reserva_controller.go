@@ -71,11 +71,11 @@ func GetRooms(c *gin.Context) {
 		c.JSON(http.StatusAccepted, gin.H{
 			"disponibilidad": "true",
 		})
+	} else {
+		c.JSON(http.StatusAccepted, gin.H{
+			"disponibilidad": "false",
+		})
 	}
-
-	c.JSON(http.StatusAccepted, gin.H{
-		"disponibilidad": "false",
-	})
 }
 
 func GetReservasByUser(c *gin.Context) {
