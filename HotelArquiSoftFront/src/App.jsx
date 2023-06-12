@@ -10,12 +10,10 @@ function App() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [hotels, setHotels] = useState([]);
     const [userId, setUserId] = useState(null);
-    const [reservas, setReservas] = useState([]);
     const handleLogin = (tipoUsuario, userId) => {
         setIsLoggedIn(true);
         setIsAdmin(tipoUsuario === 1);
         setUserId(userId);
-        fetchReservas();
     };
 
     useEffect(() => {
@@ -26,20 +24,13 @@ function App() {
           .catch(error => console.error(error));
       }, []);
 
-      const fetchReservas = () => {
-        fetch(`http://localhost:8090/reservas/reservauser/${userId}`)
-          .then(response => response.json())
-          .then(data => setReservas(data))
-          .catch(error => console.error(error));
-      };
-
     return (
     <div className = 'App'>
         <div>
            <h1>ENCONTRA LA MEJOR OPCION</h1>
            {!isLoggedIn && <BotonLogin handleLogin={handleLogin} />}
            {!isLoggedIn && <BotonRegister />}
-           {isLoggedIn && reservas.length > 0 && <Reservas reservas={reservas} />}
+           {isLoggedIn && reservas.length > 0 && <Reservas reservas={userId} />}
            {!isAdmin && hotels.map(hotel => (
           <Hoteles
             key={hotel.id}
