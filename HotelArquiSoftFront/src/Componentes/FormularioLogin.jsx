@@ -6,12 +6,27 @@ function FormularioLogin({ handleLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (user_email == '2100815@ucc.edu.ar' && password == 'Contra'){
-      handleLogin();
-      setEmail('');
-      setPassword('');
-      alert("Ha iniciado sesión con éxito");
-    }
+    fetch('/users/auth', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ UserEmail: user_email, Password: password }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.authenticated) {
+          //Falta autenticar tipo de usuario en esta parte
+          alert('Autenticación exitosa');
+        } else {
+          // Error de autenticación
+          alert('La autenticación fue incorrecta. Ingrese sus datos nuevamente');
+        }
+      })
+      .catch((error) => {
+        // Manejar el error de la solicitud
+        console.error('Error:', error);
+      });
   }
 
   return (

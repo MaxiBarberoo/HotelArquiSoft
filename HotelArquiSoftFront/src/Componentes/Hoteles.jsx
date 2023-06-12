@@ -32,11 +32,6 @@ function Hoteles(props) {
 
   return (
     <div className="contenedor-hoteles">
-      <img
-        className="imagen-hotel"
-        src={`src/Images/hotel-${props.image}.png`}
-        alt="fotodeHotel"
-      />
       <div className="contenedor-detalle-hoteles">
         <p className="nombre-hotel1">
           <strong>{props.nombreHotel}</strong>

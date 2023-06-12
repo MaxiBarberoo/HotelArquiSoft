@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css'
 import BotonLogin from './Componentes/BotonLogin';
 import BotonRegister from './Componentes/BotonRegister';
@@ -6,10 +6,20 @@ import Hoteles from './Componentes/Hoteles.jsx'
 
 function App() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+    const [hotels, setHotels] = useState([]);
 
     const handleLogin = () => {
         setIsLoggedIn(true);
     };
+
+    useEffect(() => {
+        // Realizar la solicitud GET para obtener la lista de hoteles
+        fetch('/hotels')
+          .then(response => response.json())
+          .then(data => setHotels(data))
+          .catch(error => console.error(error));
+      }, []);
 
     return (
     <div className = 'App'>
@@ -17,66 +27,15 @@ function App() {
            <h1>ENCONTRA LA MEJOR OPCION</h1>
            {!isLoggedIn && <BotonLogin handleLogin={handleLogin} />}
            {!isLoggedIn && <BotonRegister />}
-           <Hoteles
-                nombreHotel='HOTEL LUXURY'
-                image='1'
-                piezas= '5'
-                isLoggedIn = {isLoggedIn}
-            />
-            <Hoteles
-                nombreHotel='HOTEL PALACE'
-                image='2'
-                piezas= '5'
-                isLoggedIn = {isLoggedIn}
-            />
-            <Hoteles
-                nombreHotel='HOTEL CENTRAL PARK'
-                image='3'
-                piezas= '5'
-                isLoggedIn = {isLoggedIn}
-            />
-            <Hoteles
-                nombreHotel='HOTEL PARAÍSO'
-                image='4'
-                piezas= '5'
-                isLoggedIn = {isLoggedIn}
-            />
-            <Hoteles
-                nombreHotel='CASA DE LAS MONTAÑAS'
-                image='5'
-                piezas= '5'
-                isLoggedIn = {isLoggedIn}
-            />
-            <Hoteles
-                nombreHotel='HOTEL EXOTIC'
-                image='6'
-                piezas= '5'
-                isLoggedIn = {isLoggedIn}
-            />
-            <Hoteles
-                nombreHotel='HOTEL MANSION DEL SUR'
-                image='7'
-                piezas= '5'
-                isLoggedIn = {isLoggedIn}
-            />
-            <Hoteles
-                nombreHotel='HOTEL JARDIN'
-                image='8'
-                piezas= '5'
-                isLoggedIn = {isLoggedIn}
-            />
-            <Hoteles
-                nombreHotel='GRAN HOTEL'
-                image='9'
-                piezas= '5'
-                isLoggedIn = {isLoggedIn}
-            />
-            <Hoteles
-                nombreHotel='CASA NATURAL'
-                image='10'
-                piezas= '5'
-                isLoggedIn = {isLoggedIn}
-            />
+           {hotels.map(hotel => (
+          <Hoteles
+            key={hotel.id}
+            nombreHotel={hotel.name}
+            image={hotel.image}
+            piezas={hotel.piezas}
+            isLoggedIn={isLoggedIn}
+          />
+        ))}
         </div>
     </div>
     )
