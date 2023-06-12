@@ -11,14 +11,14 @@ function FormularioRegister() {
 
     // Crear el objeto de datos a enviar en la solicitud POST
     const userData = {
-      FirstName: firstName,
-      LastName: lastName,
-      Password: password,
-      Email: user_email,
+      name: firstName,
+      last_name: lastName,
+      password: password,
+      user_email: user_email,
     };
 
     // Realizar la solicitud POST al backend
-    fetch('/users', {
+    fetch('http://localhost:8090/users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

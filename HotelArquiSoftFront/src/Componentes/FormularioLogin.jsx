@@ -6,16 +6,16 @@ function FormularioLogin({ handleLogin }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    fetch('/users/auth', {
+    fetch('http://localhost:8090/users/auth', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ UserEmail: user_email, Password: password }),
+      body: JSON.stringify({ user_email: user_email, password: password }),
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.authenticated) {
+        if (data.autenticacion=="true") {
           const tipoUsuario = data.tipo; // Obtener el tipo de usuario autenticado desde la respuesta
 
           // Llamar a la función handleLogin pasando el tipo de usuario como argumento
@@ -35,9 +35,9 @@ function FormularioLogin({ handleLogin }) {
     <form onSubmit={handleSubmit}>
       <h3>Iniciar sesión</h3>
       <p>Email:</p>
-      <input type="email" className='campoEmail' onChange={(e) => setEmail(e.target.value)} />
+      <input type="email" className='campoEmail' value={user_email} onChange={(e) => setEmail(e.target.value)} />
       <p>Contraseña:</p>
-      <input type="password" className='campoContraseña' onChange={(e) => setPassword(e.target.value)} />
+      <input type="password" className='campoContraseña' value={password}  onChange={(e) => setPassword(e.target.value)} />
       <button type="submit">Iniciar sesión</button>
     </form>
   );

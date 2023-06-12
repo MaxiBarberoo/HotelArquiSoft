@@ -16,7 +16,7 @@ function App() {
 
     useEffect(() => {
         // Realizar la solicitud GET para obtener la lista de hoteles
-        fetch('/hotels')
+        fetch('http://localhost:8090/hotels')
           .then(response => response.json())
           .then(data => setHotels(data))
           .catch(error => console.error(error));
