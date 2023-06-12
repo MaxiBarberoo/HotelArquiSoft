@@ -18,10 +18,10 @@ func mapUrls() {
 	router.GET("/users", userController.GetUsers)
 	router.GET("/users/email", userController.GetUserByEmail)
 	router.GET("/users/:id", userController.GetUserById)
-	router.POST("/users/auth", userController.UserAuth)
 	router.GET("/hotels", hotelController.GetHotels)
 	router.GET("/hotels/:id", hotelController.GetHotelById)
 
+	router.POST("/users/auth", userController.UserAuth)
 	router.POST("/users", userController.UserInsert)
 	router.POST("/reservas", reservaController.ReservaInsert)
 	router.POST("/hotels", hotelController.HotelInsert)

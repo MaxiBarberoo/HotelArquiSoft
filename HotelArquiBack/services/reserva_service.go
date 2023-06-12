@@ -96,7 +96,7 @@ func (s *reservaService) GetRooms(reservaDto dto.ReservaDto) bool {
 	dias := int(duracion.Hours() / 24)
 
 	for i := 0; i < dias; i++ {
-		if reservaClient.GetRooms(fecha, reserva) > Hotel.CantHabitaciones {
+		if reservaClient.GetRooms(fecha, reserva) >= Hotel.CantHabitaciones {
 			return false
 		}
 		fecha = fecha.AddDate(0, 0, 1)
