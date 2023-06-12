@@ -16,9 +16,55 @@ var (
 	err error
 )
 
+func insertInitialData() {
+	// Insert users
+	user := model.User{
+		FirstName: "Admin",
+		LastName:  "Admin",
+		Email:     "admin@admin.com",
+		Password:  "password123",
+		Tipo:      1,
+	}
+	if err := db.Create(&user).Error; err != nil {
+		log.Error("Failed to insert user:", err.Error())
+	}
+
+	// Insert hotels
+	hotels := []model.Hotel{
+		{
+			Nombre:  "Luxury",
+			CantHab: 10,
+		},
+		{
+			Nombre:  "Grand Hotel",
+			CantHab: 10,
+		},
+		{
+			Nombre:  "Sunset Paradise",
+			CantHab: 10,
+		},
+		{
+			Nombre:  "Golden Sands Resort",
+			CantHab: 10,
+		},
+		{
+			Nombre:  "Ocean View Inn",
+			CantHab: 10,
+		},
+	}
+
+	for _, hotel := range hotels {
+		if err := db.Create(&hotel).Error; err != nil {
+			log.Error("Failed to insert hotel:", err.Error())
+		}
+	}
+
+	log.Info("Initial values inserted")
+}
+
 func init() {
 	// DB Connections Paramters
-	DBName := "HotelArquiSoft"
+	DBName := "prueba_datos"
 	DBUser := "root"
 	DBPass := "arquisoft1"
 	//DBPass := os.Getenv("MVC_DB_PASS")
@@ -38,6 +84,8 @@ func init() {
 	userClient.Db = db
 	hotelClient.Db = db
 	reservaClient.Db = db
+
+	insertInitialData()
 
 }
 
