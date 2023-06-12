@@ -22,7 +22,6 @@ function FormularioLogin({ handleLogin }) {
       .then((data) => {
         if (data.autenticacion==="true") {
           const tipoUsuario = data.tipo; // Obtener el tipo de usuario autenticado desde la respuesta
-
           // Llamar a la función handleLogin pasando el tipo de usuario como argumento
           handleLogin(tipoUsuario);
 

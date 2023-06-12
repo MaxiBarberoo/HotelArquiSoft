@@ -23,52 +23,58 @@ function Hoteles(props) {
     } else if (fechaDesde >= fechaHasta) {
       alert("La fecha desde debe ser anterior a la fecha hasta.");
     } else {
-      // Realizar la solicitud GET para verificar la disponibilidad de habitaciones
-      fetch('http://localhost:8090/reservas/rooms', {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          fecha_ingreso: fechaDesde,
-          fecha_egreso: fechaHasta,
-          hotel_id: props.hotelId,
-          user_id: props.userId,
-        }),
-      })
+      checkDisponibilidad();
+    }
+  };
+
+  const checkDisponibilidad = () => {
+    fetch("http://localhost:8090/reservas/rooms", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fecha_ingreso: fechaDesde,
+        fecha_egreso: fechaHasta,
+        hotel_id: props.hotelId, // Agrega el ID del hotel correspondiente
+        user_id: props.userId, // Agrega el ID del usuario correspondiente
+      }),
+    })
         .then((response) => response.json())
         .then((data) => {
           if (data.disponibilidad === "true") {
-            // Realizar la solicitud POST para insertar la reserva
-            fetch('http://localhost:8090/reservas', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                fecha_ingreso: fechaDesde,
-                fecha_egreso: fechaHasta,
-                hotel_id: props.hotelId,
-                user_id: props.userId,
-              }),
-            })
-              .then((response) => response.json())
-              .then((data) => {
-                alert("¡Reserva realizada con éxito!");
-                setFechaDesde(null);
-                setFechaHasta(null);
-              })
-              .catch((error) => {
-                console.error('Error:', error);
-              });
+            realizarReserva();
           } else {
-            alert("No hay habitaciones disponibles para las fechas seleccionadas.");
+            alert("No hay habitaciones disponibles en esas fechas.");
           }
         })
         .catch((error) => {
-          console.error('Error:', error);
+          console.error("Error:", error);
         });
-    }
+  };
+
+  const realizarReserva = () => {
+    fetch("http://localhost:8090/reservas", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        fecha_ingreso: fechaDesde,
+        fecha_egreso: fechaHasta,
+        hotel_id: props.hotelId, // Agrega el ID del hotel correspondiente
+        user_id: props.userId, // Agrega el ID del usuario correspondiente
+      }),
+    })
+        .then((response) => response.json())
+        .then((data) => {
+          alert("¡Reserva realizada con éxito!");
+          setFechaDesde(null);
+          setFechaHasta(null);
+        })
+        .catch((error) => {
+          console.error("Error:", error);
+        });
   };
 
   return (

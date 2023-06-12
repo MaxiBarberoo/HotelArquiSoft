@@ -84,16 +84,19 @@ func UserAuth(c *gin.Context) {
 
 	var autenticado bool
 	var tipo int
-	autenticado, tipo = service.UserService.UserAuth(userDto)
+	var id int
+	autenticado, tipo, id = service.UserService.UserAuth(userDto)
 	if autenticado == true {
 		c.JSON(http.StatusAccepted, gin.H{
 			"autenticacion": "true",
 			"tipo":          tipo,
+			"user_id":       id,
 		})
 	} else {
 		c.JSON(http.StatusAccepted, gin.H{
 			"autenticacion": "false",
 			"tipo":          tipo,
+			"user_id":       id,
 		})
 	}
 

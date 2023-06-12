@@ -14,7 +14,7 @@ type userServiceInterface interface {
 	GetUsers() (dto.UsersDto, e.ApiError)
 	InsertUser(userDto dto.UserDto) (dto.UserDto, e.ApiError)
 	GetUserByEmail(email string) (dto.UserDto, e.ApiError)
-	UserAuth(userDto dto.UserDto) (bool, int)
+	UserAuth(userDto dto.UserDto) (bool, int, int)
 }
 
 var (
@@ -94,13 +94,13 @@ func (s *userService) InsertUser(userDto dto.UserDto) (dto.UserDto, e.ApiError) 
 	return userDto, nil
 }
 
-func (s *userService) UserAuth(userDto dto.UserDto) (bool, int) {
+func (s *userService) UserAuth(userDto dto.UserDto) (bool, int, int) {
 
 	user := userClient.GetUserByEmail(userDto.UserEmail)
 
 	if user.Password != userDto.Password {
-		return false, 0
+		return false, -1, -1
 	}
 
-	return true, user.Tipo
+	return true, user.Tipo, user.ID
 }

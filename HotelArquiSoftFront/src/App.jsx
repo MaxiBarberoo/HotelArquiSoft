@@ -34,6 +34,8 @@ function App() {
             nombreHotel={hotel.name}
             piezas={hotel.cantHabitaciones}
             isLoggedIn={isLoggedIn}
+            hotelId={hotel.id}
+            userId={hotel.userId}
           />
         ))}
         </div>

@@ -12,7 +12,6 @@ func mapUrls() {
 
 	// Users Mapping
 	router.GET("/reservas", reservaController.GetReservas)
-	router.GET("/reservas/rooms", reservaController.GetRooms)
 	router.GET("/reservas/:id", reservaController.GetReservaById)
 	router.GET("/reservas/reservauser", reservaController.GetReservasByUser)
 	router.GET("/users", userController.GetUsers)
@@ -25,6 +24,7 @@ func mapUrls() {
 	router.POST("/users", userController.UserInsert)
 	router.POST("/reservas", reservaController.ReservaInsert)
 	router.POST("/hotels", hotelController.HotelInsert)
+	router.POST("/reservas/rooms", reservaController.GetRooms)
 
 	log.Info("Finishing mappings configurations")
 }
