@@ -16,18 +16,20 @@ function FormularioLogin({ handleLogin }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.authenticated) {
-          //Falta autenticar tipo de usuario en esta parte
+          const tipoUsuario = data.tipo; // Obtener el tipo de usuario autenticado desde la respuesta
+
+          // Llamar a la función handleLogin pasando el tipo de usuario como argumento
+          handleLogin(data.tipo);
+
           alert('Autenticación exitosa');
         } else {
-          // Error de autenticación
           alert('La autenticación fue incorrecta. Ingrese sus datos nuevamente');
         }
       })
       .catch((error) => {
-        // Manejar el error de la solicitud
         console.error('Error:', error);
       });
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit}>

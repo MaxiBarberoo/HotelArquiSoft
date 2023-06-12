@@ -9,8 +9,9 @@ function App() {
     const [isAdmin, setIsAdmin] = useState(false);
     const [hotels, setHotels] = useState([]);
 
-    const handleLogin = () => {
+    const handleLogin = (tipoUsuario) => {
         setIsLoggedIn(true);
+        setIsAdmin(tipoUsuario === 1);
     };
 
     useEffect(() => {
@@ -31,8 +32,7 @@ function App() {
           <Hoteles
             key={hotel.id}
             nombreHotel={hotel.name}
-            image={hotel.image}
-            piezas={hotel.piezas}
+            piezas={hotel.cantHabitaciones}
             isLoggedIn={isLoggedIn}
           />
         ))}
