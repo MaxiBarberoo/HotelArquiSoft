@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from "react";
 
 function Reservas(props) {
-    const {reservas} = props;
-
+    const { reservas, reservasTotales } = props;
+    
     return (
         <div>
             <h2>Reservas</h2>
@@ -26,7 +26,7 @@ function Reservas(props) {
                     <ul>
                         {reservasTotales.map((reserva) => (
                             <li key={reserva.id}>
-                                <p>Usuario: {reserva.usuario}</p>
+                                <p>Usuario: {reserva.user_id}</p>
                                 <p>Fecha de ingreso: {reserva.fecha_ingreso}</p>
                                 <p>Fecha de egreso: {reserva.fecha_egreso}</p>
                                 <p>Hotel: {reserva.hotel_id}</p>
