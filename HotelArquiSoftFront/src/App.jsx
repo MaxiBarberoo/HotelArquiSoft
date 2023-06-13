@@ -70,7 +70,10 @@ function App() {
         }
       })
         .then((response) => response.json())
-        .then((data) => setReservasTotales(data))
+          .then((data) => {
+            console.log(data); // Verificar los datos recibidos
+            setReservasTotales(data); // Asignar los datos a la variable de estado
+          })
         .catch((error) => console.error(error));
     }
   };
