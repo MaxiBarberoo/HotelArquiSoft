@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect} from 'react';
 import BotonLogin from './Componentes/BotonLogin';
 import BotonRegister from './Componentes/BotonRegister';
 import Hoteles from './Componentes/Hoteles.jsx';
@@ -17,7 +17,7 @@ function App() {
   });
 
   const handleNuevoHotelChange = (event) => {
-    const { name, value } = event.target;
+    const {name, value} = event.target;
     setNuevoHotel((prevNuevoHotel) => ({
       ...prevNuevoHotel,
       [name]: value
@@ -25,6 +25,7 @@ function App() {
   };
 
   const crearNuevoHotel = () => {
+    const cantHabitaciones = parseInt(nuevoHotel.cantidadHabitaciones);
     fetch("http://localhost:8090/hotels", {
       method: "POST",
       headers: {
@@ -32,26 +33,26 @@ function App() {
       },
       body: JSON.stringify({
         name: nuevoHotel.nombre,
-        cantHabitaciones: nuevoHotel.cantidadHabitaciones
+        cantHabitaciones: cantHabitaciones
       })
     })
-      .then((response) => response.json())
-      .then((data) => {
-        // Verificar si se produjo un error en la respuesta
-        if (data.error) {
-          // Manejar el error, mostrar mensaje, etc.
-          console.error(data.error);
-        } else {
-          // Actualizar la lista de hoteles con el nuevo hotel agregado
-          setHoteles((prevHoteles) => [...prevHoteles, data]);
-          // Reiniciar los valores del nuevo hotel
-          setNuevoHotel({
-            nombre: "",
-            cantidadHabitaciones: 0
-          });
-        }
-      })
-      .catch((error) => console.error(error));
+        .then((response) => response.json())
+        .then((data) => {
+          // Verificar si se produjo un error en la respuesta
+          if (data.error) {
+            // Manejar el error, mostrar mensaje, etc.
+            console.error(data.error);
+          } else {
+            // Actualizar la lista de hoteles con el nuevo hotel agregado
+            setHoteles((prevHoteles) => [...prevHoteles, data]);
+            alert("Se ha creado un nuevo hotel con exito");
+            setNuevoHotel({
+              nombre: "",
+              cantidadHabitaciones: 0
+            });
+          }
+        })
+        .catch((error) => console.error(error));
   };
 
   const handleLogin = (tipoUsuario, userId) => {
@@ -87,33 +88,48 @@ function App() {
       <div className="App">
         <div>
           <h1>ENCONTRA LA MEJOR OPCION</h1>
-          {!isLoggedIn && <BotonLogin handleLogin={handleLogin} />}
-          {!isLoggedIn && <BotonRegister />}
+          {!isLoggedIn && <BotonLogin handleLogin={handleLogin}/>}
+          {!isLoggedIn && <BotonRegister/>}
           {isLoggedIn && (
               <div>
                 <button onClick={toggleReservas}>Reservas</button>
-                {mostrarReservas && <Reservas reservas={reservas} />}
+                {mostrarReservas && <Reservas reservas={reservas}/>}
               </div>)}
-              {isAdmin && (
+          {isAdmin && (
               <div>
                 <h2>Agregar nuevo hotel</h2>
                 <input
-                  type="text"
-                  name="nombre"
-                  value={nuevoHotel.nombre}
-                  onChange={handleNuevoHotelChange}
-                  placeholder="Nombre del hotel"
+                    type="text"
+                    name="nombre"
+                    value={nuevoHotel.nombre}
+                    onChange={handleNuevoHotelChange}
+                    placeholder="Nombre del hotel"
                 />
                 <input
-                  type="number"
-                  name="cantidadHabitaciones"
-                  value={nuevoHotel.cantidadHabitaciones}
-                  onChange={handleNuevoHotelChange}
-                  placeholder="Cantidad de habitaciones"
+                    type="number"
+                    name="cantidadHabitaciones"
+                    value={nuevoHotel.cantidadHabitaciones}
+                    onChange={handleNuevoHotelChange}
+                    placeholder="Cantidad de habitaciones"
                 />
                 <button onClick={crearNuevoHotel}>Crear Hotel</button>
+                <div>
+                  <h2>Listado de Hoteles</h2>
+                  {hoteles.length > 0 ? (
+                      <ul>
+                        {hoteles.map((hotel) => (
+                            <li key={hotel.id}>
+                              <p>Nombre: {hotel.name}</p>
+                              <p>Cantidad de Habitaciones: {hotel.cantHabitaciones}</p>
+                            </li>
+                        ))}
+                      </ul>
+                  ) : (
+                      <p>No se han creado hoteles todavía.</p>
+                  )}
+                </div>
               </div>
-              )}
+          )}
           {!isAdmin && hoteles.map(hotel => (
               <Hoteles
                   key={hotel.id}
