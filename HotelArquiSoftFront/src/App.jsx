@@ -15,6 +15,7 @@ function App() {
     nombre: "",
     cantidadHabitaciones: 0
   });
+  const [reservasTotales, setReservasTotales] = useState([]);
 
   const handleNuevoHotelChange = (event) => {
     const {name, value} = event.target;
@@ -63,6 +64,18 @@ function App() {
 
   const toggleReservas = () => {
     setMostrarReservas(!mostrarReservas);
+
+    if (isAdmin) {
+      fetch(`http://localhost:8090/reservas`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then((response) => response.json())
+        .then((data) => setReservasTotales(data))
+        .catch((error) => console.error(error));
+    }
   };
 
   useEffect(() => {
@@ -113,6 +126,14 @@ function App() {
                     placeholder="Cantidad de habitaciones"
                 />
                 <button onClick={crearNuevoHotel}>Crear Hotel</button>
+                {isAdmin && (
+  <div>
+    <button onClick={toggleReservas}>Reservas</button>
+    {mostrarReservas && (
+      <Reservas reservas={reservas} reservasTotales={reservasTotales} />
+    )}
+  </div>
+)}
                 <div>
                   <h2>Listado de Hoteles</h2>
                   {hoteles.length > 0 ? (
