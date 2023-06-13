@@ -60,7 +60,6 @@ function App() {
   };
 
   const toggleReservas = () => {
-    setMostrarReservas(!mostrarReservas);
 
     if (isAdmin) {
       fetch('http://localhost:8090/reservas', {
@@ -75,7 +74,18 @@ function App() {
             setReservasTotales(data); // Asignar los datos a la variable de estado
           })
         .catch((error) => console.error(error));
+    }else{
+      fetch(`http://localhost:8090/reservas/reservauser/${userId}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+          .then((response) => response.json())
+          .then((data) => setReservas(data))
+          .catch((error) => console.error(error));
     }
+      setMostrarReservas(!mostrarReservas);
   };
 
   useEffect(() => {
