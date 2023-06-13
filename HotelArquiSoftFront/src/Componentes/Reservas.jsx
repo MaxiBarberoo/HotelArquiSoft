@@ -1,49 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 function Reservas(props) {
-    const [reservas, setReservas] = useState([]);
+  const { reservas } = props;
+  const [reservasConNombreHotel, setReservasConNombreHotel] = useState([]);
 
-    useEffect(() => {
-        // Llamada al método getReservasByUser utilizando fetch
-        fetch(`http://localhost:8090/reservas/reservauser/${props.userId}`)
-          .then((response) => response.json())
-          .then((data) => {
-            // Actualizar el estado con las reservas obtenidas
-            setReservas(data);
-    
-            // Obtener el nombre del hotel para cada reserva
-            const fetchHotelName = async () => {
-              const reservasConHotel = await Promise.all(
-                data.map(async (reserva) => {
-                  const response = await fetch(
-                    `http://localhost:8090/hotels/${reserva.hotel_id}`
-                  );
-                  const hotelData = await response.json();
-                  return { ...reserva, hotel_nombre: hotelData.name };
-                })
-              );
-              setReservas(reservasConHotel);
-            };
-    
-            fetchHotelName();
-          })
-          .catch((error) => {
-            console.error("Error:", error);
-          });
-      }, [props.userId]);
+  useEffect(() => {
+    const fetchReservasConNombreHotel = async () => {
+      const reservasConNombre = await Promise.all(
+        reservas.map(async (reserva) => {
+          const hotel = await getHotelById(reserva.hotel_id);
+          return { ...reserva, hotel_nombre: hotel.name };
+        })
+      );
+      setReservasConNombreHotel(reservasConNombre);
+    };
 
-    return (
-        <div>
-            <h2>Reservas</h2>
-            {reservas.map((reserva) => (
-        <div key={reserva.id}>
-          <p>Fecha de Ingreso: {reserva.fecha_ingreso}</p>
-          <p>Fecha de Egreso: {reserva.fecha_egreso}</p>
-          <p>Hotel: {reserva.hotel_nombre}</p>
-        </div>
-      ))}
-        </div>
-    );
+    fetchReservasConNombreHotel();
+  }, [reservas]);
+
+  const getHotelById = async (hotelId) => {
+    try {
+      const response = await fetch(`http://localhost:8090/hotels/${hotelId}`);
+      if (!response.ok) {
+        throw new Error("Error al obtener el hotel");
+      }
+      const hotel = await response.json();
+      return hotel;
+    } catch (error) {
+      console.error("Error:", error);
+      return null;
+    }
+  };
+
+  return (
+    <div>
+      <h2>Reservas</h2>
+      {reservasConNombreHotel.length > 0 ? (
+        <ul>
+          {reservasConNombreHotel.map((reserva) => (
+            <li key={reserva.id}>
+              <p>Fecha de ingreso: {reserva.fecha_ingreso}</p>
+              <p>Fecha de egreso: {reserva.fecha_egreso}</p>
+              <p>Hotel: {reserva.hotel_nombre}</p>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>No tienes reservas realizadas.</p>
+      )}
+    </div>
+  );
 }
 
 export default Reservas;
