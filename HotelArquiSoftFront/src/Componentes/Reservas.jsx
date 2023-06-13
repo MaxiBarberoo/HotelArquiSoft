@@ -1,44 +1,26 @@
-import React, { useState, useEffect } from 'react';
+import React from "react";
 
 function Reservas(props) {
-  const [reservas, setReservas] = useState([]);
+    const { reservas } = props;
 
-  useEffect(() => {
-    obtenerReservas();
-  }, []);
-
-  const obtenerReservas = () => {
-    fetch(`http://localhost:8090/reservas/reservauser/${props.userId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setReservas(data);
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-      });
-  };
-
-  const cerrarReservas = () => {
-    setReservas([]);
-  };
-
-  return (
-    <div>
-      <h2>Mis Reservas</h2>
-      {reservas.length === 0 ? (
-        <p>No tienes reservas realizadas.</p>
-      ) : (
-        <ul>
-          {reservas.map((reserva) => (
-            <li key={reserva.id}>
-              Hotel ID: {reserva.hotelId}, Fecha de Ingreso: {reserva.fechaIngreso}, Fecha de Egreso: {reserva.fechaEgreso}
-            </li>
-          ))}
-        </ul>
-      )}
-      <button onClick={cerrarReservas}>Cerrar</button>
-    </div>
-  );
+    return (
+        <div>
+            <h2>Reservas</h2>
+            {reservas.length > 0 ? (
+                <ul>
+                    {reservas.map((reserva) => (
+                        <li key={reserva.id}>
+                            <p>Fecha de ingreso: {reserva.fecha_ingreso}</p>
+                            <p>Fecha de egreso: {reserva.fecha_egreso}</p>
+                            <p>Hotel ID: {reserva.hotel_id}</p>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p>No tienes reservas realizadas.</p>
+            )}
+        </div>
+    );
 }
 
 export default Reservas;

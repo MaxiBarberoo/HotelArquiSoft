@@ -54,7 +54,7 @@ func GetRooms(fecha time.Time, reserva model.Reserva) int {
 
 func GetReservasByUser(userId int) model.Reservas {
 	var reservas model.Reservas
-	Db.Where("UserId = ?", userId).Find(&reservas)
+	Db.Where("user_id = ?", userId).Find(&reservas)
 	log.Debug("Reservas: ", reservas)
 	return reservas
 }
