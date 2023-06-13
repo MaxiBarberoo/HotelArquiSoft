@@ -39,12 +39,9 @@ function App() {
     })
       .then((response) => response.json())
       .then((data) => {
-        // Verificar si se produjo un error en la respuesta
         if (data.error) {
-          // Manejar el error, mostrar mensaje, etc.
           console.error(data.error);
         } else {
-          // Actualizar la lista de hoteles con el nuevo hotel agregado
           setHoteles((prevHoteles) => [...prevHoteles, data]);
           alert('Se ha creado un nuevo hotel con éxito');
           setNuevoHotel({
@@ -64,10 +61,22 @@ function App() {
 
   const toggleReservas = () => {
     setMostrarReservas(!mostrarReservas);
+
+    if (isAdmin) {
+      fetch('http://localhost:8090/reservas', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then((response) => response.json())
+        .then((data) => setReservasTotales(data))
+        .catch((error) => console.error(error));
+    }
   };
 
   useEffect(() => {
-    fetch(`http://localhost:8090/hotels`)
+    fetch('http://localhost:8090/hotels')
       .then((response) => response.json())
       .then((data) => setHoteles(data))
       .catch((error) => console.error(error));
@@ -83,7 +92,19 @@ function App() {
         .then((data) => setReservas(data))
         .catch((error) => console.error(error));
     }
-  }, [isLoggedIn, userId]);
+
+    if (isAdmin) {
+      fetch('http://localhost:8090/reservas', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      })
+        .then((response) => response.json())
+        .then((data) => setReservasTotales(data))
+        .catch((error) => console.error(error));
+    }
+  }, [isLoggedIn, userId, isAdmin]);
 
   return (
     <div className="App">
@@ -94,7 +115,9 @@ function App() {
         {isLoggedIn && (
           <div>
             <button onClick={toggleReservas}>Reservas</button>
-            {mostrarReservas && <Reservas reservas={reservas} reservasTotales={reservasTotales} isAdmin={isAdmin} />}
+            {mostrarReservas && (
+              <Reservas reservas={reservas} reservasTotales={reservasTotales} />
+            )}
           </div>
         )}
         {isAdmin && (
@@ -116,10 +139,6 @@ function App() {
             />
             <button onClick={crearNuevoHotel}>Crear Hotel</button>
             <div>
-              <button onClick={toggleReservas}>Reservas</button>
-              {mostrarReservas && <Reservas reservas={reservas} reservasTotales={reservasTotales} isAdmin={isAdmin} />}
-            </div>
-            <div>
               <h2>Listado de Hoteles</h2>
               {hoteles.length > 0 ? (
                 <ul>
@@ -136,16 +155,17 @@ function App() {
             </div>
           </div>
         )}
-        {!isAdmin && hoteles.map((hotel) => (
-          <Hoteles
-            key={hotel.id}
-            nombreHotel={hotel.name}
-            piezas={hotel.cantHabitaciones}
-            isLoggedIn={isLoggedIn}
-            hotelId={hotel.id}
-            userId={userId}
-          />
-        ))}
+        {!isAdmin &&
+          hoteles.map((hotel) => (
+            <Hoteles
+              key={hotel.id}
+              nombreHotel={hotel.name}
+              piezas={hotel.cantHabitaciones}
+              isLoggedIn={isLoggedIn}
+              hotelId={hotel.id}
+              userId={userId}
+            />
+          ))}
       </div>
     </div>
   );
