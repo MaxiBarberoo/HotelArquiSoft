@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-function FormularioLogin({ handleLogin, handleUserId }) {
+function FormularioLogin({ handleLogin }) {
   const [User_email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
 

@@ -1,28 +1,45 @@
 import React, { useState, useEffect } from 'react';
-import './App.css'
 import BotonLogin from './Componentes/BotonLogin';
 import BotonRegister from './Componentes/BotonRegister';
 import Hoteles from './Componentes/Hoteles.jsx';
+import Reservas from './Componentes/Reservas.jsx';
 
 function App() {
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
-    const [isAdmin, setIsAdmin] = useState(false);
-    const [hotels, setHotels] = useState([]);
-    const [userId, setUserId] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [hoteles, setHoteles] = useState([]);
+  const [userId, setUserId] = useState(null);
+  const [mostrarReservas, setMostrarReservas] = useState(false);
 
-    const handleLogin = (tipoUsuario, userId) => {
-        setIsLoggedIn(true);
-        setIsAdmin(tipoUsuario === 1);
-        setUserId(userId);
-    };
+  const handleLogin = (tipoUsuario, userId) => {
+    setIsLoggedIn(true);
+    setIsAdmin(tipoUsuario === 1);
+    setUserId(userId);
+  };
 
-    return (
-    <div className = 'App'>
+  const toggleReservas = () => {
+    setMostrarReservas(!mostrarReservas);
+  };
+
+  useEffect(() => {
+    fetch('http://localhost:8090/hotels')
+      .then(response => response.json())
+      .then(data => setHoteles(data))
+      .catch(error => console.error(error));
+  }, []);
+
+  return (
+    <div className="App">
+      <div>
+        <h1>ENCONTRA LA MEJOR OPCION</h1>
+        {!isLoggedIn && <BotonLogin handleLogin={handleLogin} />}
+        {!isLoggedIn && <BotonRegister />}
+        {isLoggedIn && (
         <div>
-           <h1>ENCONTRA LA MEJOR OPCION</h1>
-           {!isLoggedIn && <BotonLogin handleLogin={handleLogin} />}
-           {!isLoggedIn && <BotonRegister />}
-           {!isAdmin && hotels.map(hotel => (
+          <button onClick={toggleReservas}>Reservas</button>
+          {mostrarReservas && <Reservas reservas={reservas} />}
+        </div>)}
+        {!isAdmin && hoteles.map(hotel => (
           <Hoteles
             key={hotel.id}
             nombreHotel={hotel.name}
@@ -32,8 +49,9 @@ function App() {
             userId={userId}
           />
         ))}
-        </div>
+      </div>
     </div>
-    )
+  );
 }
+
 export default App;
