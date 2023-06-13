@@ -30,16 +30,16 @@ function App() {
 
     if (isLoggedIn) {
       fetch(`http://localhost:8090/reservas/reservauser/${userId}`, {
-      method: "GET",
-          headers: {
-        "Content-Type": "application/json",
-      },
-    })
-  .then((response) => response.json())
-        .then((data) => setReservas(data))
-        .catch((error) => console.error(error));
-  }
-}, [isLoggedIn, userId]);
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+          .then((response) => response.json())
+          .then((data) => setReservas(data))
+          .catch((error) => console.error(error));
+    }
+  }, [isLoggedIn, userId]);
 
   return (
       <div className="App">
