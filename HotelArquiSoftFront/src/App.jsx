@@ -16,7 +16,6 @@ function App() {
     setIsLoggedIn(true);
     setIsAdmin(tipoUsuario === 1);
     setUserId(userId);
-    obtenerReservas(userId);
   };
 
   const toggleReservas = () => {
