@@ -64,7 +64,7 @@ func insertInitialData() {
 
 func init() {
 	// DB Connections Paramters
-	DBName := "prueba_datos"
+	DBName := "HotelArquiSoft"
 	DBUser := "root"
 	DBPass := "arquisoft1"
 	//DBPass := os.Getenv("MVC_DB_PASS")
@@ -85,8 +85,6 @@ func init() {
 	hotelClient.Db = db
 	reservaClient.Db = db
 
-	insertInitialData()
-
 }
 
 func StartDbEngine() {
@@ -94,6 +92,8 @@ func StartDbEngine() {
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Reservas{})
 	db.AutoMigrate(&model.Hotels{})
+
+	insertInitialData()
 
 	log.Info("Finishing Migration Database Tables")
 }
