@@ -5,6 +5,7 @@ import (
 	userClient "HotelArquiSoft/HotelArquiBack/clients/user"
 	"HotelArquiSoft/HotelArquiBack/dto"
 	"HotelArquiSoft/HotelArquiBack/model"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type userService struct{}
@@ -79,11 +80,16 @@ func (s *userService) GetUsers() (dto.UsersDto, e.ApiError) {
 
 func (s *userService) InsertUser(userDto dto.UserDto) (dto.UserDto, e.ApiError) {
 
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(userDto.Password), bcrypt.DefaultCost)
+
+	if err != nil {
+		// Handle error
+	}
 	var user model.User
 
 	user.FirstName = userDto.FirstName
 	user.LastName = userDto.LastName
-	user.Password = userDto.Password
+	user.Password = string(hashedPassword)
 	user.Email = userDto.UserEmail
 	user.Tipo = userDto.Tipo
 
@@ -98,7 +104,8 @@ func (s *userService) UserAuth(userDto dto.UserDto) (bool, int, int) {
 
 	user := userClient.GetUserByEmail(userDto.UserEmail)
 
-	if user.Password != userDto.Password {
+	err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(userDto.Password))
+	if err != nil {
 		return false, -1, -1
 	}
 
