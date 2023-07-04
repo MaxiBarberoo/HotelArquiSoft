@@ -2,11 +2,14 @@ package controller
 
 import (
 	"HotelArquiSoft/HotelArquiBack/dto"
+	userjwt "HotelArquiSoft/HotelArquiBack/jwt"
 	service "HotelArquiSoft/HotelArquiBack/services"
 	"net/http"
 	"strconv"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/mitchellh/mapstructure"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -22,7 +25,17 @@ func GetUserById(c *gin.Context) {
 		c.JSON(err.Status(), err)
 		return
 	}
-	c.JSON(http.StatusOK, userDto)
+
+	token, err1 := userjwt.GenerateUserToken(userDto)
+
+	if err1 != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "No se pudo generar la token",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, token)
 }
 
 func GetUserByEmail(c *gin.Context) {
@@ -75,10 +88,43 @@ func UserInsert(c *gin.Context) {
 func UserAuth(c *gin.Context) {
 	var userDto dto.UserDto
 
-	err := c.BindJSON(&userDto)
+	tokenString := c.GetHeader("Authorization")
+	if tokenString == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Token no proporcionado",
+		})
+		return
+	}
+
+	secret := "secreto"
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(secret), nil
+	})
+
+	if err != nil || !token.Valid {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Token invalido",
+		})
+		return
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Error al obtener los datos",
+		})
+		return
+	}
+
+	err = mapstructure.Decode(claims, &userDto)
+
 	if err != nil {
-		log.Error(err.Error())
-		c.JSON(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Error al obtener los datos",
+		})
+
 		return
 	}
 
@@ -88,12 +134,14 @@ func UserAuth(c *gin.Context) {
 	autenticado, tipo, id = service.UserService.UserAuth(userDto)
 	if autenticado == true {
 		c.JSON(http.StatusAccepted, gin.H{
+			"message":       "Solicitud exitosa",
 			"autenticacion": "true",
 			"tipo":          tipo,
 			"user_id":       id,
 		})
 	} else {
 		c.JSON(http.StatusAccepted, gin.H{
+			"message":       "Solicitud rechazada",
 			"autenticacion": "false",
 			"tipo":          tipo,
 			"user_id":       id,
