@@ -1,8 +1,8 @@
 package model
 
 type Amenitie struct {
-	ID     int    `gorm:"primaryKey"`
-	Nombre string `gorm:"type:varchar(100);not null; unique"`
+	ID   int    `gorm:"primaryKey"`
+	Tipo string `gorm:"type:varchar(100);not null; unique"`
 }
 
 type Amenities []Amenitie
