@@ -35,6 +35,7 @@ func (s *hotelService) GetHotelById(id int) (dto.HotelDto, e.ApiError) {
 	hotelDto.Name = hotel.Nombre
 	hotelDto.CantHabitaciones = hotel.CantHab
 	hotelDto.Id = hotel.ID
+	hotelDto.Desc = hotel.Descripcion
 
 	return hotelDto, nil
 }
@@ -49,6 +50,7 @@ func (s *hotelService) GetHotels() (dto.HotelsDto, e.ApiError) {
 		hotelDto.Name = hotel.Nombre
 		hotelDto.CantHabitaciones = hotel.CantHab
 		hotelDto.Id = hotel.ID
+		hotelDto.Desc = hotel.Descripcion
 		hotelsDto = append(hotelsDto, hotelDto)
 	}
 
@@ -61,6 +63,7 @@ func (s *hotelService) InsertHotel(hotelDto dto.HotelDto) (dto.HotelDto, e.ApiEr
 
 	hotel.Nombre = hotelDto.Name
 	hotel.CantHab = hotelDto.CantHabitaciones
+	hotel.Descripcion = hotelDto.Desc
 	hotel = hotelClient.InsertHotel(hotel)
 	hotelDto.Id = hotel.ID
 
