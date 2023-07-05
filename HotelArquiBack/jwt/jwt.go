@@ -27,6 +27,20 @@ func GenerateUserToken(userDto dto.UserDto) (string, error) {
 	return signedToken, nil
 }
 
+func VerifyToken(tokenString string) (*jwt.Token, error) {
+	secret := "secreto"
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(secret), nil
+	})
+
+	if err != nil {
+		return nil, err
+	}
+
+	return token, nil
+}
+
 func GenerateHotelToken(hotelDto dto.HotelDto) (string, error) {
 	claims := jwt.MapClaims{
 		"id":                hotelDto.Id,
@@ -99,18 +113,4 @@ func GenerateAmentieHotelToken(amenitieHotelDto dto.AmenitieHotelDto) (string, e
 	}
 
 	return signedToken, nil
-}
-
-func VerifyToken(tokenString string) (*jwt.Token, error) {
-	secret := "secreto"
-
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte(secret), nil
-	})
-
-	if err != nil {
-		return nil, err
-	}
-
-	return token, nil
 }

@@ -263,4 +263,5 @@ func GetHotelsByFecha(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, tokens)
+
 }
