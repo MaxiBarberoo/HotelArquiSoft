@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import '../Stylesheet/LoginRegister.css'
 import Header from '../Componentes/Header'
+import { useNavigate } from 'react-router-dom';
 
 function LoginRegister(){
   const [isSignUpActive, setIsSignUpActive] = useState(false);
+  const navigate = useNavigate(); 
 
   const handleSignUpClick = () => {
     setIsSignUpActive(true);
@@ -12,6 +14,10 @@ function LoginRegister(){
   const handleSignInClick = () => {
     setIsSignUpActive(false);
   };
+
+  const handleLoginSubmit = (event) => {
+	navigate('/reserve');
+  }
 
   return (
     <div className="main-loginregister-container">
@@ -27,11 +33,11 @@ function LoginRegister(){
           </form>
         </div>
         <div className="form-container sign-in-container">
-          <form action="#">
+          <form action="#" onSubmit={handleLoginSubmit}>
             <h1>Iniciar sesión</h1>
             <input type="email" placeholder="Email" />
             <input type="password" placeholder="Contraseña" />
-            <button>Loguearse</button>
+            <button type="submit">Loguearse</button>
           </form>
         </div>
         <div className="overlay-container">
