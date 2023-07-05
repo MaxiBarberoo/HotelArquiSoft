@@ -1,6 +1,8 @@
 package db
 
 import (
+	amenitieClient "HotelArquiSoft/HotelArquiBack/clients/amenitie"
+	amenitieHotelClient "HotelArquiSoft/HotelArquiBack/clients/amenitiehotel"
 	hotelClient "HotelArquiSoft/HotelArquiBack/clients/hotel"
 	reservaClient "HotelArquiSoft/HotelArquiBack/clients/reserva"
 	userClient "HotelArquiSoft/HotelArquiBack/clients/user"
@@ -89,7 +91,8 @@ func init() {
 	userClient.Db = db
 	hotelClient.Db = db
 	reservaClient.Db = db
-
+	amenitieClient.Db = db
+	amenitieHotelClient.Db = db
 }
 
 func StartDbEngine() {
@@ -97,6 +100,8 @@ func StartDbEngine() {
 	db.AutoMigrate(&model.User{})
 	db.AutoMigrate(&model.Reservas{})
 	db.AutoMigrate(&model.Hotels{})
+	db.AutoMigrate(&model.Amenities{})
+	db.AutoMigrate(&model.AmenitieHotel{})
 
 	insertInitialData()
 
