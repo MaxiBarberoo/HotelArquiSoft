@@ -15,6 +15,8 @@ type reservaServiceInterface interface {
 	InsertReserva(reservaDto dto.ReservaDto) (dto.ReservaDto, e.ApiError)
 	GetRooms(ReservaDto dto.ReservaDto) bool
 	GetReservasByUser(userId int) (dto.ReservasDto, e.ApiError)
+	GetReservasByFecha(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError)
+	GetHotelsByFecha(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError)
 }
 
 var (
@@ -119,6 +121,46 @@ func (s *reservaService) GetReservasByUser(userId int) (dto.ReservasDto, e.ApiEr
 		reservaDto.UserId = reserva.UserId
 		reservaDto.Id = reserva.ID
 		reservasDto = append(reservasDto, reservaDto)
+	}
+
+	return reservasDto, nil
+}
+
+func (s *reservaService) GetReservasByFecha(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError) {
+
+	var reserva model.Reserva
+
+	reserva.FechaIn = reservaDto.FechaIngreso
+	reserva.FechaOut = reservaDto.FechaEgreso
+
+	var reservas model.Reservas = reservaClient.GetReservasByFecha(reserva)
+	var reservasDto dto.ReservasDto
+
+	for _, reserva = range reservas {
+		var reservaDto dto.ReservaDto
+
+		reservaDto.FechaIngreso = reserva.FechaIn
+		reservaDto.FechaEgreso = reserva.FechaOut
+		reservaDto.HotelId = reserva.HotelId
+		reservaDto.UserId = reserva.UserId
+		reservaDto.Id = reserva.ID
+		reservasDto = append(reservasDto, reservaDto)
+	}
+
+	return reservasDto, nil
+}
+
+func (s *reservaService) GetHotelsByFecha(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError) {
+
+	hoteles, _ := HotelService.GetHotels()
+
+	var reservasDto dto.ReservasDto
+
+	for _, hotel := range hoteles {
+		reservaDto.HotelId = hotel.Id
+		if s.GetRooms(reservaDto) {
+			reservasDto = append(reservasDto, reservaDto)
+		}
 	}
 
 	return reservasDto, nil

@@ -58,3 +58,14 @@ func GetReservasByUser(userId int) model.Reservas {
 	log.Debug("Reservas: ", reservas)
 	return reservas
 }
+
+func GetReservasByFecha(reserva model.Reserva) model.Reservas {
+
+	var reservas model.Reservas
+	err := Db.Where("fecha_in >= ? AND fecha_out <= ?", reserva.FechaIn, reserva.FechaOut).Find(&reservas).Error
+	if err != nil {
+		return nil
+	}
+	return reservas
+
+}

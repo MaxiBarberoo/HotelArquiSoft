@@ -92,3 +92,45 @@ func GetReservasByUser(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, reservasDto)
 }
+
+func GetReservasByFecha(c *gin.Context) {
+
+	var reservaDto dto.ReservaDto
+	err := c.BindJSON(&reservaDto)
+	if err != nil {
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var reservasDto dto.ReservasDto
+	reservasDto, err = service.ReservaService.GetReservasByFecha(reservaDto)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, reservasDto)
+}
+
+func GetHotelsByFecha(c *gin.Context) {
+	var reservaDto dto.ReservaDto
+	err := c.BindJSON(&reservaDto)
+	if err != nil {
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
+		return
+	}
+
+	var reservasDto dto.ReservasDto
+	reservasDto, err = service.ReservaService.GetHotelsByFecha(reservaDto)
+
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	c.JSON(http.StatusOK, reservasDto)
+
+}
