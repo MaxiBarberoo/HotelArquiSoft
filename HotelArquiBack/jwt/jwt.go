@@ -6,7 +6,7 @@ import (
 	"github.com/dgrijalva/jwt-go"
 )
 
-func generateUserToken(userDto dto.UserDto) (string, error) {
+func GenerateUserToken(userDto dto.UserDto) (string, error) {
 	claims := jwt.MapClaims{
 		"id":         userDto.Id,
 		"name":       userDto.FirstName,
@@ -27,7 +27,7 @@ func generateUserToken(userDto dto.UserDto) (string, error) {
 	return signedToken, nil
 }
 
-func verifyToken(tokenString string) (*jwt.Token, error) {
+func VerifyToken(tokenString string) (*jwt.Token, error) {
 	secret := "secreto"
 
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
