@@ -50,8 +50,18 @@ func GetUserByEmail(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, userDto)
+	token, err1 := userjwt.GenerateUserToken(userDto)
+
+	if err1 != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "No se pudo generar la token",
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, token)
 }
+
 func GetUsers(c *gin.Context) {
 	var usersDto dto.UsersDto
 	usersDto, err := service.UserService.GetUsers()
@@ -61,17 +71,60 @@ func GetUsers(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, usersDto)
+	var tokens []string
+
+	for _, user := range usersDto {
+		token, err := userjwt.GenerateUserToken(user)
+		if err != nil {
+			return
+		}
+
+		tokens = append(tokens, token)
+	}
+
+	c.JSON(http.StatusOK, tokens)
 }
 
 func UserInsert(c *gin.Context) {
 	var userDto dto.UserDto
-	err := c.BindJSON(&userDto)
 
-	// Error Parsing json param
+	tokenString := c.GetHeader("Authorization")
+	if tokenString == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Token no proporcionado",
+		})
+		return
+	}
+
+	secret := "secreto"
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(secret), nil
+	})
+
+	if err != nil || !token.Valid {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Token invalido",
+		})
+		return
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Error al obtener los datos",
+		})
+		return
+	}
+
+	err = mapstructure.Decode(claims, &userDto)
+
 	if err != nil {
-		log.Error(err.Error())
-		c.JSON(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Error al obtener los datos",
+		})
+
 		return
 	}
 
@@ -82,7 +135,7 @@ func UserInsert(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, userDto)
+	c.JSON(http.StatusCreated, token)
 }
 
 func UserAuth(c *gin.Context) {
