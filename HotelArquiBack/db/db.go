@@ -31,6 +31,32 @@ func insertInitialData() {
 		log.Error("Failed to insert user:", err.Error())
 	}
 
+	amenities := []model.Amenitie{
+		{
+			Tipo: "Sauna",
+		},
+		{
+			Tipo: "Piscina",
+		},
+		{
+			Tipo: "Gimnasio",
+		},
+		{
+			Tipo: "Salón de juegos",
+		},
+		{
+			Tipo: "Área de barbacoa",
+		},
+		{
+			Tipo: "Área de recreación infantil",
+		},
+	}
+
+	for _, amenitie := range amenities {
+		if err := db.Create(&amenitie).Error; err != nil {
+			log.Error("Failed to insert hotel:", err.Error())
+		}
+	}
 	// Insert hotels
 	hotels := []model.Hotel{
 		{
