@@ -13,7 +13,12 @@ function Hoteles(props){
         <p className="nombre-hotel1">
           <strong>{props.nombreHotel}</strong>
         </p>
-        <p className="cantidad-piezas">Habitaciones: {props.piezas}</p>
+        <p className="cantidad-piezas">
+            Habitaciones: {props.piezas}
+        </p>
+        <p className="descripcion-hotel">
+            Descripción: {props.descripcion}
+        </p>
       </div>
       <forms onClick={handleReservaSubmit} className="boton-reserva">
         <button type="button">Reservar</button>
