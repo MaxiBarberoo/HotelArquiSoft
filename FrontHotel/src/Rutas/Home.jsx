@@ -1,7 +1,8 @@
-import React from "react"
+import React, {useState} from "react"
 import '../Stylesheet/Home.css'
 import Header from '../Componentes/Header'
 import { useNavigate } from "react-router-dom"
+import Hoteles from '../Componentes/Hoteles'
 
 function Home() {
     const navigate = useNavigate();
@@ -16,10 +17,8 @@ function Home() {
             <form onSubmit={handleButtonSubmit} className="contenedor-boton">
                 <button type="submit" className="boton-uno"><span><strong>INGRESA PARA HACER TUS RESERVAS!</strong></span></button>
             </form>
-            <div className="contenedor-hoteles">
-                <div className="contenedor-detalle-hoteles">
-                    <p className="nombre-hotel1"></p>
-                </div>
+            <div className="contenedor-de-hoteles">
+                <Hoteles />
             </div>
         </div>
     );
