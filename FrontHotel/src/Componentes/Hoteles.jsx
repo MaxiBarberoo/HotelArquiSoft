@@ -1,8 +1,8 @@
 import React from 'react'
 import '../Stylesheet/Hoteles.css'
 
-function Hoteles(){
-    
+function Hoteles(props){
+
     const handleReservaSubmit = () => {
         alert("Para reservar, primero debe iniciar sesión.");
     }
@@ -11,9 +11,9 @@ function Hoteles(){
     <div className="contenedor-hoteles">
       <div className="contenedor-detalle-hoteles">
         <p className="nombre-hotel1">
-          <strong>Hotel</strong>
+          <strong>{props.nombreHotel}</strong>
         </p>
-        <p className="cantidad-piezas">Habitaciones: 2</p>
+        <p className="cantidad-piezas">Habitaciones: {props.piezas}</p>
       </div>
       <forms onClick={handleReservaSubmit} className="boton-reserva">
         <button type="button">Reservar</button>
