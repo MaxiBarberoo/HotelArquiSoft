@@ -43,12 +43,12 @@ function LoginRegister(){
         <div className="overlay-container">
           <div className="overlay">
             <div className="overlay-panel overlay-left">
-              <h1>Hola de nuevo!</h1>
+              <h2>Hola de nuevo!</h2>
               <p>Para conectarte, por favor proporciona tus datos de inicio de sesión</p>
               <button className="ghost" onClick={handleSignInClick}>Iniciar sesión</button>
             </div>
             <div className="overlay-panel overlay-right">
-              <h1>Bienvenido!</h1>
+              <h2>Bienvenido!</h2>
               <p>Ingresa tus datos personales y comienza tu travesía con nosotros</p>
               <button className="ghost" onClick={handleSignUpClick}>Registrarse</button>
             </div>
