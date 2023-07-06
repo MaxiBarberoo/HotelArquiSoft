@@ -16,10 +16,19 @@ function Home(){
           </div>
 
 
+          <div className="contenedor-hoteles">
+
+              <div className="contenedor-detalle-hoteles">
+                  <p className="nombre-hotel1"></p>
+                  
+
+              </div>
+
+          </div>
+
+
+
       </div>
-
-
-
 
       );
 }
