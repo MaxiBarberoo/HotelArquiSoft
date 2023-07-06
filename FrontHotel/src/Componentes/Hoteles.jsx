@@ -20,9 +20,9 @@ function Hoteles(props){
             Descripción: {props.descripcion}
         </p>
       </div>
-      <forms onClick={handleReservaSubmit} className="boton-reserva">
+      <form onClick={handleReservaSubmit} className="boton-reserva">
         <button type="button">Reservar</button>
-      </forms>
+      </form>
     </div>
     );
 }
