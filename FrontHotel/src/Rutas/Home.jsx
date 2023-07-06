@@ -2,7 +2,6 @@ import React from "react"
 import '../Stylesheet/Home.css'
 import Header from '../Componentes/Header'
 
-
 function Home(){
   return (
 
@@ -15,19 +14,14 @@ function Home(){
 
           </div>
 
-
           <div className="contenedor-hoteles">
 
               <div className="contenedor-detalle-hoteles">
                   <p className="nombre-hotel1"></p>
-                  
 
               </div>
 
           </div>
-
-
-
       </div>
 
       );
