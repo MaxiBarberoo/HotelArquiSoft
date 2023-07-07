@@ -10,7 +10,7 @@ function Home() {
     const fetchData = async () => {
       try {
         const response = await fetch('http://localhost:8090/hotels');
-        
+
         if (response.ok) {
           const data = await response.json();
           setHoteles(data);
@@ -28,24 +28,14 @@ function Home() {
   return (
     <div>
       <Header />
-      <div className="contenedor-hoteles">
-        <div className="contenedor-detalle-hoteles">
-          <p className="nombre-hotel1"></p>
-        </div>
-        <div className="contenedor-de-hoteles">
-          <Hoteles />
-          <div className="contenedor-de-hoteles">
-            {hoteles.map((hotel) => (
-              <Hoteles
-                key={hotel.id}
-                nombreHotel={hotel.name}
-                piezas={hotel.cantHabitaciones}
-                descripcion={hotel.descripcion}
-              />
-            ))}
-          </div>
-        </div>
-      </div>
+      {hoteles.map((hotel) => (
+        <Hoteles
+          key={hotel.id}
+          nombreHotel={hotel.name}
+          piezas={hotel.cantHabitaciones}
+          descripcion={hotel.descripcion}
+        />
+      ))}
     </div>
   );
 }

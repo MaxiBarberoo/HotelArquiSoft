@@ -83,17 +83,3 @@ body {
     transition: .3s ease all;
 }
 
-.contenedor-hoteles {
-
-
-    width: 1000px;
-    height: 300px;
-    margin: 100px 250px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #FFFFFF;
-    box-shadow: 0 3px 13px 1px rgb(0 0 0 / 9%);
-
-
-}
