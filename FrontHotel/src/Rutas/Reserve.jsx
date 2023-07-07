@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, {useState} from "react"
 import '../Stylesheet/Reserve.css'
 import Header from '../Componentes/Header'
 import DatePicker from 'react-datepicker';
@@ -19,7 +19,12 @@ function Reserve() {
     };
 
     const buscarHotelesDisponibles = () => {
-        if (fechaDesde && fechaHasta) {
+        if (!fechaDesde || !fechaHasta) {
+            alert("Debes completar los campos de fecha desde y fecha hasta.");
+        } else if (fechaDesde >= fechaHasta) {
+            alert("La fecha desde debe ser anterior a la fecha hasta.");
+        } else {
+
             // Realizar la solicitud al backend para obtener los hoteles disponibles
             fetch("/reservas/hotelsbyfecha", {
                 method: "POST",
@@ -38,55 +43,23 @@ function Reserve() {
                     setHotelesDisponibles(data);
                 })
                 .catch((error) => console.error(error));
-        } else {
-            if (fechaDesde > fechaHasta) {
-                alert("La fecha de checkin no puede ser mayor a la de checkout.");
-            } else {
-                alert("Por favor, seleccione las fechas desde y hasta.");
-            }
         }
     };
 
-<<<<<<< HEAD
-
-
-
-  return (
-      <div>
-          <div className="header">
-              <h1>SUMMIT LUXURY Hotels</h1>
-          </div>
-
-          <div>
-              <br></br>
-              <h2>INGRESE LAS FECHAS para su estadia</h2>
-              <div>
-                  <p>Desde: </p>
-                  <DatePicker selected={fechaDesde} onChange={handleFechaDesdeChange} />
-              </div>
-              <div>
-                  <p>Hasta: </p>
-                  <DatePicker selected={fechaHasta} onChange={handleFechaHastaChange} />
-              </div>
-              <button onClick={buscarHotelesDisponibles}>BUSCAR</button>
-          </div>
-
-    {hotelesDisponibles.length > 0 && (
-=======
     return (
->>>>>>> 97b7dce058677dd1620a026c7aaa725455482576
+
         <div>
-            <Header />
+            <Header/>
             <div>
                 <br></br>
                 <h2>INGRESE LAS FECHAS para su estadia</h2>
                 <div>
                     <p>Desde: </p>
-                    <DatePicker selected={fechaDesde} onChange={handleFechaDesdeChange} />
+                    <DatePicker selected={fechaDesde} onChange={handleFechaDesdeChange}/>
                 </div>
                 <div>
                     <p>Hasta: </p>
-                    <DatePicker selected={fechaHasta} onChange={handleFechaHastaChange} />
+                    <DatePicker selected={fechaHasta} onChange={handleFechaHastaChange}/>
                 </div>
                 <button onClick={buscarHotelesDisponibles}>BUSCAR</button>
             </div>
