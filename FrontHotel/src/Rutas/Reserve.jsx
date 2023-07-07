@@ -35,7 +35,7 @@ function Reserve(){
                   <p>Hasta: </p>
                   <DatePicker selected={fechaHasta} onChange={handleFechaHastaChange} />
               </div>
-              <button>Reservar</button>
+              <button>BUSCAR</button>
           </div>
 
           </div>
