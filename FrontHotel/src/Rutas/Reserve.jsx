@@ -9,7 +9,7 @@ function Reserve(){
     const [fechaDesde, setFechaDesde] = useState(null);
     const [fechaHasta, setFechaHasta] = useState(null);
     const [hotelesDisponibles, setHotelesDisponibles] = useState([]);
-
+    const token = "secreto";
 
     const handleFechaDesdeChange = (date) => {
         setFechaDesde(date);
