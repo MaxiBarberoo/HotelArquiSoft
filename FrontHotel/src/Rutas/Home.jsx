@@ -1,7 +1,8 @@
-import React from "react"
+import React, {useState} from "react"
 import '../Stylesheet/Home.css'
 import Header from '../Componentes/Header'
 import { useNavigate } from "react-router-dom"
+import Hoteles from '../Componentes/Hoteles'
 
 function Home() {
     const navigate = useNavigate();
@@ -24,7 +25,13 @@ function Home() {
                 <div className="contenedor-detalle-hoteles">
                     <p className="nombre-hotel1"></p>
                 </div>
+
+                <div className="contenedor-de-hoteles">
+                <Hoteles />
+
             </div>
+        </div>
+
 
         </div>
     );

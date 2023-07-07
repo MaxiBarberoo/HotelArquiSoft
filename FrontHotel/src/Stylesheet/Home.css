@@ -19,6 +19,7 @@
 
 h1 {
     color: #FFFFFF;
+    display: inline-flex;
     font-size: 200%;
     font-family: 'Montserrat', sans-serif;
     text-align: center;
@@ -89,7 +90,7 @@ body {
     content: "";
     width: 100%;
     height: 40px;
-    background-color: #FE9A2E;
+    background-color: #873030;
     position: absolute;
     z-index: 1;
     top: -80px;
