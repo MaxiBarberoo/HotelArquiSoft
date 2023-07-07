@@ -4,6 +4,7 @@ import (
 	amenitieController "HotelArquiSoft/HotelArquiBack/controller/amenitie"
 	amenitieHotelController "HotelArquiSoft/HotelArquiBack/controller/amenitiehotel"
 	hotelController "HotelArquiSoft/HotelArquiBack/controller/hotel"
+	imagenesController "HotelArquiSoft/HotelArquiBack/controller/imagenes"
 	reservaController "HotelArquiSoft/HotelArquiBack/controller/reserva"
 	userController "HotelArquiSoft/HotelArquiBack/controller/user"
 	log "github.com/sirupsen/logrus"
@@ -21,8 +22,10 @@ func mapUrls() {
 	router.GET("amenities", amenitieController.GetAmenities)
 	router.GET("/amenities/:id", amenitieController.GetAmenitieById)
 	router.GET("/amenitiehotel/:hotel_id", amenitieHotelController.SearchAmenitiesByHotel)
+	router.GET("/imagenes/:hotel_id", imagenesController.GetImagenesByHotel)
 
 	router.POST("/users/auth", userController.UserAuth)
+	router.POST("/imagenes/", imagenesController.InsertImagen)
 	router.POST("/reservas/hotelsbyfecha", reservaController.GetHotelsByFecha)
 	router.POST("/users", userController.UserInsert)
 	router.POST("/reservas", reservaController.ReservaInsert)

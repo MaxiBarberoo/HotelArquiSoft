@@ -4,6 +4,7 @@ import (
 	amenitieClient "HotelArquiSoft/HotelArquiBack/clients/amenitie"
 	amenitieHotelClient "HotelArquiSoft/HotelArquiBack/clients/amenitiehotel"
 	hotelClient "HotelArquiSoft/HotelArquiBack/clients/hotel"
+	imagenClient "HotelArquiSoft/HotelArquiBack/clients/imagenes"
 	reservaClient "HotelArquiSoft/HotelArquiBack/clients/reserva"
 	userClient "HotelArquiSoft/HotelArquiBack/clients/user"
 	"HotelArquiSoft/HotelArquiBack/model"
@@ -119,6 +120,8 @@ func init() {
 	reservaClient.Db = db
 	amenitieClient.Db = db
 	amenitieHotelClient.Db = db
+	imagenClient.Db = db
+
 }
 
 func StartDbEngine() {

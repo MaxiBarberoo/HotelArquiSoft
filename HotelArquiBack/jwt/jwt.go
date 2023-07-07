@@ -114,3 +114,22 @@ func GenerateAmentieHotelToken(amenitieHotelDto dto.AmenitieHotelDto) (string, e
 
 	return signedToken, nil
 }
+func GenerateImageToken(ImageDto dto.ImageDTO) (string, error) {
+	claims := jwt.MapClaims{
+		"id":        ImageDto.ID,
+		"nombre":    ImageDto.Nombre,
+		"contenido": ImageDto.Contenido,
+		"hotel_id":  ImageDto.HotelId,
+		"url":       ImageDto.Url,
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	secret := "secreto"
+	signedToken, err := token.SignedString([]byte(secret))
+
+	if err != nil {
+		return "", err
+	}
+
+	return signedToken, nil
+}

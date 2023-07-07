@@ -12,7 +12,13 @@ var (
 
 func init() {
 	router = gin.Default()
-	router.Use(cors.Default())
+	corsConfig := cors.DefaultConfig()
+	corsConfig.AllowAllOrigins = true
+	corsConfig.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+	corsConfig.AllowHeaders = []string{"Origin", "Authorization", "Content-Type"}
+
+	// Aplicar el middleware de CORS al enrutador
+	router.Use(cors.New(corsConfig))
 }
 
 func StartRoute() {
