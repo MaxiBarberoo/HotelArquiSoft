@@ -8,6 +8,8 @@ function Reserve(){
 
     const [fechaDesde, setFechaDesde] = useState(null);
     const [fechaHasta, setFechaHasta] = useState(null);
+    const [hotelesDisponibles, setHotelesDisponibles] = useState([]);
+
 
     const handleFechaDesdeChange = (date) => {
         setFechaDesde(date);
@@ -17,6 +19,29 @@ function Reserve(){
         setFechaHasta(date);
     };
 
+    const buscarHotelesDisponibles = () => {
+        if (fechaDesde && fechaHasta) {
+            // Realizar la solicitud al backend para obtener los hoteles disponibles
+            fetch("/reservas/hotelsbyfecha", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    fechaDesde,
+                    fechaHasta,
+                }),
+            })
+                .then((response) => response.json())
+                .then((data) => {
+                    // Actualizar el estado con los hoteles disponibles obtenidos del backend
+                    setHotelesDisponibles(data);
+                })
+                .catch((error) => console.error(error));
+        } else {
+            alert("Por favor, seleccione las fechas desde y hasta.");
+        }
+    };
 
   return (
       <div>
@@ -35,10 +60,24 @@ function Reserve(){
                   <p>Hasta: </p>
                   <DatePicker selected={fechaHasta} onChange={handleFechaHastaChange} />
               </div>
-              <button>BUSCAR</button>
+              <button onClick={buscarHotelesDisponibles}>BUSCAR</button>
           </div>
 
-          </div>
+    {hotelesDisponibles.length > 0 && (
+        <div>
+            <h2>Hoteles Disponibles:</h2>
+            <ul>
+                {hotelesDisponibles.map((hotel) => (
+                    <li key={hotel.id}>
+                        <p>Nombre: {hotel.nombre}</p>
+                        <p>Cantidad de Habitaciones: {hotel.cantidadHabitaciones}</p>
+                    </li>
+                ))}
+            </ul>
+        </div>
+    )}
+</div>
+
   );
 }
 
