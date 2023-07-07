@@ -2,7 +2,6 @@ package amenitie
 
 import (
 	"HotelArquiSoft/HotelArquiBack/dto"
-	jwtToken "HotelArquiSoft/HotelArquiBack/jwt"
 	service "HotelArquiSoft/HotelArquiBack/services"
 	"net/http"
 	"strconv"
@@ -24,13 +23,7 @@ func GetAmenitieById(c *gin.Context) {
 		return
 	}
 
-	token, err1 := jwtToken.GenerateAmenitieToken(amenitieDto)
-
-	if err1 != nil {
-		return
-	}
-
-	c.JSON(http.StatusOK, token)
+	c.JSON(http.StatusOK, amenitieDto)
 }
 
 func GetAmenities(c *gin.Context) {
@@ -42,17 +35,5 @@ func GetAmenities(c *gin.Context) {
 		return
 	}
 
-	var tokens []string
-
-	for _, amenitie := range amenitiesDto {
-		token, err := jwtToken.GenerateAmenitieToken(amenitie)
-
-		if err != nil {
-			return
-		}
-
-		tokens = append(tokens, token)
-	}
-
-	c.JSON(http.StatusOK, tokens)
+	c.JSON(http.StatusOK, amenitiesDto)
 }

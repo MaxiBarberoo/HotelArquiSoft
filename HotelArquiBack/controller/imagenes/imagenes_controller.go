@@ -2,7 +2,6 @@ package imagenes
 
 import (
 	"HotelArquiSoft/HotelArquiBack/dto"
-	jwtToken "HotelArquiSoft/HotelArquiBack/jwt"
 	service "HotelArquiSoft/HotelArquiBack/services"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -60,16 +59,7 @@ func InsertImagen(c *gin.Context) {
 		c.JSON(er.Status(), er)
 		return
 	}
-
-	signedtoken, err1 := jwtToken.GenerateImageToken(imageDTO)
-	if err1 != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-
-		return
-	}
-	c.JSON(http.StatusCreated, signedtoken)
+	c.JSON(http.StatusCreated, imageDTO)
 
 }
 func GetImagenesByHotel(c *gin.Context) {
@@ -84,18 +74,6 @@ func GetImagenesByHotel(c *gin.Context) {
 		return
 	}
 
-	var tokens []string
-
-	for _, imagen := range imagenes {
-		token, err := jwtToken.GenerateImageToken(imagen)
-
-		if err != nil {
-			return
-		}
-
-		tokens = append(tokens, token)
-	}
-
-	c.JSON(http.StatusOK, tokens)
+	c.JSON(http.StatusOK, imagenes)
 
 }

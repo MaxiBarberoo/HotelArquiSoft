@@ -2,7 +2,6 @@ package controller
 
 import (
 	"HotelArquiSoft/HotelArquiBack/dto"
-	userjwt "HotelArquiSoft/HotelArquiBack/jwt"
 	service "HotelArquiSoft/HotelArquiBack/services"
 	"net/http"
 	"strconv"
@@ -26,16 +25,7 @@ func GetUserById(c *gin.Context) {
 		return
 	}
 
-	token, err1 := userjwt.GenerateUserToken(userDto)
-
-	if err1 != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "No se pudo generar la token",
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, token)
+	c.JSON(http.StatusOK, userDto)
 }
 
 func GetUserByEmail(c *gin.Context) {
@@ -50,16 +40,7 @@ func GetUserByEmail(c *gin.Context) {
 		return
 	}
 
-	token, err1 := userjwt.GenerateUserToken(userDto)
-
-	if err1 != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "No se pudo generar la token",
-		})
-		return
-	}
-
-	c.JSON(http.StatusOK, token)
+	c.JSON(http.StatusOK, userDto)
 }
 
 func GetUsers(c *gin.Context) {
@@ -71,18 +52,7 @@ func GetUsers(c *gin.Context) {
 		return
 	}
 
-	var tokens []string
-
-	for _, user := range usersDto {
-		token, err := userjwt.GenerateUserToken(user)
-		if err != nil {
-			return
-		}
-
-		tokens = append(tokens, token)
-	}
-
-	c.JSON(http.StatusOK, tokens)
+	c.JSON(http.StatusOK, usersDto)
 }
 
 func UserInsert(c *gin.Context) {
@@ -135,7 +105,7 @@ func UserInsert(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, token)
+	c.JSON(http.StatusCreated, userDto)
 }
 
 func UserAuth(c *gin.Context) {

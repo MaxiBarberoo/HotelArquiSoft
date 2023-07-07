@@ -8,8 +8,6 @@ import (
 	"net/http"
 	"strconv"
 
-	jwtToken "HotelArquiSoft/HotelArquiBack/jwt"
-
 	"github.com/dgrijalva/jwt-go"
 	"github.com/mitchellh/mapstructure"
 )
@@ -58,13 +56,11 @@ func AssignAmenitieToHotel(c *gin.Context) {
 
 	amenitiehotelDto, err = service.AmenitieHotelService.AssignAmenitieToHotel(amenitiehotelDto)
 
-	signedtoken, err1 := jwtToken.GenerateAmentieHotelToken(amenitiehotelDto)
-
-	if err1 != nil {
-		c.JSON(http.StatusBadRequest, err1)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, err)
 		return
 	}
-	c.JSON(http.StatusOK, signedtoken)
+	c.JSON(http.StatusOK, amenitiehotelDto)
 }
 
 func SearchAmenitiesByHotel(c *gin.Context) {
@@ -79,18 +75,6 @@ func SearchAmenitiesByHotel(c *gin.Context) {
 		return
 	}
 
-	var tokens []string
-
-	for _, amenitieHotel := range amenitiesHotels {
-		token, err := jwtToken.GenerateAmentieHotelToken(amenitieHotel)
-
-		if err != nil {
-			return
-		}
-
-		tokens = append(tokens, token)
-	}
-
-	c.JSON(http.StatusOK, tokens)
+	c.JSON(http.StatusOK, amenitiesHotels)
 
 }

@@ -2,7 +2,6 @@ package hotel
 
 import (
 	"HotelArquiSoft/HotelArquiBack/dto"
-	jwtToken "HotelArquiSoft/HotelArquiBack/jwt"
 	service "HotelArquiSoft/HotelArquiBack/services"
 
 	"net/http"
@@ -27,13 +26,7 @@ func GetHotelById(c *gin.Context) {
 		return
 	}
 
-	token, err1 := jwtToken.GenerateHotelToken(hotelDto)
-
-	if err1 != nil {
-		return
-	}
-
-	c.JSON(http.StatusOK, token)
+	c.JSON(http.StatusOK, hotelDto)
 }
 
 func GetHotels(c *gin.Context) {
@@ -45,19 +38,7 @@ func GetHotels(c *gin.Context) {
 		return
 	}
 
-	var tokens []string
-
-	for _, hotel := range hotelsDto {
-		token, err := jwtToken.GenerateHotelToken(hotel)
-
-		if err != nil {
-			return
-		}
-
-		tokens = append(tokens, token)
-	}
-
-	c.JSON(http.StatusOK, tokens)
+	c.JSON(http.StatusOK, hotelsDto)
 }
 
 func HotelInsert(c *gin.Context) {
@@ -109,14 +90,5 @@ func HotelInsert(c *gin.Context) {
 		c.JSON(er.Status(), er)
 		return
 	}
-
-	signedtoken, err1 := jwtToken.GenerateHotelToken(hotelDto)
-	if err1 != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-
-		return
-	}
-	c.JSON(http.StatusCreated, signedtoken)
+	c.JSON(http.StatusCreated, hotelDto)
 }
