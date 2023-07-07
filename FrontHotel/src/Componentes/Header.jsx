@@ -3,9 +3,10 @@ import '../Stylesheet/Header.css'
 
 function Header(){
     return (
-        <header className="Header">
 
-        </header>
+            <div className="header">
+                <h1>SUMMIT LUXURY Hotels</h1>
+            </div>
     );
 }
 
