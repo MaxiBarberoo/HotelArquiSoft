@@ -110,5 +110,13 @@ func HotelInsert(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, token)
+	signedtoken, err1 := jwtToken.GenerateHotelToken(hotelDto)
+	if err1 != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Error al obtener los datos",
+		})
+
+		return
+	}
+	c.JSON(http.StatusCreated, signedtoken)
 }
