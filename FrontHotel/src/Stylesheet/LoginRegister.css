@@ -15,12 +15,16 @@ body {
 	margin: -20px 0 50px;
 }
 
-h1 {
+h2 {
+	color: black;
+	font-size: 32px;
 	font-weight: bold;
 	margin: 0;
 }
 
-h2 {
+h3 {
+	color: #f6f5f7;
+	font-size: 28px;
 	text-align: center;
 	font-weight: bold;
 }

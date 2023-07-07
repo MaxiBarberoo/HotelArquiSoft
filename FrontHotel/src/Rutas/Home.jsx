@@ -60,7 +60,6 @@ function Home() {
                                 piezas={hotel.cantHabitaciones}
                                 descripcion={hotel.descripcion}
                             />
-
                         ))}
                     </div>
                 </div>
