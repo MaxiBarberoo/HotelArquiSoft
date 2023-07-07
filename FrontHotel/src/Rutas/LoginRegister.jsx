@@ -21,9 +21,7 @@ function LoginRegister(){
 
   return (
     <div className="main-loginregister-container">
-      <div className="header">
-        <h1>SUMMIT LUXURY Hotels</h1>
-      </div>
+      <Header />
       <div className={`container ${isSignUpActive ? 'right-panel-active' : ''}`} id="container">
         <div className="form-container sign-up-container">
           <form action="#">

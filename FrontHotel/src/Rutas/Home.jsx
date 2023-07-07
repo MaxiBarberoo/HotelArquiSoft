@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import '../Stylesheet/Home.css';
-import Header from '../Componentes/Header';
-import { useNavigate } from "react-router-dom";
-import Hoteles from '../Componentes/Hoteles';
+import React, { useState, useEffect } from "react"
+import '../Stylesheet/Home.css'
+import Header from '../Componentes/Header'
+import Hoteles from '../Componentes/Hoteles'
+import { useNavigate } from "react-router-dom"
 
 function Home() {
 
@@ -37,8 +37,8 @@ function Home() {
     }, []);
 
     return (
-        <div className="header">
-            <h1>SUMMIT LUXURY Hotels</h1>
+        <div>
+            <Header />
             <form onSubmit={handleButtonSubmit} className="contenedor-boton">
                 <button type="submit" className="boton-uno">
                     <span>
@@ -46,32 +46,25 @@ function Home() {
                     </span>
                 </button>
             </form>
-
-
             <div className="contenedor-hoteles">
                 <div className="contenedor-detalle-hoteles">
                     <p className="nombre-hotel1"></p>
                 </div>
-
                 <div className="contenedor-de-hoteles">
-                <Hoteles />
+                    <Hoteles />
+                    <div className="contenedor-de-hoteles">
+                        {hoteles.map((hotel) => (
+                            <Hoteles
+                                key={hotel.id}
+                                nombreHotel={hotel.name}
+                                piezas={hotel.cantHabitaciones}
+                                descripcion={hotel.descripcion}
+                            />
 
-
-            <div className="contenedor-de-hoteles">
-                {hoteles.map((hotel) => (
-                    <Hoteles
-                        key={hotel.id}
-                        nombreHotel={hotel.name}
-                        piezas={hotel.cantHabitaciones}
-                        descripcion={hotel.descripcion}
-                    />
-
-                    ))}
-            </div>
-
+                        ))}
+                    </div>
                 </div>
-        </div>
-            
+            </div>
         </div>
     );
 }
