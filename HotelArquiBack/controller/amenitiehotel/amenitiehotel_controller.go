@@ -7,11 +7,48 @@ import (
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
+
+	jwtToken "HotelArquiSoft/HotelArquiBack/jwt"
+
+
+	"github.com/dgrijalva/jwt-go"
+	"github.com/mitchellh/mapstructure"
 )
 
 func AssignAmenitieToHotel(c *gin.Context) {
 	var amenitiehotelDto dto.AmenitieHotelDto
-	err := c.BindJSON(&amenitiehotelDto)
+
+	tokenString := c.GetHeader("Authorization")
+	if tokenString == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Token no proporcionado",
+		})
+		return
+	}
+
+	secret := "secreto"
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(secret), nil
+	})
+
+	if err != nil || !token.Valid {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Token invalido",
+		})
+		return
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Error al obtener los datos",
+		})
+		return
+	}
+
+	err = mapstructure.Decode(claims, &amenitiehotelDto)
 
 	// Error Parsing json param
 	if err != nil {
@@ -21,6 +58,8 @@ func AssignAmenitieToHotel(c *gin.Context) {
 	}
 
 	amenitiehotelDto, err = service.AmenitieHotelService.AssignAmenitieToHotel(amenitiehotelDto)
+
+	token := 
 
 	if err != nil {
 		c.JSON(http.StatusBadRequest, err)

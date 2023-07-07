@@ -2,11 +2,15 @@ package hotel
 
 import (
 	"HotelArquiSoft/HotelArquiBack/dto"
+	jwtToken "HotelArquiSoft/HotelArquiBack/jwt"
 	service "HotelArquiSoft/HotelArquiBack/services"
+
 	"net/http"
 	"strconv"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/mitchellh/mapstructure"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -22,7 +26,14 @@ func GetHotelById(c *gin.Context) {
 		c.JSON(err.Status(), err)
 		return
 	}
-	c.JSON(http.StatusOK, hotelDto)
+
+	token, err1 := jwtToken.GenerateHotelToken(hotelDto)
+
+	if err1 != nil {
+		return
+	}
+
+	c.JSON(http.StatusOK, token)
 }
 
 func GetHotels(c *gin.Context) {
@@ -34,17 +45,61 @@ func GetHotels(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, hotelsDto)
+	var tokens []string
+
+	for _, hotel := range hotelsDto {
+		token, err := jwtToken.GenerateHotelToken(hotel)
+
+		if err != nil {
+			return
+		}
+
+		tokens = append(tokens, token)
+	}
+
+	c.JSON(http.StatusOK, tokens)
 }
 
 func HotelInsert(c *gin.Context) {
 	var hotelDto dto.HotelDto
-	err := c.BindJSON(&hotelDto)
 
-	// Error Parsing json param
+	tokenString := c.GetHeader("Authorization")
+	if tokenString == "" {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Token no proporcionado",
+		})
+		return
+	}
+
+	secret := "secreto"
+
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+		return []byte(secret), nil
+	})
+
+	if err != nil || !token.Valid {
+		c.JSON(http.StatusUnauthorized, gin.H{
+			"error": "Token invalido",
+		})
+		return
+	}
+
+	claims, ok := token.Claims.(jwt.MapClaims)
+
+	if !ok {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Error al obtener los datos",
+		})
+		return
+	}
+
+	err = mapstructure.Decode(claims, &hotelDto)
+
 	if err != nil {
-		log.Error(err.Error())
-		c.JSON(http.StatusBadRequest, err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{
+			"error": "Error al obtener los datos",
+		})
+
 		return
 	}
 
@@ -55,5 +110,5 @@ func HotelInsert(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, hotelDto)
+	c.JSON(http.StatusCreated, token)
 }
