@@ -25,7 +25,8 @@ function Reserve(){
           </div>
 
           <div>
-              <h1>Reserva de Hoteles</h1>
+              <br></br>
+              <h2>INGRESE LAS FECHAS para su estadia</h2>
               <div>
                   <p>Desde: </p>
                   <DatePicker selected={fechaDesde} onChange={handleFechaDesdeChange} />
