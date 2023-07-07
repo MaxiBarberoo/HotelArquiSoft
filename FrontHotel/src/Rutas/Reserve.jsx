@@ -9,7 +9,7 @@ function Reserve(){
     const [fechaDesde, setFechaDesde] = useState(null);
     const [fechaHasta, setFechaHasta] = useState(null);
     const [hotelesDisponibles, setHotelesDisponibles] = useState([]);
-    const token = "secreto";
+    const clavetoken = "secreto";
 
     const handleFechaDesdeChange = (date) => {
         setFechaDesde(date);
@@ -26,7 +26,7 @@ function Reserve(){
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${token}`
+                    "Authorization": `Bearer ${clavetoken}`
                 },
                 body: JSON.stringify({
                     fechaDesde,
@@ -43,6 +43,9 @@ function Reserve(){
             alert("Por favor, seleccione las fechas desde y hasta.");
         }
     };
+
+
+
 
   return (
       <div>
