@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Hoteles from '../Componentes/Hoteles';
 
 function Home() {
+
     const [hoteles, setHoteles] = useState([]);
     const navigate = useNavigate();
 
@@ -12,11 +13,6 @@ function Home() {
         navigate('/loginandregister');
     }
 
-<<<<<<< HEAD
-    return(
-
-        <div>
-=======
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -41,7 +37,6 @@ function Home() {
     }, []);
 
     return (
->>>>>>> 05f521fc1cbb9cfa7286cbd06caa540938927d7f
         <div className="header">
             <h1>SUMMIT LUXURY Hotels</h1>
             <form onSubmit={handleButtonSubmit} className="contenedor-boton">
@@ -51,9 +46,8 @@ function Home() {
                     </span>
                 </button>
             </form>
-<<<<<<< HEAD
 
-        </div>
+
             <div className="contenedor-hoteles">
                 <div className="contenedor-detalle-hoteles">
                     <p className="nombre-hotel1"></p>
@@ -62,7 +56,7 @@ function Home() {
                 <div className="contenedor-de-hoteles">
                 <Hoteles />
 
-=======
+
             <div className="contenedor-de-hoteles">
                 {hoteles.map((hotel) => (
                     <Hoteles
@@ -71,9 +65,11 @@ function Home() {
                         piezas={hotel.cantHabitaciones}
                         descripcion={hotel.descripcion}
                     />
-                ))}
->>>>>>> 05f521fc1cbb9cfa7286cbd06caa540938927d7f
+
+                    ))}
             </div>
+
+                </div>
         </div>
 
 
