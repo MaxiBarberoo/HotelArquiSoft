@@ -2,8 +2,6 @@ import React, { useState } from 'react';
 import '../Stylesheet/LoginRegister.css';
 import Header from '../Componentes/Header';
 import { useNavigate } from 'react-router-dom';
-import jwt_decode from 'jwt-decode';
-import jwt from 'jsonwebtoken';
 
 function LoginRegister() {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
@@ -31,14 +29,6 @@ function LoginRegister() {
       email,
       password
     };
-
-    const token = jwt.sign(
-      {
-        email,
-        password,
-      },
-      'secreto'
-    );
 
     try {
       const response = await fetch('http://localhost:8090/user/auth', {
@@ -81,16 +71,6 @@ function LoginRegister() {
       email,
       password,
     };
-
-    const token = jwt.sign(
-      {
-        nombre,
-        apellido,
-        email,
-        password,
-      },
-      'secreto'
-    );
 
     fetch('http://localhost:8090/users', {
     method: 'POST',
