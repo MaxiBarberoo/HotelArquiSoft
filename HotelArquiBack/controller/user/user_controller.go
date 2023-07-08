@@ -2,14 +2,14 @@ package controller
 
 import (
 	"HotelArquiSoft/HotelArquiBack/dto"
+	jwtG "HotelArquiSoft/HotelArquiBack/jwt"
 	service "HotelArquiSoft/HotelArquiBack/services"
-	"net/http"
-	"strconv"
-
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
 	log "github.com/sirupsen/logrus"
+	"net/http"
+	"strconv"
 )
 
 func GetUserById(c *gin.Context) {
@@ -171,4 +171,24 @@ func UserAuth(c *gin.Context) {
 		})
 	}
 
+}
+
+func GenerateUserToken(c *gin.Context) {
+	var userDto dto.UserDto
+	err := c.BindJSON(&userDto)
+
+	// Error Parsing json param
+	if err != nil {
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error al procesar los datos del usuario"})
+		return
+	}
+
+	signedToken, err := jwtG.GenerateUserToken(userDto)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Error al generar el token"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"token": signedToken})
 }

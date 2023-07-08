@@ -12,7 +12,6 @@ func GenerateUserToken(userDto dto.UserDto) (string, error) {
 		"name":       userDto.FirstName,
 		"last_name":  userDto.LastName,
 		"user_email": userDto.UserEmail,
-		"password":   userDto.Password,
 		"tipo":       userDto.Tipo,
 	}
 
