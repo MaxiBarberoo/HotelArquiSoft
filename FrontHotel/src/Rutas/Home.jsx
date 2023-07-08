@@ -1,10 +1,16 @@
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import '../Stylesheet/Home.css';
 import Header from '../Componentes/Header';
 import Hoteles from '../Componentes/Hoteles';
 
 function Home() {
   const [hoteles, setHoteles] = useState([]);
+  const navigate = useNavigate();
+
+  const handleRedirectSubmit = (event) =>{
+    navigate('/loginandregister');
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -36,6 +42,9 @@ function Home() {
           descripcion={hotel.descripcion}
         />
       ))}
+      <form onSubmit={handleRedirectSubmit} className="contenedor-boton-redireccion">
+        <button type="submit" className="boton-redireccion">INICIA SESION PARA RESERVAR TU HOTEL</button>
+      </form>
     </div>
   );
 }
