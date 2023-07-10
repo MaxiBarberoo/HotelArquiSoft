@@ -8,6 +8,7 @@ import (
 	reservaClient "HotelArquiSoft/HotelArquiBack/clients/reserva"
 	userClient "HotelArquiSoft/HotelArquiBack/clients/user"
 	"HotelArquiSoft/HotelArquiBack/model"
+	"golang.org/x/crypto/bcrypt"
 
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
@@ -28,6 +29,11 @@ func insertInitialData() {
 		Password:  "password123",
 		Tipo:      1,
 	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Error("Error al hashear la password:", err.Error())
+	}
+	user.Password = string(hashedPassword)
 	if err := db.Create(&user).Error; err != nil {
 		log.Error("Failed to insert user:", err.Error())
 	}
