@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import '../Stylesheet/LoginRegister.css';
 import Header from '../Componentes/Header';
 import { useNavigate } from 'react-router-dom';
+import jwtDecode from 'jwt-decode';
 
 function LoginRegister() {
   const [isSignUpActive, setIsSignUpActive] = useState(false);
@@ -10,6 +11,7 @@ function LoginRegister() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [token, setToken] = useState('');
   const navigate = useNavigate();
 
   const handleSignUpClick = () => {
@@ -20,31 +22,56 @@ function LoginRegister() {
     setIsSignUpActive(false);
   };
 
-  const handleLoginSubmit = async (event) => {
-    event.preventDefault();
-    setEmail(event.target.elements.email.value);
-    setPassword(event.target.elements.password.value);
-
+  const fetchToken = async () => {
     const userData = {
       email,
       password
     };
-
     try {
-      const response = await fetch('http://localhost:8090/user/auth', {
+      const response = await fetch('http://localhost:8090/users/jwt', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({userData}),
+        body: JSON.stringify({ userData }),
       });
 
       if (response.ok) {
-        const token = await response.json();
-        const decodedToken = jwt_decode(token);
-        const isAuthenticated = decodedToken.autenticacion === 'true';
+        const tokenRecibido = await response.json();
+        console.log(tokenRecibido.token);
+        setToken(tokenRecibido.token);
+      } else {
+        throw new Error('Error al generar el token');
+      }
+    } catch (error) {
+      setError('Error al generar el token');
+      console.log(error);
+    }
+  };
 
-        if (isAuthenticated) {
+  const handleUserAuth = async () => {
+    const userData = {
+      email,
+      password
+    };
+    console.log(token);
+    
+    try {
+      const authResponse = await fetch('http://localhost:8090/users/auth', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `${token}`
+        },
+        body: JSON.stringify(userData)
+      });
+
+      if (authResponse.ok) {
+        const decodedtoken = await authResponse.json();
+        const isAuthenticated = decodedtoken.autenticacion;
+        console.log(isAuthenticated);
+  
+        if (isAuthenticated == 'true') {
           navigate('/reserve');
         } else {
           setError('Credenciales inválidas');
@@ -56,7 +83,14 @@ function LoginRegister() {
       setError('Error en la solicitud');
       console.log(error);
     }
-  };
+  };  
+
+  const handleLoginSubmit = async (event) => {
+    event.preventDefault();
+    setEmail(event.target.elements.email.value);
+    setPassword(event.target.elements.password.value);
+    await fetchToken();
+  };  
 
   const handleRegisterSubmit = (event) => {
     event.preventDefault();
@@ -76,13 +110,11 @@ function LoginRegister() {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': `Bearer ${token}`,
     },
       body: JSON.stringify(userData),
     })
       .then(response => response.json())
       .then(data => {
-        // Aquí puedes manejar la respuesta del servidor, si es necesario
         console.log(data);
         alert('El usuario ha sido registrado exitosamente');
         setNombre('');
@@ -91,10 +123,15 @@ function LoginRegister() {
         setPassword('');
       })
       .catch(error => {
-        // Aquí puedes manejar el error, si ocurre alguno
         console.error(error);
       });
   }
+
+  useEffect(() => {
+    if (token) {
+      handleUserAuth();
+    }
+  }, [token]);
 
   return (
     <div className="main-loginregister-container">
