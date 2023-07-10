@@ -71,7 +71,9 @@ func UserInsert(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, userDto)
+	c.JSON(http.StatusAccepted, gin.H{
+		"user_created": "true",
+	})
 }
 
 func UserAuth(c *gin.Context) {
