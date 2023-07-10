@@ -64,22 +64,12 @@ func ReservaInsert(c *gin.Context) {
 		return
 	}
 
-	claims, ok := token.Claims.(jwt.MapClaims)
+	err1 := c.BindJSON(&reservaDto)
 
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-		return
-	}
-
-	err = mapstructure.Decode(claims, &reservaDto)
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-
+	// Error Parsing json param
+	if err1 != nil {
+		log.Error(err1.Error())
+		c.JSON(http.StatusBadRequest, err1.Error())
 		return
 	}
 
