@@ -1,14 +1,18 @@
 import React, { useState, useEffect } from "react"
 import '../Stylesheet/Reserve.css'
 import Header from '../Componentes/Header'
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
+import DatePicker from 'react-datepicker'
+import HotelesR from '../Componentes/HotelesR'
+import 'react-datepicker/dist/react-datepicker.css'
+import { useParams } from 'react-router-dom';
 
 function Reserve() {
     const [fechaDesde, setFechaDesde] = useState(null);
     const [fechaHasta, setFechaHasta] = useState(null);
     const [hotelesDisponibles, setHotelesDisponibles] = useState([]);
     const [reservas, setReservas] = useState([]); // Agregar el estado de las reservas
+    const { token } = useParams();
+    const { user_id } = useParams();
 
     const clavetoken = "secreto";
 
@@ -26,45 +30,55 @@ function Reserve() {
         } else if (fechaDesde >= fechaHasta) {
             alert("La fecha desde debe ser anterior a la fecha hasta.");
         } else {
-            // Realizar la solicitud al backend para obtener los hoteles disponibles y las reservas del usuario
-            fetch("/reservas/hotelsbyfecha", {
+            fetch("http://localhost:8090/reservas/hotelsbyfecha", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
-                    "Authorization": `Bearer ${clavetoken}`
+                    "Authorization": `${token}`,
                 },
                 body: JSON.stringify({
-                    fechaDesde,
-                    fechaHasta,
+                    fecha_ingreso: fechaDesde,
+                    fecha_egreso: fechaHasta,
                 }),
             })
                 .then((response) => response.json())
                 .then((data) => {
-                    // Actualizar el estado con los hoteles disponibles obtenidos del backend
-                    setHotelesDisponibles(data.hoteles);
-                    // Actualizar el estado con las reservas del usuario obtenidas del backend
-                    setReservas(data.reservas);
+                    // Obtener los ID's de los hoteles disponibles
+                    const hotelIds = Object.values(data).map((item) => item.hotel_id);
+                    // Realizar las solicitudes GET para obtener la información completa de los hoteles
+                    Promise.all(
+                        hotelIds.map((hotelId) =>
+                            fetch(`http://localhost:8090/hotels/${hotelId}`, {
+                                method: "GET",
+                                headers: {
+                                    Authorization: `${token}`,
+                                },
+                            }).then((response) => response.json())
+                        )
+                    )
+                        .then((hotelData) => {
+                            // Actualizar el estado con la información completa de los hoteles
+                            setHotelesDisponibles(hotelData);
+                            // Actualizar el estado con las reservas del usuario obtenidas del backend
+                        })
+                        .catch((error) => console.error(error));
                 })
                 .catch((error) => console.error(error));
         }
     };
 
     useEffect(() => {
-        // Realizar la solicitud al backend para obtener las reservas del usuario
-        fetch("/reservas", {
+        fetch(`http://localhost:8090/reservas/reservauser/${user_id}`, {
+            method: "GET",
             headers: {
-                Authorization: `Bearer ${clavetoken}`, // Asegúrate de incluir el token de autenticación
+                "Content-Type": "application/json",
             },
         })
             .then((response) => response.json())
             .then((data) => {
-                // Actualizar el estado con las reservas obtenidas del backend
-                setReservas(data);
+                console.log(data);
             })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
-    }, []);
+    });
 
 
     return (
@@ -88,16 +102,21 @@ function Reserve() {
                     <h2>Hoteles Disponibles:</h2>
                     <ul>
                         {hotelesDisponibles.map((hotel) => (
-                            <li key={hotel.id}>
-                                <p>Nombre: {hotel.nombre}</p>
-                                <p>Cantidad de Habitaciones: {hotel.cantidadHabitaciones}</p>
-                            </li>
+                            <HotelesR
+                                key={hotel.id}
+                                nombreHotel={hotel.name}
+                                piezas={hotel.cantHabitaciones}
+                                hotelId={hotel.id}
+                                userId={user_id}
+                                fechaDesde={fechaDesde}
+                                fechaHasta={fechaHasta}
+                                token = {token}
+                            />
                         ))}
                     </ul>
                 </div>
             )}
-
-            {reservas.length > 0 && (
+            {reservas.length > 0 ? (
                 <div>
                     <h2>Tus Reservas:</h2>
                     <ul>
@@ -105,11 +124,12 @@ function Reserve() {
                             <li key={reserva.id}>
                                 <p>Nombre: {reserva.nombre}</p>
                                 <p>Habitaciones: {reserva.cantidadHabitaciones}</p>
-                                {/* Agrega más detalles de la reserva aquí */}
                             </li>
                         ))}
                     </ul>
                 </div>
+            ) : (
+                <p>No tienes reservas activas.</p>
             )}
         </div>
     );

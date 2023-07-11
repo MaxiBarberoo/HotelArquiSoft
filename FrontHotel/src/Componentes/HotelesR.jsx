@@ -1,28 +1,22 @@
 import React from 'react'
 import '../Stylesheet/Hoteles.css'
 
-function Hoteles(props){
+function HotelesR(props){
 
-    const handleReservaSubmit = () => {
-        if (usuario && hotel) {
-            Reservar(usuario, hotel);
-        } else {
-            alert("Para reservar, primero debes iniciar sesión y seleccionar un hotel.");
-        }
-    };
-
-    const Reservar = (usuario, hotel) => {
+    const Reservar = (event) => {
+        event.preventDefault();
         // Realizar la solicitud al backend para guardar la reserva
-        fetch("/reservas", {
+        fetch("http://localhost:8090/reservas", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                "Authorization": `${props.token}`
             },
             body: JSON.stringify({
-                fecha_ingreso: fechaDesde,
-                fecha_egreso: fechaHasta,
-                hotel_id: props.hotelId, // Agrega el ID del hotel correspondiente
-                user_id: props.userId, // Agrega el ID del usuario correspondiente
+                fecha_ingreso: props.fechaDesde,
+                fecha_egreso: props.fechaHasta,
+                hotel_id: parseInt(props.hotelId), // Agrega el ID del hotel correspondiente
+                user_id: parseInt(props.userId), // Agrega el ID del usuario correspondiente
             }),
         })
             .then((response) => response.json())
@@ -48,11 +42,11 @@ function Hoteles(props){
                     Descripción: {props.descripcion}
                 </p>
             </div>
-            <form onClick={handleReservaSubmit} className="boton-reserva">
-                <button type="button">Reservar</button>
+            <form onSubmit={Reservar} className="boton-reserva">
+                <button type="submit">Reservar</button>
             </form>
         </div>
     );
 }
 
-export default Hoteles;
+export default HotelesR;
