@@ -75,7 +75,6 @@ function LoginRegister() {
     })
       .then(response => response.json())
       .then(data => {
-        console.log(data);
         alert('El usuario ha sido registrado exitosamente');
       })
       .catch(error => {

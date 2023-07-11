@@ -76,9 +76,9 @@ function Reserve() {
         })
             .then((response) => response.json())
             .then((data) => {
-                console.log(data);
+                setReservas(data);
             })
-    });
+    }, []);
 
 
     return (
@@ -115,21 +115,6 @@ function Reserve() {
                         ))}
                     </ul>
                 </div>
-            )}
-            {reservas.length > 0 ? (
-                <div>
-                    <h2>Tus Reservas:</h2>
-                    <ul>
-                        {reservas.map((reserva) => (
-                            <li key={reserva.id}>
-                                <p>Nombre: {reserva.nombre}</p>
-                                <p>Habitaciones: {reserva.cantidadHabitaciones}</p>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ) : (
-                <p>No tienes reservas activas.</p>
             )}
         </div>
     );
