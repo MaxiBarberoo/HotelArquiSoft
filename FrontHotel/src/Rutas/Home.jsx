@@ -12,22 +12,16 @@ function Home() {
     navigate('/loginandregister');
   }
 
+  const fetchData = async () => {
+      console.log("Se realizo gethotels")
+      const response = await fetch('http://localhost:8090/hotels');
+      if (response.ok) {
+        const data = await response.json();
+        setHoteles(data);
+      } 
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch('http://localhost:8090/hotels');
-
-        if (response.ok) {
-          const data = await response.json();
-          setHoteles(data);
-        } else {
-          throw new Error('Error en la petición GET');
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -42,6 +36,7 @@ function Home() {
         {hoteles.map((hotel) => (
           <Hoteles
             key={hotel.id}
+            hotelId = {hotel.id}
             nombreHotel={hotel.name}
             piezas={hotel.cantHabitaciones}
             descripcion={hotel.descripcion}
