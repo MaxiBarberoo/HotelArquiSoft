@@ -97,24 +97,26 @@ function Reserve() {
                 </div>
                 <button className="boton-buscar" onClick={buscarHotelesDisponibles}>BUSCAR</button>
             </div>
-            {hotelesDisponibles.length > 0 ? (
-                hotelesDisponibles.map((hotel) => (
-                    <div key={hotel.id}>
-                        <HotelesR
-                            nombreHotel={hotel.name}
-                            piezas={hotel.cantHabitaciones}
-                            descripcion={hotel.descripcion}
-                            hotelId={hotel.id}
-                            userId={user_id}
-                            fechaDesde={fechaDesde}
-                            fechaHasta={fechaHasta}
-                            token={token}
-                        />
-                    </div>
-                ))
-            ) : (
-                <p>No hay hoteles disponibles en esas fechas.</p>
-            )}
+            <div className="contenedor-hoteles-r">
+                {hotelesDisponibles.length != null ? (
+                    hotelesDisponibles.map((hotel) => (
+                        <div key={hotel.id}>
+                            <HotelesR
+                                nombreHotel={hotel.name}
+                                piezas={hotel.cantHabitaciones}
+                                descripcion={hotel.descripcion}
+                                hotelId={hotel.id}
+                                userId={user_id}
+                                fechaDesde={fechaDesde}
+                                fechaHasta={fechaHasta}
+                                token={token}
+                            />
+                        </div>
+                    ))
+                ) : (
+                    <p>No hay hoteles disponibles en esas fechas.</p>
+                )}
+            </div>
         </div>
     );
 }

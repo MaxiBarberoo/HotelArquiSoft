@@ -1,31 +1,68 @@
 .contenedor-hoteles {
-    background-color: white;
-    padding: 10px;
-    margin-top: 80px;
-    margin-bottom: 20px;
-    text-align: center;
-    width: 70%; /* Ajustar según el ancho deseado */
-    margin-left: auto; /* Centrar horizontalmente */
-    margin-right: auto; /* Centrar horizontalmente */
-    border: 1px solid #888888; /* Agregado: recuadro */
-    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra */
-    border-radius: 10px;
-  }
-  
-  .nombre-hotel1 {
-    font-size: 20px;
-    font-weight: bold;
-    margin-bottom: 5px; /* Agregado para separar del siguiente párrafo */
-  }
-  
-  .cantidad-piezas,
-  .descripcion-hotel {
-    font-size: 14px;
-    color: #888888;
-    text-align: justify;
-    margin-top: 5px;
-  }
-  
-  .contenedor-hoteles p {
-    margin: 0;
-  }
+  background-color: white;
+  width: 40%;
+  padding: 10px;
+  margin-top: 80px;
+  margin-bottom: 20px;
+  text-align: center;
+  /* Ajustar según el ancho deseado */
+  margin-left: auto;
+  /* Centrar horizontalmente */
+  margin-right: auto;
+  /* Centrar horizontalmente */
+  border: 1px solid #888888;
+  /* Agregado: recuadro */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  /* Sombra */
+  border-radius: 10px;
+}
+
+.boton-reservar {
+  border-radius: 20px;
+  border: 1px solid #FF4B2B;
+  background-color: #FF4B2B;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+}
+
+.boton-reservar:active {
+  transform: scale(0.95);
+}
+
+.boton-reservar:focus {
+  outline: none;
+}
+
+.boton-reservar.ghost {
+  background-color: transparent;
+  border-color: #FFFFFF;
+}
+
+.boton-reservar:hover {
+  background-color: #7f1818;
+  color: #ffffffd8;
+}
+
+.nombre-hotel1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px;
+  /* Agregado para separar del siguiente párrafo */
+}
+
+.cantidad-piezas,
+.descripcion-hotel {
+  font-size: 14px;
+  color: #888888;
+  text-align: justify;
+  margin-top: 5px;
+}
+
+.contenedor-hoteles p {
+  margin: 0;
+}

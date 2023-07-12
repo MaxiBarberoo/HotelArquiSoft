@@ -62,7 +62,7 @@ function HotelesR(props) {
           Descripción: {props.descripcion}
         </p>
       <form onSubmit={checkDisponibilidad} className="boton-reserva">
-        <button type="submit">Reservar</button>
+        <button className='boton-reservar' type="submit">Reservar</button>
       </form>
     </div>
   );

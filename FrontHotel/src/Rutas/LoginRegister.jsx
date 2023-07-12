@@ -91,9 +91,9 @@ function LoginRegister() {
     <div className="main-loginregister-container">
       <Header />
       <div className='container-principal'>
-        <div class="main">
+        <div className="main">
           <input type="checkbox" id="chk" aria-hidden="true" />
-          <div class="signup">
+          <div className="signup">
             <form onSubmit={handleRegisterSubmit}>
               <label for="chk" aria-hidden="true">Sign up</label>
               <input type="text" name="txt" placeholder="Nombre" required="" value={nombre} onChange={(e) => setNombre(e.target.value)} />
@@ -103,7 +103,7 @@ function LoginRegister() {
               <button className='sign' type="submit">Sign up</button>
             </form>
           </div>
-          <div class="login">
+          <div className="login">
             <form onSubmit={handleLoginSubmit}>
               <label for="chk" aria-hidden="true">Login</label>
               <input type="email" name="email" placeholder="Email" required="" value={email} onChange={(e) => setEmail(e.target.value)}/>
