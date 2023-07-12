@@ -119,7 +119,6 @@ func GenerateImageToken(ImageDto dto.ImageDTO) (string, error) {
 		"nombre":    ImageDto.Nombre,
 		"contenido": ImageDto.Contenido,
 		"hotel_id":  ImageDto.HotelId,
-		"url":       ImageDto.Url,
 	}
 
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
