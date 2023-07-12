@@ -82,39 +82,38 @@ function Reserve() {
 
 
     return (
-        <div>
+        <div className="contenedor-principal">
             <Header />
-            <div>
+            <div className="contenedor-fechas">
                 <br></br>
                 <h2>INGRESE LAS FECHAS para su estadia</h2>
-                <div>
+                <div className="fecha-desde">
                     <p>Desde: </p>
                     <DatePicker selected={fechaDesde} onChange={handleFechaDesdeChange} />
                 </div>
-                <div>
+                <div className="fecha-hasta">
                     <p>Hasta: </p>
                     <DatePicker selected={fechaHasta} onChange={handleFechaHastaChange} />
                 </div>
                 <button onClick={buscarHotelesDisponibles}>BUSCAR</button>
             </div>
-            {hotelesDisponibles.length > 0 && (
-                <div>
-                    <h2>Hoteles Disponibles:</h2>
-                    <ul>
-                        {hotelesDisponibles.map((hotel) => (
-                            <HotelesR
-                                key={hotel.id}
-                                nombreHotel={hotel.name}
-                                piezas={hotel.cantHabitaciones}
-                                hotelId={hotel.id}
-                                userId={user_id}
-                                fechaDesde={fechaDesde}
-                                fechaHasta={fechaHasta}
-                                token = {token}
-                            />
-                        ))}
-                    </ul>
-                </div>
+            {hotelesDisponibles.length > 0 ? (
+                hotelesDisponibles.map((hotel) => (
+                    <div key={hotel.id}>
+                        <HotelesR
+                            nombreHotel={hotel.name}
+                            piezas={hotel.cantHabitaciones}
+                            descripcion={hotel.descripcion}
+                            hotelId={hotel.id}
+                            userId={user_id}
+                            fechaDesde={fechaDesde}
+                            fechaHasta={fechaHasta}
+                            token={token}
+                        />
+                    </div>
+                ))
+            ) : (
+                <p>No hay hoteles disponibles en esas fechas.</p>
             )}
         </div>
     );

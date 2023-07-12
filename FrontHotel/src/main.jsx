@@ -5,6 +5,7 @@ import Home from './Rutas/Home'
 import LoginRegister from './Rutas/LoginRegister'
 import Reserve from './Rutas/Reserve'
 import Admin from './Rutas/Admin.jsx'
+import './main.css'
 
 createRoot(document.getElementById('root')).render(
   <React.StrictMode>

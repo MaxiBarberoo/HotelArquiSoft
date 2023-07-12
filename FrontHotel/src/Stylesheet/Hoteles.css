@@ -1,37 +1,31 @@
 .contenedor-hoteles {
-
-    width: 1170px;
-    height: 368px;
-    margin: 10px 10px 50px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #fff;
-    box-shadow: 0 3px 13px 1px rgb(0 0 0 / 9%);
-
+  background-color: white;
+  padding: 10px;
+  margin-bottom: 20px;
+  text-align: center;
+  width: 60%; /* Ajustar según el ancho deseado */
+  margin-left: auto; /* Centrar horizontalmente */
+  margin-right: auto; /* Centrar horizontalmente */
+  border: 1px solid #888888; /* Agregado: recuadro */
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2); /* Sombra */
+  border-radius: 10px;
 }
 
-.contenedor-detalle-hoteles{
-
-    text-align: center;
-    padding: 40px;
-    font-family: Rockwell, sans-serif;
-    font-weight: 400;
-    line-height: 1.5rem;
-
+.nombre-hotel1 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 5px; /* Agregado para separar del siguiente párrafo */
 }
 
-.nombre-hotel1{
-
-    font-size: 1.3rem;
-    margin-top: 15px;
-    padding-bottom: 30px;
-
-
+.cantidad-piezas,
+.descripcion-hotel {
+  font-size: 14px;
+  color: #888888;
+  text-align: justify;
+  margin-top: 5px;
 }
 
-.cantidad-piezas {
-
-    font-size: 1.1rem;text-align: justify;
-
+.contenedor-hoteles p {
+  margin: 0;
 }
+  

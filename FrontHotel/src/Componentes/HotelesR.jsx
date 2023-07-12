@@ -1,5 +1,5 @@
 import React from 'react'
-import '../Stylesheet/Hoteles.css'
+import '../Stylesheet/HotelesR.css'
 
 function HotelesR(props) {
   const checkDisponibilidad = (event) => {
@@ -54,7 +54,6 @@ function HotelesR(props) {
 
   return (
     <div className="contenedor-hoteles">
-      <div className="contenedor-detalle-hoteles">
         <p className="nombre-hotel1">
           <strong>{props.nombreHotel}</strong>
         </p>
@@ -62,7 +61,6 @@ function HotelesR(props) {
         <p className="descripcion-hotel">
           Descripción: {props.descripcion}
         </p>
-      </div>
       <form onSubmit={checkDisponibilidad} className="boton-reserva">
         <button type="submit">Reservar</button>
       </form>

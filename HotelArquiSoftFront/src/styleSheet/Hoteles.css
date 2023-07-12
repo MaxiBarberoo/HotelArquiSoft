@@ -8,13 +8,14 @@
     justify-content: center;
     background-color: #fff;
     box-shadow: 0 3px 13px 1px rgb(0 0 0 / 9%);
+    
 
 }
 
 .imagen-hotel{
 
     height: 100%;
-    width: auto; //anchodelaimagen
+    width: auto; 
 
 }
 

@@ -1,7 +1,6 @@
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,800');
 
 h2 {
-
     color: black;
     display: inline-flex;
     font-size: 200%;
@@ -10,6 +9,13 @@ h2 {
     display: flex;
     justify-content: center;
     align-items: center;
+}
 
+.contenedor-fechas {
+    position: relative;
+    margin-top: 500px;
+}
 
+.contenedor-principal{
+    height: 100vh;
 }
