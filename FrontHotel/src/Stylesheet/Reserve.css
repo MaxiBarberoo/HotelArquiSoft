@@ -13,9 +13,47 @@ h2 {
 
 .contenedor-fechas {
     position: relative;
-    margin-top: 500px;
+}
+
+.fecha-desde, .fecha-hasta{
+    display:flex;
+    justify-content: center;
 }
 
 .contenedor-principal{
     height: 100vh;
 }
+
+.boton-buscar {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 20px;
+    border: 1px solid #FF4B2B;
+    background-color: #FF4B2B;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    transition: transform 80ms ease-in;
+  }
+  
+  .boton-buscar:active {
+    transform: scale(0.95);
+  }
+  
+  .boton-buscar:focus {
+    outline: none;
+  }
+  
+  .boton-buscar.ghost {
+    background-color: transparent;
+    border-color: #FFFFFF;
+  }
+  
+  .boton-buscar:hover {
+    background-color: #7f1818;
+    color: #ffffffd8;
+  }

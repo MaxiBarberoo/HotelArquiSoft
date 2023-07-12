@@ -37,6 +37,7 @@ function Home() {
       <form onSubmit={handleRedirectSubmit} className="contenedor-boton-redireccion">
         <button type="submit" className="boton-redireccion">INICIA SESION PARA RESERVAR TU HOTEL</button>
       </form>
+      <h2>Hoteles disponibles:</h2>
       <div className="contenedor-de-hoteles">
         {hoteles.map((hotel) => (
           <Hoteles

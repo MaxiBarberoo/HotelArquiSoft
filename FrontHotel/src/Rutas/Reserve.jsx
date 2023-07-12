@@ -95,7 +95,7 @@ function Reserve() {
                     <p>Hasta: </p>
                     <DatePicker selected={fechaHasta} onChange={handleFechaHastaChange} />
                 </div>
-                <button onClick={buscarHotelesDisponibles}>BUSCAR</button>
+                <button className="boton-buscar" onClick={buscarHotelesDisponibles}>BUSCAR</button>
             </div>
             {hotelesDisponibles.length > 0 ? (
                 hotelesDisponibles.map((hotel) => (
