@@ -50,7 +50,7 @@ func InsertImagen(c *gin.Context) {
 
 }
 func GetImagenesByHotel(c *gin.Context) {
-	log.Debug("Image id to load: " + c.Param("image_id"))
+	log.Debug("Hotel id to load: " + c.Param("hotel_id"))
 
 	hotelId, _ := strconv.Atoi(c.Param("hotel_id"))
 
