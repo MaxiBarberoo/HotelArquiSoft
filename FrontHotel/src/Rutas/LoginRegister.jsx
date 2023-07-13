@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
-import '../Stylesheet/LoginRegister.css'
-import Header from '../Componentes/Header'
-import { useNavigate } from 'react-router-dom'
+import React, { useState, useEffect } from 'react';
+import '../Stylesheet/LoginRegister.css';
+import Header from '../Componentes/Header';
+import { useNavigate } from 'react-router-dom';
+
 
 function LoginRegister() {
   const [nombre, setNombre] = useState('');
