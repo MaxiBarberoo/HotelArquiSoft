@@ -1,14 +1,8 @@
-<<<<<<< HEAD
 import React, { useState, useEffect } from 'react';
 import '../Stylesheet/LoginRegister.css';
 import Header from '../Componentes/Header';
 import { useNavigate } from 'react-router-dom';
-=======
-import React, { useState } from 'react'
-import '../Stylesheet/LoginRegister.css'
-import Header from '../Componentes/Header'
-import { useNavigate } from 'react-router-dom'
->>>>>>> f52b92bc70811c91c11115dd9c6be286709cda07
+
 
 function LoginRegister() {
   const [nombre, setNombre] = useState('');
