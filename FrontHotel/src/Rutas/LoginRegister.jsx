@@ -44,7 +44,8 @@ function LoginRegister() {
           if (isAuthenticated === 'true') {
             navigate(`/reserve/${tokenRecibido}/${responseJson.user_id}`);
           } else {
-            setError('Credenciales inválidas');
+            alert("Credenciales inválidas.");
+            window.location.reload();
           }
         } else {
           setError('Error en la autenticación');
@@ -57,7 +58,8 @@ function LoginRegister() {
   };
 
   const handleRegisterSubmit = async (event) => {
-    if (email.trim() == '' || contraseña.trim() == '' || nombre.trim() == '' || apellido.trim() == ''){
+    event.preventDefault()
+    if (email.trim() === '' || contraseña.trim() === '' || nombre.trim() === '' || apellido.trim() === ''){
       alert("Uno de los campos se encuentra vacío, por favor completelos e intente nuevamente.");
       setNombre('');
       setApellido('');
@@ -71,20 +73,26 @@ function LoginRegister() {
         password: contraseña,
       };
   
-      fetch('http://localhost:8090/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData),
-      })
-        .then(response => response.json())
-        .then(data => {
-          alert('El usuario ha sido registrado exitosamente');
-        })
-        .catch(error => {
-          console.error(error);
+      try {
+        const response = await fetch('http://localhost:8090/users', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(userData),
         });
+  
+        if (response.ok) {
+          // Registro exitoso
+          alert('El usuario ha sido registrado exitosamente');
+          window.location.reload(); // Recargar la página
+        } else {
+          setError('Error en el registro');
+        }
+      } catch (error) {
+        setError('Error en la solicitud');
+        console.log(error);
+      }
     }
   }
 
