@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import '../Stylesheet/LoginRegister.css';
 import Header from '../Componentes/Header';
 import { useNavigate } from 'react-router-dom';
-import jwtDecode from 'jwt-decode';
 
 function LoginRegister() {
   const [isSignUpActive, setIsSignUpActive] = useState(false);

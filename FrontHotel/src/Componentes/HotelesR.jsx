@@ -3,6 +3,7 @@ import '../Stylesheet/Hoteles.css'
 
 function Hoteles(props){
 
+
     const handleReservaSubmit = () => {
         if (usuario && hotel) {
             Reservar(usuario, hotel);
