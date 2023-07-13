@@ -25,7 +25,7 @@ func mapUrls() {
 	router.GET("/imagenes/:hotel_id", imagenesController.GetImagenesByHotel)
 
 	router.POST("/users/auth", userController.UserAuth)
-	router.POST("/imagenes/", imagenesController.InsertImagen)
+	router.POST("/imagenes", imagenesController.InsertImagen)
 	router.POST("/reservas/hotelsbyfecha", reservaController.GetHotelsByFecha)
 	router.POST("/users", userController.UserInsert)
 	router.POST("/reservas", reservaController.ReservaInsert)

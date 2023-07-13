@@ -1,6 +1,6 @@
 .contenedor-hoteles {
   background-color: white;
-  height: auto;
+  width: 40%;
   padding: 10px;
   margin-top: 80px;
   margin-bottom: 20px;
@@ -17,10 +17,42 @@
   border-radius: 10px;
 }
 
+.boton-reservar {
+  border-radius: 20px;
+  border: 1px solid #FF4B2B;
+  background-color: #FF4B2B;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+}
+
+.boton-reservar:active {
+  transform: scale(0.95);
+}
+
+.boton-reservar:focus {
+  outline: none;
+}
+
+.boton-reservar.ghost {
+  background-color: transparent;
+  border-color: #FFFFFF;
+}
+
+.boton-reservar:hover {
+  background-color: #7f1818;
+  color: #ffffffd8;
+}
+
 .nombre-hotel1 {
   font-size: 20px;
   font-weight: bold;
-  margin-bottom: 5px; /* Agregado para separar del siguiente párrafo */
+  margin-bottom: 5px;
+  /* Agregado para separar del siguiente párrafo */
 }
 
 .cantidad-piezas,
@@ -34,4 +66,3 @@
 .contenedor-hoteles p {
   margin: 0;
 }
-  

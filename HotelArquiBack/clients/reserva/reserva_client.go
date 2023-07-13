@@ -42,7 +42,7 @@ func GetRooms(fecha time.Time, reserva model.Reserva) int {
 	err := Db.Table("reservas").
 		Select("COUNT(reservas.id)").
 		Joins("JOIN hotels ON reservas.hotel_id = hotels.id").
-		Where("? >= reservas.fecha_in AND ? <= reservas.fecha_out", fecha, fecha).
+		Where("? >= reservas.fecha_in AND ? <= reservas.fecha_out AND ? = hotels.id", fecha, fecha, reserva.HotelId).
 		Count(&count).Error
 
 	if err != nil {

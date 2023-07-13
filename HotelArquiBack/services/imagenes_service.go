@@ -43,15 +43,8 @@ func (s *imagenService) GetImagenesByHotel(hotelId int) (dto.ImagenesDTO, e.ApiE
 		imagenDto.HotelId = imagen.HotelId
 		imagenDto.Contenido = imagen.Contenido
 		imagenDto.Nombre = imagen.Nombre
-		imagenDto.Url = GenerateImageURL(imagen.Nombre)
 		imagenesDto = append(imagenesDto, imagenDto)
 	}
 
 	return imagenesDto, nil
-}
-func GenerateImageURL(imageFilename string) string {
-	baseURL := "http://localhost:8090/" // Reemplaza el puerto con el que estés utilizando en tu servidor local
-	imagePath := "/images/" + imageFilename
-	imageURL := baseURL + imagePath
-	return imageURL
 }
