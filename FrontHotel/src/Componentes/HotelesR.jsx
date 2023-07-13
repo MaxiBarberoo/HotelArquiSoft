@@ -4,10 +4,6 @@ import '../Stylesheet/HotelesR.css'
 
 function HotelesR(props) {
 
-    const handleReservaSubmit = () => {
-        if (usuario && hotel) {
-            Reservar(usuario, hotel);
-
             const checkDisponibilidad = (event) => {
                 fetch("http://localhost:8090/reservas/rooms", {
                     method: "POST",
@@ -75,9 +71,5 @@ function HotelesR(props) {
                 </div>
             );
         }
-
-    }
-
-}
 
 export default HotelesR;
