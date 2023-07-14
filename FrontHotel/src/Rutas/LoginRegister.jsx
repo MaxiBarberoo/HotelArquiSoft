@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Stylesheet/LoginRegister.css';
 import Header from '../Componentes/Header';
-import { useNavigate } from 'react-router-dom';
-
+import { useNavigate, useHistory } from 'react-router-dom';
 
 function LoginRegister() {
   const [nombre, setNombre] = useState('');
@@ -11,7 +10,9 @@ function LoginRegister() {
   const [contraseña, setContraseña] = useState('');
   const [token, setToken] = useState('');
   const [error, setError] = useState('');
+  const [isAdmin, setIsAdmin] = useState(false); // Agregar isAdmin al estado
   const navigate = useNavigate();
+  const history = useHistory();
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
@@ -40,9 +41,17 @@ function LoginRegister() {
           setToken(tokenRecibido);
           const isAuthenticated = responseJson.autenticacion;
           console.log(isAuthenticated);
+          const isAdmin = responseJson.tipo === 1; // Verificar si es el administrador
+          setIsAdmin(isAdmin); // Actualizar el estado de isAdmin
   
           if (isAuthenticated === 'true') {
-            navigate(`/reserve/${tokenRecibido}/${responseJson.user_id}`);
+
+            if (isAdmin) {
+              history.push('/admin');
+            } else {
+              navigate(`/reserve/${tokenRecibido}/${responseJson.user_id}`);
+            }
+
           } else {
             alert("Credenciales inválidas.");
             window.location.reload();
@@ -54,6 +63,7 @@ function LoginRegister() {
         setError('Error en la solicitud');
         console.log(error);
       }
+
     }
   };
 

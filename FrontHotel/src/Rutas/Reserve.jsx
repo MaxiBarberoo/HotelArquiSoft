@@ -14,6 +14,8 @@ function Reserve() {
     const { token } = useParams();
     const { user_id } = useParams();
 
+
+
     const clavetoken = "secreto";
 
     const handleFechaDesdeChange = (date) => {

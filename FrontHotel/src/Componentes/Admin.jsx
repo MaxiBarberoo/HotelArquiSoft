@@ -1,8 +1,12 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import '../Stylesheet/Admin.css'
-import 'Header.jsx'
 
 function Admin() {
+
+
+
+
+    const [reservasTotales, setReservasTotales] = useState([]);
     return (
         <div>
             <h2>Reservas Totales</h2>
@@ -15,3 +19,5 @@ function Admin() {
     );
 
 }
+
+export default Admin;

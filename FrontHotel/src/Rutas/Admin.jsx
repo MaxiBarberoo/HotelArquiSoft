@@ -4,6 +4,7 @@ import { getReservas } from 'HotelArquiSoft/HotelArquiBack/services/reserva_serv
 
 function Admin(){
     const [reservasTotales, setReservasTotales] = useState([]);
+    const [reservasUsuario, setReservasUsuario] = useState([]);
     const [nuevoHotel, setNuevoHotel] = useState({
         nombre: '',
         cantidadHabitaciones: 0
@@ -68,10 +69,21 @@ function Admin(){
         setIsLoggedIn(true);
         setIsAdmin(tipoUsuario === 1);
         setUserId(userId);
+
     };
+
+
 
     return(
         <div>
+
+            <h2>Reservas Totales</h2>
+            <ul>
+                {reservasTotales.map((reserva) => (
+                    <li key={reserva.id}>{reserva.nombre}</li>
+                ))}
+            </ul>
+
 
         </div>
     );
