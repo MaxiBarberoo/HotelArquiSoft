@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import '../Stylesheet/LoginRegister.css';
 import Header from '../Componentes/Header';
-import { useNavigate, useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 function LoginRegister() {
   const [nombre, setNombre] = useState('');
@@ -12,7 +12,6 @@ function LoginRegister() {
   const [error, setError] = useState('');
   const [isAdmin, setIsAdmin] = useState(false); // Agregar isAdmin al estado
   const navigate = useNavigate();
-  const history = useHistory();
 
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
@@ -47,7 +46,7 @@ function LoginRegister() {
           if (isAuthenticated === 'true') {
 
             if (isAdmin) {
-              history.push('/admin');
+              navigate('/Admin'); // Utilizar navigate para redireccionar a '/admin'
             } else {
               navigate(`/reserve/${tokenRecibido}/${responseJson.user_id}`);
             }
