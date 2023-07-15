@@ -29,7 +29,7 @@ func init() {
 
 func (s *reservaService) GetReservaById(id int) (dto.ReservaDto, e.ApiError) {
 
-	var reserva model.Reserva = reservaClient.GetReservaById(id)
+	var reserva model.Reserva = reservaClient.ReservaClient.GetReservaById(id)
 	var reservaDto dto.ReservaDto
 
 	if reserva.ID == 0 {
@@ -47,7 +47,7 @@ func (s *reservaService) GetReservaById(id int) (dto.ReservaDto, e.ApiError) {
 
 func (s *reservaService) GetReservas() (dto.ReservasDto, e.ApiError) {
 
-	var reservas model.Reservas = reservaClient.GetReservas()
+	var reservas model.Reservas = reservaClient.ReservaClient.GetReservas()
 	var reservasDto dto.ReservasDto
 
 	for _, reserva := range reservas {
@@ -73,7 +73,7 @@ func (s *reservaService) InsertReserva(reservaDto dto.ReservaDto) (dto.ReservaDt
 	reserva.HotelId = reservaDto.HotelId
 	reserva.UserId = reservaDto.UserId
 
-	reserva = reservaClient.InsertReserva(reserva)
+	reserva = reservaClient.ReservaClient.InsertReserva(reserva)
 
 	reservaDto.Id = reserva.ID
 
@@ -99,7 +99,7 @@ func (s *reservaService) GetRooms(reservaDto dto.ReservaDto) bool {
 	dias := int(duracion.Hours() / 24)
 
 	for i := 0; i < dias; i++ {
-		if reservaClient.GetRooms(fecha, reserva) >= Hotel.CantHabitaciones {
+		if reservaClient.ReservaClient.GetRooms(fecha, reserva) >= Hotel.CantHabitaciones {
 			return false
 		}
 		fecha = fecha.AddDate(0, 0, 1)
@@ -109,7 +109,7 @@ func (s *reservaService) GetRooms(reservaDto dto.ReservaDto) bool {
 
 func (s *reservaService) GetReservasByUser(userId int) (dto.ReservasDto, e.ApiError) {
 
-	var reservas model.Reservas = reservaClient.GetReservasByUser(userId)
+	var reservas model.Reservas = reservaClient.ReservaClient.GetReservasByUser(userId)
 	var reservasDto dto.ReservasDto
 
 	for _, reserva := range reservas {
@@ -133,7 +133,7 @@ func (s *reservaService) GetReservasByFecha(reservaDto dto.ReservaDto) (dto.Rese
 	reserva.FechaIn = reservaDto.FechaIngreso
 	reserva.FechaOut = reservaDto.FechaEgreso
 
-	var reservas model.Reservas = reservaClient.GetReservasByFecha(reserva)
+	var reservas model.Reservas = reservaClient.ReservaClient.GetReservasByFecha(reserva)
 	var reservasDto dto.ReservasDto
 
 	for _, reserva = range reservas {

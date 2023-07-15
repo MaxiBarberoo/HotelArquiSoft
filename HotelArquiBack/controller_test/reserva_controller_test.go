@@ -1,4 +1,4 @@
-package controller_test_test
+package controller_test
 
 import (
 	e "HotelArquiSoft/HotelArquiBack/Utils"
