@@ -40,11 +40,10 @@ function LoginRegister() {
           setToken(tokenRecibido);
           const isAuthenticated = responseJson.autenticacion;
           console.log(isAuthenticated);
-          const isAdmin = responseJson.tipo === 1; // Verificar si es el administrador
+          const isAdmin = responseJson.tipo == 1; // Verificar si es el administrador
           setIsAdmin(isAdmin); // Actualizar el estado de isAdmin
   
-          if (isAuthenticated === 'true') {
-
+          if (isAuthenticated == 'true') {
             if (isAdmin) {
               navigate('/Admin'); // Utilizar navigate para redireccionar a '/admin'
             } else {

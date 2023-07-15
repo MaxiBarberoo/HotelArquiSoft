@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { getReservas } from 'HotelArquiSoft/HotelArquiBack/services/reserva_service.go'; // Importa el servicio para obtener las reservas
-
 
 function Admin(){
     const [reservasTotales, setReservasTotales] = useState([]);

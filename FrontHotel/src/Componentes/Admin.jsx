@@ -1,11 +1,6 @@
 import React, { useState, useEffect } from 'react'
-import '../Stylesheet/Admin.css'
 
 function Admin() {
-
-
-
-
     const [reservasTotales, setReservasTotales] = useState([]);
     return (
         <div>

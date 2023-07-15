@@ -64,3 +64,21 @@ h2 {
   background-color: #7f1818;
   color: #ffffffd8;
 }
+
+.reserva-item {
+  margin-top: 20px;
+}
+
+.subtitulo-reserva {
+  margin-bottom: 10px; 
+  font-weight: bold;
+  font-style: italic;
+}
+
+.detalle-reserva {
+  margin-left: 40px; 
+}
+
+.titulo-reservas{
+  font-size: larger;
+}
