@@ -9,6 +9,10 @@ import { useParams } from 'react-router-dom';
 function Reserve() {
   const [fechaDesde, setFechaDesde] = useState(null);
   const [fechaHasta, setFechaHasta] = useState(null);
+  const [filtroBusqueda, setfiltroBusqueda] = useState(1);
+  const [fechaDesdeFiltro, setFechaDesdeFiltro] = useState(null);
+  const [fechaHastaFiltro, setFechaHastaFiltro] = useState(null);
+  const [nombreHotel, setNombreHotel] = useState('');
   const [hotelesDisponibles, setHotelesDisponibles] = useState([]);
   const [reservas, setReservas] = useState([]);
   const [contadorReserva, setContadorReserva] = useState(1);
@@ -22,6 +26,13 @@ function Reserve() {
   const handleFechaHastaChange = (date) => {
     setFechaHasta(date);
   };
+
+  const handleFechaDesdeChangeFiltro = (date) => {
+    setFechaDesdeFiltro(date);
+  }
+  const handleFechaHastaChangeFiltro = (date) => {
+    setFechaHastaFiltro(date);
+  }
 
   const buscarHotelesDisponibles = () => {
     if (!fechaDesde || !fechaHasta) {
@@ -62,7 +73,44 @@ function Reserve() {
     }
   };
 
-  useEffect(() => {
+  const filtrarReservas = async () => {
+    setReservas([]);
+    if (nombreHotel !== '' && fechaDesdeFiltro && fechaHastaFiltro) {
+      // Lógica para filtrar por nombre de hotel y fechas
+      // Implementa aquí el código necesario para esta opción
+    } else if (fechaDesdeFiltro && fechaHastaFiltro) {
+      console.log("entró a filtros por fecha");
+      console.log(fechaDesdeFiltro);
+      console.log(fechaHastaFiltro);
+  
+      const fechas = {
+        fecha_ingreso: fechaDesdeFiltro,
+        fecha_egreso: fechaHastaFiltro,
+      };
+  
+      try {
+        const response = await fetch("http://localhost:8090/reservas/byfecha", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`,
+          },
+          body: JSON.stringify({ fechas }),
+        });
+  
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (nombreHotel) {
+    } else {
+      console.log("entró todasreservas");
+      fetchTodasLasReservas();
+    }
+  };
+
+  const fetchTodasLasReservas = () => {
     fetch(`http://localhost:8090/reservas/reservauser/${user_id}`, {
       method: "GET",
       headers: {
@@ -78,7 +126,15 @@ function Reserve() {
         }
       })
       .catch((error) => console.error(error));
-  }, []);
+  };
+
+  useEffect(() => {
+    if (filtroBusqueda) {
+      filtrarReservas(); // Si el filtro está activado, se aplica el filtrado
+    } else {
+      fetchTodasLasReservas(); // Si no, se obtienen todas las reservas
+    }
+  }, [filtroBusqueda]);
 
   const obtenerNombres = (reservasData) => {
     const hotelIds = [...new Set(reservasData.map((reserva) => reserva.hotel_id))];
@@ -130,7 +186,7 @@ function Reserve() {
 
   const formatDate = (date) => {
     const formattedDate = new Date(date);
-    formattedDate.setDate(formattedDate.getDate() + 1); 
+    formattedDate.setDate(formattedDate.getDate() + 1);
 
     const day = formattedDate.getDate();
     const month = formattedDate.getMonth() + 1;
@@ -143,13 +199,25 @@ function Reserve() {
     <div className="contenedor-principal">
       <Header />
       <h4 className="titulo-reservas">Mis reservas:</h4>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        setfiltroBusqueda(filtroBusqueda+1);
+      }}>
+        <h5>Filtrar por fecha:</h5>
+        <p>Fecha desde:</p>
+        <DatePicker selected={fechaDesdeFiltro} onChange={handleFechaDesdeChangeFiltro} />
+        <p>Fecha hasta:</p>
+        <DatePicker selected={fechaHastaFiltro} onChange={handleFechaHastaChangeFiltro} />
+        <h5>Filtrar por nombre de hotel:</h5>
+        <input type="text" placeholder="Nombre del hotel" value={nombreHotel} onChange={(e) => setNombreHotel(e.target.value)} />
+        <button type="submit">Filtrar</button>
+      </form>
       <div className="contenedor-reservas-usuario">
         {reservas.length > 0 ? (
           reservas.map((reserva, index) => (
             <div key={reserva.id} className="reserva-item">
               <p className="subtitulo-reserva"> Datos de la reserva {contadorReserva + index}:</p>
               <div className="detalle-reserva">
-                <p>Usuario: {reserva.usuario_nombre}</p>
                 <p>Hotel: {reserva.hotel_nombre}</p>
                 <p>Fecha check-in: {formatDate(reserva.fecha_ingreso)}</p>
                 <p>Fecha check-out: {formatDate(reserva.fecha_egreso)}</p>
