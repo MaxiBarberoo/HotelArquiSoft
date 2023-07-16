@@ -9,7 +9,6 @@ import (
 	"strconv"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/mitchellh/mapstructure"
 )
 
 func AssignAmenitieToHotel(c *gin.Context) {
@@ -36,18 +35,7 @@ func AssignAmenitieToHotel(c *gin.Context) {
 		return
 	}
 
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-		return
-	}
-
-	err = mapstructure.Decode(claims, &amenitiehotelDto)
-
-	// Error Parsing json param
+	err = c.BindJSON(&amenitiehotelDto)
 	if err != nil {
 		log.Error(err.Error())
 		c.JSON(http.StatusBadRequest, err.Error())
@@ -76,5 +64,4 @@ func SearchAmenitiesByHotel(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, amenitiesHotels)
-
 }

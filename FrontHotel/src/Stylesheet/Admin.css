@@ -1,14 +1,17 @@
-.contenedor-de-hoteles{
-  display: content;
-}
-
-.contenedor-boton-redireccion {
-    text-align: center;
-    margin-top: 20px;
-    margin-bottom: 20px; /* Agregado para separar del siguiente elemento */
+.contenedor-crear-hoteles {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-content: center;
+    align-items: center;
   }
-  
-  .boton-redireccion {
+
+.boton-crear-hotel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 20px;
     border: 1px solid #FF4B2B;
     background-color: #FF4B2B;
@@ -21,20 +24,20 @@
     transition: transform 80ms ease-in;
   }
   
-  .boton-redireccion:active {
+  .boton-crear-hotel:active {
     transform: scale(0.95);
   }
   
-  .boton-redireccion:focus {
+  .boton-crear-hotel:focus {
     outline: none;
   }
   
-  .boton-redireccion.ghost {
+  .boton-crear-hotel.ghost {
     background-color: transparent;
     border-color: #FFFFFF;
   }
   
-  .boton-redireccion:hover {
+  .boton-crear-hotel:hover {
     background-color: #7f1818;
     color: #ffffffd8;
   }

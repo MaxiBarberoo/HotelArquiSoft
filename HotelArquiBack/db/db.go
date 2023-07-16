@@ -8,10 +8,12 @@ import (
 	reservaClient "HotelArquiSoft/HotelArquiBack/clients/reserva"
 	userClient "HotelArquiSoft/HotelArquiBack/clients/user"
 	"HotelArquiSoft/HotelArquiBack/model"
-
+	"fmt"
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	log "github.com/sirupsen/logrus"
+	"golang.org/x/crypto/bcrypt"
+	"os"
 )
 
 var (
@@ -19,6 +21,29 @@ var (
 	err error
 )
 
+func generateFilename(number int) string {
+	// Base directory and filename template
+	baseDirectory := "imagenes/"
+	baseFilename := "%d.jpg"
+
+	// Format the filename with the given number
+	filename := fmt.Sprintf(baseFilename, number)
+
+	// Concatenate the directory and filename
+	fullPath := baseDirectory + filename
+
+	return fullPath
+}
+
+func readImageAsBlob(filepath string) ([]byte, error) {
+	// Read the image file
+	imageData, err := os.ReadFile(filepath)
+	if err != nil {
+		return nil, err
+	}
+
+	return imageData, nil
+}
 func insertInitialData() {
 	// Insert users
 	user := model.User{
@@ -28,6 +53,11 @@ func insertInitialData() {
 		Password:  "password123",
 		Tipo:      1,
 	}
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		log.Error("Error al hashear la password:", err.Error())
+	}
+	user.Password = string(hashedPassword)
 	if err := db.Create(&user).Error; err != nil {
 		log.Error("Failed to insert user:", err.Error())
 	}
@@ -93,6 +123,46 @@ func insertInitialData() {
 		}
 	}
 
+	imagenes := []model.Imagen{
+		{
+			Nombre:  "Luxury",
+			HotelId: 1,
+		},
+		{
+			Nombre:  "GrandHotel",
+			HotelId: 2,
+		},
+		{
+			Nombre:  "SunsetParadise",
+			HotelId: 3,
+		},
+		{
+			Nombre:  "GoldenSandsResort",
+			HotelId: 4,
+		},
+		{
+			Nombre:  "OceanViewInn",
+			HotelId: 5,
+		},
+	}
+
+	var i int
+	i = 0
+
+	for _, imagen := range imagenes {
+		i++
+		filename := generateFilename(i)
+		imageData, err := readImageAsBlob(filename)
+		if err != nil {
+			fmt.Println("Error reading file:", err)
+			return
+		}
+		imagen.Contenido = imageData
+
+		imagenClient.InsertImagen(imagen)
+
+	}
+
 	log.Info("Initial values inserted")
 }
 
@@ -131,6 +201,7 @@ func StartDbEngine() {
 	db.AutoMigrate(&model.Hotels{})
 	db.AutoMigrate(&model.Amenities{})
 	db.AutoMigrate(&model.AmenitieHotel{})
+	db.AutoMigrate(&model.Imagen{})
 
 	insertInitialData()
 

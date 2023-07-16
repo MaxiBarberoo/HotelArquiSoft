@@ -5,7 +5,6 @@ import (
 	service "HotelArquiSoft/HotelArquiBack/services"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/mitchellh/mapstructure"
 	log "github.com/sirupsen/logrus"
 	"net/http"
 	"strconv"
@@ -34,22 +33,10 @@ func InsertImagen(c *gin.Context) {
 		})
 		return
 	}
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-		return
-	}
-
-	err = mapstructure.Decode(claims, &imageDTO)
-
+	err = c.BindJSON(&imageDTO)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -63,7 +50,7 @@ func InsertImagen(c *gin.Context) {
 
 }
 func GetImagenesByHotel(c *gin.Context) {
-	log.Debug("Image id to load: " + c.Param("image_id"))
+	log.Debug("Hotel id to load: " + c.Param("hotel_id"))
 
 	hotelId, _ := strconv.Atoi(c.Param("hotel_id"))
 

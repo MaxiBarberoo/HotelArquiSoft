@@ -8,7 +8,6 @@ import (
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/mitchellh/mapstructure"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -64,22 +63,12 @@ func ReservaInsert(c *gin.Context) {
 		return
 	}
 
-	claims, ok := token.Claims.(jwt.MapClaims)
+	err1 := c.BindJSON(&reservaDto)
 
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-		return
-	}
-
-	err = mapstructure.Decode(claims, &reservaDto)
-
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-
+	// Error Parsing json param
+	if err1 != nil {
+		log.Error(err1.Error())
+		c.JSON(http.StatusBadRequest, err1.Error())
 		return
 	}
 
@@ -118,22 +107,10 @@ func GetRooms(c *gin.Context) {
 		return
 	}
 
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-		return
-	}
-
-	err = mapstructure.Decode(claims, &reservaDto)
-
+	err = c.BindJSON(&reservaDto)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -187,22 +164,10 @@ func GetReservasByFecha(c *gin.Context) {
 		return
 	}
 
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-		return
-	}
-
-	err = mapstructure.Decode(claims, &reservaDto)
-
+	err = c.BindJSON(&reservaDto)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -242,22 +207,10 @@ func GetHotelsByFecha(c *gin.Context) {
 		return
 	}
 
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-		return
-	}
-
-	err = mapstructure.Decode(claims, &reservaDto)
-
+	err = c.BindJSON(&reservaDto)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -270,5 +223,4 @@ func GetHotelsByFecha(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, reservasDto)
-
 }

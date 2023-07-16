@@ -7,9 +7,7 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"github.com/mitchellh/mapstructure"
 	log "github.com/sirupsen/logrus"
 )
 
@@ -58,44 +56,12 @@ func GetUsers(c *gin.Context) {
 
 func UserInsert(c *gin.Context) {
 	var userDto dto.UserDto
+	err := c.BindJSON(&userDto)
 
-	tokenString := c.GetHeader("Authorization")
-	if tokenString == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "Token no proporcionado",
-		})
-		return
-	}
-
-	secret := "secreto"
-
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte(secret), nil
-	})
-
-	if err != nil || !token.Valid {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "Token invalido",
-		})
-		return
-	}
-
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-		return
-	}
-
-	err = mapstructure.Decode(claims, &userDto)
-
+	// Error Parsing json param
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -106,49 +72,18 @@ func UserInsert(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusCreated, userDto)
+	c.JSON(http.StatusAccepted, gin.H{
+		"user_created": "true",
+	})
 }
 
 func UserAuth(c *gin.Context) {
 	var userDto dto.UserDto
 
-	tokenString := c.GetHeader("Authorization")
-	if tokenString == "" {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "Token no proporcionado",
-		})
-		return
-	}
-
-	secret := "secreto"
-
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
-		return []byte(secret), nil
-	})
-
-	if err != nil || !token.Valid {
-		c.JSON(http.StatusUnauthorized, gin.H{
-			"error": "Token invalido",
-		})
-		return
-	}
-
-	claims, ok := token.Claims.(jwt.MapClaims)
-
-	if !ok {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-		return
-	}
-
-	err = mapstructure.Decode(claims, &userDto)
-
+	err := c.BindJSON(&userDto)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{
-			"error": "Error al obtener los datos",
-		})
-
+		log.Error(err.Error())
+		c.JSON(http.StatusBadRequest, err.Error())
 		return
 	}
 
@@ -157,39 +92,26 @@ func UserAuth(c *gin.Context) {
 	var id int
 	autenticado, tipo, id = service.UserService.UserAuth(userDto)
 	if autenticado == true {
+		userDto.Tipo = tipo
+		userDto.Id = id
+		token, err := jwtG.GenerateUserToken(userDto)
+		if err != nil {
+			log.Error(err.Error())
+			c.JSON(http.StatusBadRequest, err.Error())
+			return
+		}
 		c.JSON(http.StatusAccepted, gin.H{
-			"message":       "Solicitud exitosa",
 			"autenticacion": "true",
 			"tipo":          tipo,
 			"user_id":       id,
+			"token":         token,
 		})
 	} else {
 		c.JSON(http.StatusAccepted, gin.H{
-			"message":       "Solicitud rechazada",
 			"autenticacion": "false",
 			"tipo":          tipo,
 			"user_id":       id,
 		})
 	}
 
-}
-
-func GenerateUserToken(c *gin.Context) {
-	var userDto dto.UserDto
-	err := c.BindJSON(&userDto)
-
-	// Error Parsing json param
-	if err != nil {
-		log.Error(err.Error())
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error al procesar los datos del usuario"})
-		return
-	}
-
-	signedToken, err := jwtG.GenerateUserToken(userDto)
-	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Error al generar el token"})
-		return
-	}
-
-	c.JSON(http.StatusOK, gin.H{"token": signedToken})
 }
