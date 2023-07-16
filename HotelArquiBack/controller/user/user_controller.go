@@ -4,12 +4,13 @@ import (
 	"HotelArquiSoft/HotelArquiBack/dto"
 	jwtG "HotelArquiSoft/HotelArquiBack/jwt"
 	service "HotelArquiSoft/HotelArquiBack/services"
+	"net/http"
+	"strconv"
+
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"github.com/mitchellh/mapstructure"
 	log "github.com/sirupsen/logrus"
-	"net/http"
-	"strconv"
 )
 
 func GetUserById(c *gin.Context) {
