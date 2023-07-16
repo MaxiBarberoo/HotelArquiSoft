@@ -289,7 +289,6 @@ func TestGetReservasByFecha(t *testing.T) {
 	mockClient.AssertExpectations(t)
 }
 
-/*
 func TestGetHotelsByFecha(t *testing.T) {
 	// Arrange
 	mockHotel := new(mockHotelService)
@@ -335,15 +334,15 @@ func TestGetHotelsByFecha(t *testing.T) {
 	clients.ReservaClient = mockClient
 
 	// Act
-	hotelsDto, err := services.ReservaService.GetHotelsByFecha(reservaDto)
+	reservasDto, err := services.ReservaService.GetHotelsByFecha(reservaDto)
 	// Assert
 	assert.NoError(t, err)
-	assert.Len(t, hotelsDto, 1)
-	assert.Equal(t, expectedHotel1.Id, hotelsDto[0].Id)
+	assert.Len(t, reservasDto, 1)
+	assert.Equal(t, expectedHotel1.Id, reservasDto[0].HotelId)
 
 	// Verify that the GetRooms function is called twice with the correct parameters
 	mockClient.AssertExpectations(t)
 
 	// Verify that the GetHotelById function is called for both hotels
 	mockHotel.AssertExpectations(t)
-}*/
+}

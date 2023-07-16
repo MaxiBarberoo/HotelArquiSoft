@@ -206,7 +206,7 @@ func GetHotelsByFecha(c *gin.Context) {
 		})
 		return
 	}
-
+	log.Debug(c)
 	err = c.BindJSON(&reservaDto)
 	if err != nil {
 		log.Error(err.Error())
