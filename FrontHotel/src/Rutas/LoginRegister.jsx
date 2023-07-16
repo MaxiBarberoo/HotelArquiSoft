@@ -10,7 +10,7 @@ function LoginRegister() {
   const [contraseña, setContraseña] = useState('');
   const [token, setToken] = useState('');
   const [error, setError] = useState('');
-  const [isAdmin, setIsAdmin] = useState(false); // Agregar isAdmin al estado
+  const [isAdmin, setIsAdmin] = useState(false);
   const navigate = useNavigate();
 
   const handleLoginSubmit = async (event) => {
@@ -36,16 +36,16 @@ function LoginRegister() {
   
         if (authResponse.ok) {
           const responseJson = await authResponse.json();
-          const tokenRecibido = responseJson.token; // Acceder al campo 'token' en la respuesta
+          const tokenRecibido = responseJson.token; 
           setToken(tokenRecibido);
           const isAuthenticated = responseJson.autenticacion;
           console.log(isAuthenticated);
-          const isAdmin = responseJson.tipo == 1; // Verificar si es el administrador
-          setIsAdmin(isAdmin); // Actualizar el estado de isAdmin
+          const isAdmin = responseJson.tipo == 1; 
+          setIsAdmin(isAdmin); 
   
           if (isAuthenticated == 'true') {
             if (isAdmin) {
-              navigate('/Admin'); // Utilizar navigate para redireccionar a '/admin'
+              navigate(`/admin/${tokenRecibido}/${responseJson.user_id}`); 
             } else {
               navigate(`/reserve/${tokenRecibido}/${responseJson.user_id}`);
             }
@@ -91,9 +91,8 @@ function LoginRegister() {
         });
   
         if (response.ok) {
-          // Registro exitoso
           alert('El usuario ha sido registrado exitosamente');
-          window.location.reload(); // Recargar la página
+          window.location.reload();
         } else {
           setError('Error en el registro');
         }

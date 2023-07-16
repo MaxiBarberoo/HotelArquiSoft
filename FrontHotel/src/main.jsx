@@ -14,7 +14,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<Home />} />
         <Route path="/loginandregister" element={<LoginRegister />} />
         <Route path="/reserve/:token/:user_id" element={<Reserve />} />
-        <Route path="/Admin" element={<Admin />} />
+        <Route path="/admin/:token/:user_id" element={<Admin />} />
       </Routes>
     </Router>
   </React.StrictMode>
