@@ -8,7 +8,7 @@ function Hoteles(props) {
 
     useEffect(() => {
         // Obtener los IDs de los hoteles mediante una solicitud fetch
-        fetch('/hotels')
+        fetch('http://localhost:8090/hotels')
             .then(response => response.json())
             .then(data => {
                 setHotels(data);
@@ -20,22 +20,25 @@ function Hoteles(props) {
 
 
     useEffect(() => {
-        // Realizar la solicitud fetch para cada hotel y obtener los amenities correspondientes
-        hotels.forEach(hotel => {
-            fetch(`/amenitiehotel/${hotel.id}`)
-                .then(response => response.json())
-                .then(data => {
-                    // Agregar los amenities al estado general
-                    setAmenities(prevAmenities =>[...prevAmenities, ...data]);
-                    console.log(data); // Imprimir los datos de amenities en la consola
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                });
-        });
-    }, [hotels]);
+        const fetchAmenities = async () => {
+            try {
+                const response = await fetch(`http://localhost:8090/amenitiehotel/${props.hotelId}`);
+                if (response.ok) {
+                    const data = await response.json();
+                    setAmenities(data);
+                } else {
+                    throw new Error(`Error en la petición GET de las amenidades para el hotel ${props.hotelId}`);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        };
 
-  return (
+        fetchAmenities();
+    }, [props.hotelId]);
+
+
+    return (
     <div className="contenedor-hoteles">
       <p className="nombre-hotel1">
         <strong>{props.nombreHotel}</strong>
