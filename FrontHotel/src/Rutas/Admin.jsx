@@ -10,7 +10,7 @@ function Admin() {
         nombre: '',
         descripcion: '',
         cantidadHabitaciones: 0,
-        imagen: '',
+        imagenesSeleccionadas: [],
     });
     const [hoteles, setHoteles] = useState([]);
     const { token } = useParams();
@@ -20,72 +20,128 @@ function Admin() {
     const crearNuevoHotel = (event) => {
         event.preventDefault();
         const cantiHabitaciones = parseInt(nuevoHotel.cantidadHabitaciones);
-        if (nuevoHotel.cantidadHabitaciones <= 0) {
-            alert("La cantidad de habitaciones ingresadas es inválida. Inténtelo nuevamente.");
-            window.location.reload();
+        if (
+          nuevoHotel.cantidadHabitaciones <= 0 ||
+          nuevoHotel.nombre === "" ||
+          nuevoHotel.descripcion === "" ||
+          nuevoHotel.imagenesSeleccionadas.length === 0 // Cambiamos el estado a imagenesSeleccionadas
+        ) {
+          alert("El nombre, descripción y al menos una imagen son requeridos. Inténtelo nuevamente.");
+          window.location.reload();
         } else {
-            if (nuevoHotel.nombre == '' || nuevoHotel.descripcion == '') {
-                alert("El nombre y descripción no pueden estar vacíos. Inténtelo nuevamente.");
-                window.location.reload();
-            } else {
-                fetch('http://localhost:8090/hotels', {
-                    method: 'POST',
-                    headers: {
-                        "Content-Type": 'application/json',
-                        "Authorization": `${token}`,
-                    },
-                    body: JSON.stringify({
-                        name: nuevoHotel.nombre,
-                        descripcion: nuevoHotel.descripcion,
-                        cantHabitaciones: cantiHabitaciones
-                    })
-                })
-                    .then((response) => response.json())
-                    .then((data) => {
-                        if (data.error) {
-                            console.error(data.error);
-                        } else {
-                            setHoteles((prevHoteles) => [...prevHoteles, data]);
-                            alert('Se ha creado un nuevo hotel con éxito');
-                            setNuevoHotel({
-                                nombre: '',
-                                descripcion: '',
-                                cantidadHabitaciones: 0
-                            });
-                            window.location.reload();
-                        }
-                    })
-                    .catch((error) => console.error(error));
+          const imagenesFiles = nuevoHotel.imagenesSeleccionadas.map(
+            (imagenBlob, index) => {
+              return new File([imagenBlob], `nombre_imagen_${index}.jpg`, {
+                type: imagenBlob.type,
+              });
             }
+          );
+    
+          const formData = new FormData();
+          formData.append("name", nuevoHotel.nombre);
+          formData.append("descripcion", nuevoHotel.descripcion);
+          formData.append("cantHabitaciones", cantiHabitaciones);
+          imagenesFiles.forEach((imagenFile, index) => {
+            formData.append(`imagen_${index}`, imagenFile);
+          });
+    
+          fetch("http://localhost:8090/hotels", {
+            method: "POST",
+            headers: {
+              Authorization: `${token}`,
+            },
+            body: formData,
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data.error) {
+                console.error(data.error);
+              } else {
+                setHoteles((prevHoteles) => [...prevHoteles, data]);
+                alert("Se ha creado un nuevo hotel con éxito");
+                console.log(nuevoHotel)
+                setNuevoHotel({
+                  nombre: "",
+                  descripcion: "",
+                  cantidadHabitaciones: 0,
+                  imagenesSeleccionadas: [], // Limpiar las imágenes seleccionadas
+                });
+                window.location.reload();
+              }
+            })
+            .catch((error) => console.error(error));
         }
+      };  
 
-    };
+    const handleImagenesChange = (event) => {
+        const { files } = event.target;
+        if (files && files.length > 0) {
+          const imagenFiles = Array.from(files);
+          const imagenBlobs = [];
+    
+          imagenFiles.forEach((imagenFile) => {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+              const blob = new Blob([reader.result], { type: imagenFile.type });
+              imagenBlobs.push(blob);
+    
+              if (imagenBlobs.length === imagenFiles.length) {
+                setNuevoHotel((prevNuevoHotel) => ({
+                  ...prevNuevoHotel,
+                  imagenesSeleccionadas: imagenBlobs,
+                }));
+              }
+            };
+            reader.readAsArrayBuffer(imagenFile);
+          });
+        }
+      };
 
-    const handleNuevoHotelChange = (event) => {
-        const { name, value } = event.target;
+    const handleNombreHotelChange = (event) => {
+        const { value } = event.target;
         setNuevoHotel((prevNuevoHotel) => ({
             ...prevNuevoHotel,
-            [name]: value
+            nombre: value,
+        }));
+    };
+
+    const handleDescripcionHotelChange = (event) => {
+        const { value } = event.target;
+        setNuevoHotel((prevNuevoHotel) => ({
+            ...prevNuevoHotel,
+            descripcion: value,
+        }));
+    };
+
+    const handleCantidadHabitacionesChange = (event) => {
+        const { value } = event.target;
+        setNuevoHotel((prevNuevoHotel) => ({
+            ...prevNuevoHotel,
+            cantidadHabitaciones: parseInt(value),
         }));
     };
 
     useEffect(() => {
         fetch('http://localhost:8090/hotels')
-            .then((response) => response.json())
-            .then((data) => setHoteles(data))
-            .catch((error) => console.error(error));
-
+          .then((response) => response.json())
+          .then((data) => setHoteles(data))
+          .catch((error) => console.error(error));
+      
         fetch('http://localhost:8090/reservas', {
-            method: 'GET',
-            headers: {
-                "Content-Type": 'application/json',
-                "Authorization": `${token}`
-            }
+          method: 'GET',
+          headers: {
+            "Content-Type": 'application/json',
+            "Authorization": `${token}`
+          }
         })
-            .then((response) => response.json())
-            .then((data) => obtenerNombres(data))
-            .catch((error) => console.error(error));
-    }, []);
+          .then((response) => response.json())
+          .then((data) => {
+            if (data && data.length > 0) { 
+              obtenerNombres(data);
+            }
+          })
+          .catch((error) => console.error(error));
+      }, []);     
 
     const obtenerNombres = (reservasData) => {
         const hotelIds = [...new Set(reservasData.map((reserva) => reserva.hotel_id))];
@@ -171,34 +227,34 @@ function Admin() {
                     type="text"
                     name="nombre"
                     value={nuevoHotel.nombre}
-                    onChange={handleNuevoHotelChange}
+                    onChange={handleNombreHotelChange}
                     placeholder="Nombre del hotel"
                 />
-                <p>Descripción del hotel:</p>
+
                 <input
                     type="text"
                     maxLength={500}
                     name="descripcion"
                     value={nuevoHotel.descripcion}
-                    onChange={handleNuevoHotelChange}
+                    onChange={handleDescripcionHotelChange}
                     placeholder="Descripción"
                 />
-                <p>Cantidad de habitaciones:</p>
+
                 <input
                     type="number"
                     name="cantidadHabitaciones"
                     value={nuevoHotel.cantidadHabitaciones}
-                    onChange={handleNuevoHotelChange}
+                    onChange={handleCantidadHabitacionesChange}
                     placeholder="Cantidad de habitaciones"
                 />
+
                 <input
                     type="file"
                     name="imagen"
-                    value={nuevoHotel.imagen}
-                    onChange={handleNuevoHotelChange}
-                    placeholder="Imagen"
-                >
-                </input>
+                    onChange={handleImagenesChange}
+                    multiple
+                />
+
                 <button className="boton-crear-hotel" onClick={crearNuevoHotel}>Crear Hotel</button>
             </div>
             <div className="contenedor-hoteles-admin">
