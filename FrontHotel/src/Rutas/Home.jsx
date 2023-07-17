@@ -60,6 +60,29 @@ function Home() {
   }, []);
 
 
+  useEffect(() => {
+    const fetchAmenitiesForHotels = async () => {
+      const hotelsWithAmenities = await Promise.all(
+          hoteles.map(async (hotel) => {
+            const response = await fetch(`http://localhost:8090/amenities/${hotel.id}`);
+            if (response.ok) {
+              const amenitiesData = await response.json();
+              return { ...hotel, amenities: amenitiesData };
+            } else {
+              console.error(`Error en la petición GET de amenities para el hotel ${hotel.id}`);
+              return hotel;
+            }
+          })
+      );
+      setHoteles(hotelsWithAmenities);
+    };
+
+    if (hoteles.length > 0) {
+      fetchAmenitiesForHotels();
+    }
+  }, [hoteles]);
+
+
 
   return (
     <div>
@@ -77,6 +100,7 @@ function Home() {
                 nombreHotel={hotel.name}
                 piezas={hotel.cantHabitaciones}
                 descripcion={hotel.descripcion}
+                amenities={hotel.amenities}
             />
         ))}
       </div>
