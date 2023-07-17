@@ -3,19 +3,37 @@ import '../Stylesheet/Hoteles.css';
 
 function Hoteles(props) {
 
+        const [hotels, setHotels] = useState([]);
         const [amenities, setAmenities] = useState([]);
 
-        useEffect(() => {
-            fetch(`/amenitiehotel/${props.hotelId}`)
+    useEffect(() => {
+        // Obtener los IDs de los hoteles mediante una solicitud fetch
+        fetch('/hotels')
+            .then(response => response.json())
+            .then(data => {
+                setHotels(data);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+    }, []);
+
+
+    useEffect(() => {
+        // Realizar la solicitud fetch para cada hotel y obtener los amenities correspondientes
+        hotels.forEach(hotel => {
+            fetch(`/amenitiehotel/${hotel.id}`)
                 .then(response => response.json())
                 .then(data => {
-                    setAmenities(data);
+                    // Agregar los amenities al estado general
+                    setAmenities(prevAmenities =>[...prevAmenities, ...data]);
+                    console.log(data); // Imprimir los datos de amenities en la consola
                 })
                 .catch(error => {
                     console.error('Error:', error);
                 });
-        }, [props.hotelId]);
-
+        });
+    }, [hotels]);
 
   return (
     <div className="contenedor-hoteles">
@@ -31,11 +49,12 @@ function Hoteles(props) {
 
         <h2>Amenities del hotel:</h2>
         <ul>
-            {amenities.map(amenitie => (
-                <li key={amenitie.id}>{amenitie.name}</li>
-            ))}
+            {amenities
+                .filter(amenitie => amenitie.hotelId === props.hotelId)
+                .map(amenitie => (
+                    <li key={amenitie.id}>{amenitie.Tipo}</li>
+                ))}
         </ul>
-
 
     </div>
   );

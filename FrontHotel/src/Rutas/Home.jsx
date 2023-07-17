@@ -70,16 +70,14 @@ function Home() {
       <h2>Hoteles disponibles:</h2>
       <div className="contenedor-de-hoteles">
         {hoteles.map((hotel) => (
-          <Hoteles
-            key={hotel.id}
-            hotelID={hotel.id}
-            imagenesURLs={hotel.imagenesURLs}
-            nombreHotel={hotel.name}
-            piezas={hotel.cantHabitaciones}
-            descripcion={hotel.descripcion}
-            amenities={hotel.amenities}
-
-          />
+            <Hoteles
+                key={hotel.id}
+                hotelId={hotel.id}
+                imagenesURLs={hotel.imagenesURLs}
+                nombreHotel={hotel.name}
+                piezas={hotel.cantHabitaciones}
+                descripcion={hotel.descripcion}
+            />
         ))}
       </div>
     </div>
