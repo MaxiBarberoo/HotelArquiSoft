@@ -52,7 +52,7 @@ function Admin() {
             const hotelId = data.id;
             const imagenData = {
               hotel_id: hotelId,
-              contenido: nuevoHotel.imagenSeleccionada, // Enviaremos el blob de la imagen seleccionada como string
+              contenido: nuevoHotel.imagenSeleccionada, 
             };
 
             fetch("http://localhost:8090/imagenes", {
@@ -61,7 +61,7 @@ function Admin() {
                 Authorization: `${token}`,
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(imagenData), // Enviamos solo una imagen seleccionada
+              body: JSON.stringify(imagenData), 
             })
               .then((response) => response.json())
               .then((data) => {
@@ -76,6 +76,7 @@ function Admin() {
                     cantidadHabitaciones: 0,
                     imagenSeleccionada: null, // Limpiamos la imagen seleccionada
                   });
+                  window.location.reload();
                 }
               })
               .catch((error) => console.error(error));
