@@ -1,63 +1,55 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '../Stylesheet/HotelesR.css'
+import '../Stylesheet/HotelesAdmin.css';
 
-function HotelesR(props) {
+function HotelesAdmin(props) {
     const [hotels, setHotels] = useState([]);
     const [amenities, setAmenities] = useState([]);
     const hotelIdRef = useRef(props.hotelId);
+    const [imagenSeleccionada, setImagenSeleccionada] = useState(null);
 
-    const checkDisponibilidad = (event) => {
-        event.preventDefault();
-        fetch("http://localhost:8090/reservas/rooms", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `${props.token}`,
-            },
-            body: JSON.stringify({
-                fecha_ingreso: props.fechaDesde,
-                fecha_egreso: props.fechaHasta,
-                hotel_id: parseInt(props.hotelId),
-                user_id: parseInt(props.userId),
-            }),
-        })
-            .then((response) => response.json())
-            .then((data) => {
-                if (data.disponibilidad === "true") {
-                    Reservar();
-                    alert("Su reserva fue realizada con éxito.");
-                    window.location.reload();
-                } else {
-                    alert("No hay habitaciones disponibles en el hotel seleccionado para esas fechas.");
-                    window.location.reload();
-                }
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
+    const handleImagenesChange = (event) => {
+        const { files } = event.target;
+        if (files && files.length > 0) {
+            const imagenFile = files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const blob = new Blob([reader.result], { type: imagenFile.type });
+                setImagenSeleccionada(blob);
+            };
+            reader.readAsArrayBuffer(imagenFile);
+        }
     };
 
-    const Reservar = () => {
-        fetch("http://localhost:8090/reservas", {
+    const agregarImagen = () => {
+        if (!imagenSeleccionada) {
+            alert("Por favor, seleccione una imagen.");
+            return;
+        }
+
+        const imagenData = {
+            hotel_id: props.hotelId,
+            contenido: Array.from(new Uint8Array(imagenSeleccionada.arrayBuffer())),
+        };
+
+        fetch("http://localhost:8090/imagenes", {
             method: "POST",
             headers: {
-                "Content-Type": "application/json",
                 Authorization: `${props.token}`,
+                "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-                fecha_ingreso: props.fechaDesde,
-                fecha_egreso: props.fechaHasta,
-                hotel_id: parseInt(props.hotelId),
-                user_id: parseInt(props.userId),
-            }),
+            body: JSON.stringify(imagenData),
         })
-            .then((response) => response.json())
-            .then((data) => {
-                // Actualizar el estado de las reservas si es necesario
-            })
-            .catch((error) => {
-                console.error("Error:", error);
-            });
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.error) {
+                console.error(data.error);
+            } else {
+                alert("Imagen agregada con éxito");
+                // Limpiar la imagen seleccionada después de agregarla
+                setImagenSeleccionada(null);
+            }
+        })
+        .catch((error) => console.error(error));
     };
 
     useEffect(() => {
@@ -129,22 +121,28 @@ function HotelesR(props) {
             <p className="nombre-hotel1">
                 <strong>{props.nombreHotel}</strong>
             </p>
-
-            <p className="cantidad-piezas">Habitaciones: {props.piezas}</p>
+            <p className="cantidad-piezas">
+                Habitaciones: {props.piezas}
+            </p>
             <p className="descripcion-hotel">
                 Descripción: {props.descripcion}
             </p>
+
             <h2>Amenities del hotel:</h2>
             <ul>
                 {amenities.map(amenitie => (
                     <li key={amenitie.id}>{amenitie.tipo}</li>
                 ))}
             </ul>
-            <form onSubmit={checkDisponibilidad} className="boton-reserva">
-                <button className='boton-reservar' type="submit">Reservar</button>
-            </form>
+            <p>Cargar imagen:</p>
+            <input
+                type="file"
+                name="imagen"
+                onChange={handleImagenesChange}
+            />
+            <button className="boton-subir-imagen" onClick={agregarImagen}>Agregar imagen</button>
         </div>
     );
 }
 
-export default HotelesR;
+export default HotelesAdmin;

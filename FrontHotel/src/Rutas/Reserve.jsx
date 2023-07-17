@@ -82,12 +82,12 @@ function Reserve() {
       console.log("entró a filtros por fecha");
       console.log(fechaDesdeFiltro);
       console.log(fechaHastaFiltro);
-  
+
       const fechas = {
         fecha_ingreso: fechaDesdeFiltro,
         fecha_egreso: fechaHastaFiltro,
       };
-  
+
       try {
         const response = await fetch("http://localhost:8090/reservas/byfecha", {
           method: "POST",
@@ -97,7 +97,7 @@ function Reserve() {
           },
           body: JSON.stringify({ fechas }),
         });
-  
+
         const data = await response.json();
         console.log(data);
       } catch (error) {
@@ -201,7 +201,7 @@ function Reserve() {
       <h4 className="titulo-reservas">Mis reservas:</h4>
       <form onSubmit={(e) => {
         e.preventDefault();
-        setfiltroBusqueda(filtroBusqueda+1);
+        setfiltroBusqueda(filtroBusqueda + 1);
       }}>
         <h5>Filtrar por fecha:</h5>
         <p>Fecha desde:</p>
@@ -246,10 +246,12 @@ function Reserve() {
           hotelesDisponibles.map((hotel) => (
             <div key={hotel.id}>
               <HotelesR
-                nombreHotel={hotel.name}
+                key={hotel.id}
+                hotelId={hotel.id}
                 piezas={hotel.cantHabitaciones}
                 descripcion={hotel.descripcion}
-                hotelId={hotel.id}
+                amenities={hotel.amenities}
+                nombreHotel={hotel.name}
                 userId={user_id}
                 fechaDesde={fechaDesde}
                 fechaHasta={fechaHasta}
