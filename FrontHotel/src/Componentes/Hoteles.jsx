@@ -5,6 +5,8 @@ function Hoteles(props) {
 
         const [hotels, setHotels] = useState([]);
         const [amenities, setAmenities] = useState([]);
+        const hotelIdRef = useRef(props.hotelId);
+
 
     useEffect(() => {
         // Obtener los IDs de los hoteles mediante una solicitud fetch
@@ -18,6 +20,9 @@ function Hoteles(props) {
             });
     }, []);
 
+    useEffect(() => {
+        hotelIdRef.current = props.hotelId;
+    }, [props.hotelId]);
 
     useEffect(() => {
         const fetchAmenities = async () => {
@@ -34,10 +39,10 @@ function Hoteles(props) {
             }
         };
 
-        fetchAmenities();
-    }, [props.hotelId]);
-
-
+        if (hotelIdRef.current) {
+            fetchAmenities();
+        }
+    }, []);
 
     return (
     <div className="contenedor-hoteles">
