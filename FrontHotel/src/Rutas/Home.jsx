@@ -72,10 +72,13 @@ function Home() {
         {hoteles.map((hotel) => (
           <Hoteles
             key={hotel.id}
+            hotelID={hotel.id}
             imagenesURLs={hotel.imagenesURLs}
             nombreHotel={hotel.name}
             piezas={hotel.cantHabitaciones}
             descripcion={hotel.descripcion}
+            amenities={hotel.amenities}
+
           />
         ))}
       </div>
