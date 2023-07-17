@@ -20,6 +20,11 @@ type ReservaClientInterface interface {
 	GetRooms(fecha time.Time, reserva model.Reserva) int
 	GetReservasByUser(userId int) model.Reservas
 	GetReservasByFecha(reserva model.Reserva) model.Reservas
+	GetReservasByHotel(hotelId int) model.Reservas
+	GetReservasByHotelAndFecha(reserva model.Reserva) model.Reservas
+	GetReservasByHotelAndUser(reserva model.Reserva) model.Reservas
+	GetReservasByFechaAndUser(reserva model.Reserva) model.Reservas
+	GetReservasByHotelFechaAndUser(reserva model.Reserva) model.Reservas
 }
 
 var (
@@ -80,6 +85,49 @@ func (c *reservaClient) GetReservasByUser(userId int) model.Reservas {
 func (c *reservaClient) GetReservasByFecha(reserva model.Reserva) model.Reservas {
 	var reservas model.Reservas
 	err := Db.Where("fecha_in >= ? AND fecha_out <= ?", reserva.FechaIn, reserva.FechaOut).Find(&reservas).Error
+	if err != nil {
+		return nil
+	}
+	return reservas
+}
+
+func (c *reservaClient) GetReservasByHotel(hotelId int) model.Reservas {
+	var reservas model.Reservas
+	Db.Where("hotel_id = ?", hotelId).Find(&reservas)
+	log.Debug("Reservas: ", reservas)
+	return reservas
+}
+
+func (c *reservaClient) GetReservasByHotelAndFecha(reserva model.Reserva) model.Reservas {
+	var reservas model.Reservas
+	err := Db.Where("fecha_in >= ? AND fecha_out <= ? AND hotel_id = ?", reserva.FechaIn, reserva.FechaOut, reserva.HotelId).Find(&reservas).Error
+	if err != nil {
+		return nil
+	}
+	return reservas
+}
+
+func (c *reservaClient) GetReservasByHotelAndUser(reserva model.Reserva) model.Reservas {
+	var reservas model.Reservas
+	err := Db.Where("hotel_id = ? AND user_id = ?", reserva.HotelId, reserva.UserId).Find(&reservas).Error
+	if err != nil {
+		return nil
+	}
+	return reservas
+}
+
+func (c *reservaClient) GetReservasByFechaAndUser(reserva model.Reserva) model.Reservas {
+	var reservas model.Reservas
+	err := Db.Where("fecha_in >= ? AND fecha_out <= ? AND user_id = ?", reserva.FechaIn, reserva.FechaOut, reserva.UserId).Find(&reservas).Error
+	if err != nil {
+		return nil
+	}
+	return reservas
+}
+
+func (c *reservaClient) GetReservasByHotelFechaAndUser(reserva model.Reserva) model.Reservas {
+	var reservas model.Reservas
+	err := Db.Where("fecha_in >= ? AND fecha_out <= ? AND user_id = ? AND hotel_id = ?", reserva.FechaIn, reserva.FechaOut, reserva.UserId, reserva.HotelId).Find(&reservas).Error
 	if err != nil {
 		return nil
 	}
