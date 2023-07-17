@@ -1,10 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react'
 import '../Stylesheet/HotelesR.css'
 
 function HotelesR(props) {
     const [hotels, setHotels] = useState([]);
     const [amenities, setAmenities] = useState([]);
     const hotelIdRef = useRef(props.hotelId);
+
+    const fetchAmenityTypes = async (amenityIds) => {
+        const amenityTypesPromises = amenityIds.map(async (amenityId) => {
+            const response = await fetch(`http://localhost:8090/amenities/${amenityId}`);
+            if (response.ok) {
+                const data = await response.json();
+                return data.tipo; // Suponiendo que el tipo se encuentra en la propiedad "tipo"
+            } else {
+                throw new Error(`Error en la petición GET de la amenidad ${amenityId}`);
+            }
+        });
+        try {
+            const amenityTypes = await Promise.all(amenityTypesPromises);
+            return amenityTypes;
+        } catch (error) {
+            console.error('Error:', error);
+            return [];
+        }
+    };
 
     const checkDisponibilidad = (event) => {
         event.preventDefault();
@@ -103,26 +123,6 @@ function HotelesR(props) {
             fetchAmenities();
         }
     }, []);
-
-    const fetchAmenityTypes = async (amenityIds) => {
-        const amenityTypesPromises = amenityIds.map(async (amenityId) => {
-            const response = await fetch(`http://localhost:8090/amenities/${amenityId}`);
-            if (response.ok) {
-                const data = await response.json();
-                return data.tipo; // Suponiendo que el tipo se encuentra en la propiedad "tipo"
-            } else {
-                throw new Error(`Error en la petición GET de la amenidad ${amenityId}`);
-            }
-        });
-
-        try {
-            const amenityTypes = await Promise.all(amenityTypesPromises);
-            return amenityTypes;
-        } catch (error) {
-            console.error('Error:', error);
-            return [];
-        }
-    };
 
     return (
         <div className="contenedor-hoteles">
