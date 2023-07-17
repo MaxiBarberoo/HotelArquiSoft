@@ -38,6 +38,7 @@ function Hoteles(props) {
     }, [props.hotelId]);
 
 
+
     return (
     <div className="contenedor-hoteles">
       <p className="nombre-hotel1">
