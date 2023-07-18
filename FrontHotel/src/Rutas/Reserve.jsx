@@ -83,10 +83,10 @@ function Reserve() {
             console.log(fechaDesdeFiltro);
             console.log(fechaHastaFiltro);
 
-            const fechas = {
+          /*  const fechas = {
                 fecha_ingreso: fechaDesdeFiltro,
                 fecha_egreso: fechaHastaFiltro,
-            };
+            };*/
 
             try {
                 const response = await fetch("http://localhost:8090/reservas/byfecha", {
@@ -95,14 +95,24 @@ function Reserve() {
                         "Content-Type": "application/json",
                         "Authorization": `${token}`,
                     },
-                    body: JSON.stringify({ fechas }),
-                });
+                    body: JSON.stringify({
+                        fecha_ingreso: fechaDesdeFiltro,
+                        fecha_egreso: fechaHastaFiltro, }),
+                })
+                    .then((response) => response.json())
+                    .then((data) => {
+                        if (data && data.length > 0) {
+                            obtenerNombres(data);
+                        } else {
+                            setReservas([]);
+                        }
+                    })
+                    .catch((error) => console.error(error));
 
-                const data = await response.json();
-                console.log(data);
             } catch (error) {
                 console.error(error);
             }
+
         } else if (nombreHotel) {
         } else {
             console.log("entró todasreservas");
