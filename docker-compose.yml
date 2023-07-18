@@ -1,0 +1,56 @@
+version: '3'
+
+networks:
+  mynetwork:
+    name: hotelarquinetwork
+
+services:
+  db:
+    image: mysql:latest
+    ports:
+      - "3306:3306"
+    restart: always
+    volumes:
+      - ./mysql:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: pruebaHash
+      MYSQL_ROOT_PASSWORD: arquisoft1
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "mysqladmin",
+          "ping",
+          "-h",
+          "127.0.0.1",
+          "-u root",
+          "-p arquisoft1"
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    networks:
+      - mynetwork
+
+  backend:
+    build:
+      context: .
+      dockerfile: HotelArquiBack/Dockerfile
+    restart: always
+    ports:
+      - "8090:8090"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - mynetwork
+
+  frontend:
+    build:
+      context: .
+      dockerfile: FrontHotel/Dockerfile
+    restart: always
+    ports:
+      - "8000:8000"
+    networks:
+      - mynetwork
