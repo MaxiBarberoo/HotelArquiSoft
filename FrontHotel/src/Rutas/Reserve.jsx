@@ -260,8 +260,24 @@ function Reserve() {
 
     return (
         <div className="contenedor-principal">
+
             <Header />
-            <h4 className="titulo-reservas">Mis reservas:</h4>
+
+            <div className="contenedor-fechas">
+                <br></br>
+                <h2>INGRESE LAS FECHAS para su estadia</h2>
+                <div className="fecha-desde">
+                    <p>Desde: </p>
+                    <DatePicker selected={fechaDesde} onChange={handleFechaDesdeChange} />
+                </div>
+                <div className="fecha-hasta">
+                    <p>Hasta: </p>
+                    <DatePicker selected={fechaHasta} onChange={handleFechaHastaChange} />
+                </div>
+                <button className="boton-buscar" onClick={buscarHotelesDisponibles}>BUSCAR</button>
+            </div>
+
+            <h2 className="titulo-reservas">Mis reservas:</h2>
             <div className="contenedor-reservas-usuario">
                 {reservas.length > 0 ? (
                     reservas.map((reserva, index) => (
@@ -279,7 +295,7 @@ function Reserve() {
                 )}
             </div>
 
-            <h2>Filtros de reservas:</h2>
+            <h4>Filtros de reservas:</h4>
             <form onSubmit={(e) => {
                 e.preventDefault();
                 setfiltroBusqueda(filtroBusqueda + 1);
@@ -289,30 +305,20 @@ function Reserve() {
                 <DatePicker selected={fechaDesdeFiltro} onChange={handleFechaDesdeChangeFiltro} />
                 <p>Fecha hasta:</p>
                 <DatePicker selected={fechaHastaFiltro} onChange={handleFechaHastaChangeFiltro} />
-                <button type="submit">Filtrar</button>
+                <button type="submit" className="filtro-boton">Filtrar</button>
             </form>
             <form onSubmit={(e) => {
                 e.preventDefault();
                 setfiltroBusqueda(filtroBusqueda + 1);
             }}>
-                <h5>Filtrar por nombre de hotel:</h5>
-                <input type="text" placeholder="Nombre del hotel" value={nombreHotel} onChange={(e) => setNombreHotel(e.target.value)} />
-                <button type="submit">Filtrar</button>
+
+                <h5 className="filtro-titulo">Filtrar por nombre de hotel:</h5>
+                <div className="filtro-input">
+                    <input type="text" placeholder="Nombre del hotel" value={nombreHotel} onChange={(e) => setNombreHotel(e.target.value)} />
+                    <button type="submit" className="filtro-boton">Filtrar</button>
+                </div>
             </form>
 
-            <div className="contenedor-fechas">
-                <br></br>
-                <h2>INGRESE LAS FECHAS para su estadia</h2>
-                <div className="fecha-desde">
-                    <p>Desde: </p>
-                    <DatePicker selected={fechaDesde} onChange={handleFechaDesdeChange} />
-                </div>
-                <div className="fecha-hasta">
-                    <p>Hasta: </p>
-                    <DatePicker selected={fechaHasta} onChange={handleFechaHastaChange} />
-                </div>
-                <button className="boton-buscar" onClick={buscarHotelesDisponibles}>BUSCAR</button>
-            </div>
             <div className="contenedor-hoteles-r">
                 {hotelesDisponibles.length != null ? (
                     hotelesDisponibles.map((hotel) => (
@@ -332,10 +338,16 @@ function Reserve() {
                         </div>
                     ))
                 ) : (
-                    <p>No hay hoteles disponibles en esas fechas.</p>
+                    <p className="sin-hoteles-mensaje">No hay hoteles disponibles en esas fechas.</p>
                 )}
             </div>
+
+            <div className="contenedor-boton-volver">
+                <button onClick={() => navigate('/')} className="volver-button">Volver</button>
+            </div>
+
         </div>
+
     );
 }
 

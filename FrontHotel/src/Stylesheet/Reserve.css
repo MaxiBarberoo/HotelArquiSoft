@@ -2,29 +2,24 @@
 
 h2 {
   color: black;
-  display: inline-flex;
   font-size: 200%;
   font-family: 'Montserrat', sans-serif;
   text-align: center;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  margin-top: 20px;
 }
 
 .contenedor-fechas {
-  position: relative;
   display: flex;
   justify-content: center;
-  flex-direction: column;
-  flex-wrap: wrap;
-  align-content: center;
   align-items: center;
+  margin-top: 20px;
 }
 
 .contenedor-hoteles-r {
-  height: auto;
-  position: relative;
-  display: contents;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+  margin-top: 20px;
 }
 
 .contenedor-principal {
@@ -45,6 +40,7 @@ h2 {
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: transform 80ms ease-in;
+  margin-top: 20px;
 }
 
 .boton-buscar:active {
@@ -70,15 +66,124 @@ h2 {
 }
 
 .subtitulo-reserva {
-  margin-bottom: 10px; 
+  margin-bottom: 10px;
   font-weight: bold;
   font-style: italic;
 }
 
 .detalle-reserva {
-  margin-left: 40px; 
+  margin-left: 40px;
 }
 
-.titulo-reservas{
+.titulo-reservas {
+  margin-bottom: 10px;
+  font-family: 'Montserrat', sans-serif;
   font-size: larger;
+  text-align: center;
+}
+
+.contenedor-reservas-usuario {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-top: 20px;
+}
+
+h4 {
+
+  color: #FF4B2B;
+  font-size: 200%;
+  font-family: 'Montserrat', sans-serif;
+  text-align: center;
+  margin-top: 20px;
+
+}
+
+.filtro-form {
+  margin-bottom: 20px;
+}
+
+.filtro-titulo {
+  margin-bottom: 10px;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.filtro-input {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.filtro-boton {
+  background-color: #FF4B2B;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.filtro-boton:hover {
+  background-color: #7f1818;
+}
+
+.contenedor-hoteles-r {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-gap: 20px;
+}
+
+.sin-hoteles-mensaje {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.contenedor-boton-volver {
+
+
+  text-align: center;
+  margin-top: 1px;
+  margin-bottom: 10px;
+}
+
+.volver-button{
+
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border-radius: 20px;
+  border: 1px solid #FF4B2B;
+  background-color: #FF4B2B;
+  color: #FFFFFF;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 12px 45px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  transition: transform 80ms ease-in;
+
+
+}
+
+.volver-button:active {
+  transform: scale(0.95);
+}
+
+.volver-button:focus {
+  outline: none;
+}
+
+.volver-button.ghost {
+  background-color: transparent;
+  border-color: #FFFFFF;
+}
+
+.volver-button:hover {
+  background-color: #7f1818;
+  color: #ffffffd8;
 }
