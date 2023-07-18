@@ -6,6 +6,7 @@ import HotelesR from '../Componentes/HotelesR'
 import 'react-datepicker/dist/react-datepicker.css'
 import { useParams } from 'react-router-dom';
 
+
 function Reserve() {
   const [fechaDesde, setFechaDesde] = useState(null);
   const [fechaHasta, setFechaHasta] = useState(null);
@@ -73,42 +74,34 @@ function Reserve() {
     }
   };
 
-  const filtrarReservas = async () => {
-    setReservas([]);
-    if (nombreHotel !== '' && fechaDesdeFiltro && fechaHastaFiltro) {
-      // Lógica para filtrar por nombre de hotel y fechas
-      // Implementa aquí el código necesario para esta opción
-    } else if (fechaDesdeFiltro && fechaHastaFiltro) {
-      console.log("entró a filtros por fecha");
-      console.log(fechaDesdeFiltro);
-      console.log(fechaHastaFiltro);
-  
-      const fechas = {
-        fecha_ingreso: fechaDesdeFiltro,
-        fecha_egreso: fechaHastaFiltro,
-      };
-  
-      try {
-        const response = await fetch("http://localhost:8090/reservas/byfecha", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Authorization": `${token}`,
-          },
-          body: JSON.stringify({ fechas }),
-        });
-  
-        const data = await response.json();
-        console.log(data);
-      } catch (error) {
-        console.error(error);
-      }
-    } else if (nombreHotel) {
-    } else {
-      console.log("entró todasreservas");
-      fetchTodasLasReservas();
-    }
-  };
+    const filtrarReservas = async () => {
+        setReservas([]);
+        if (nombreHotel !== '' && fechaDesdeFiltro && fechaHastaFiltro) {
+            // Filtrar por nombre de hotel y fechas
+            const reservasFiltradas = reservas.filter((reserva) =>
+                reserva.hotel_nombre.toLowerCase().includes(nombreHotel.toLowerCase()) &&
+                new Date(reserva.fecha_ingreso) >= fechaDesdeFiltro &&
+                new Date(reserva.fecha_egreso) <= fechaHastaFiltro
+            );
+            setReservas(reservasFiltradas);
+        } else if (fechaDesdeFiltro && fechaHastaFiltro) {
+            // Filtrar solo por fechas
+            const reservasFiltradas = reservas.filter((reserva) =>
+                new Date(reserva.fecha_ingreso) >= fechaDesdeFiltro &&
+                new Date(reserva.fecha_egreso) <= fechaHastaFiltro
+            );
+            setReservas(reservasFiltradas);
+        } else if (nombreHotel) {
+            // Filtrar solo por nombre de hotel
+            const reservasFiltradas = reservas.filter((reserva) =>
+                reserva.hotel_nombre.toLowerCase().includes(nombreHotel.toLowerCase())
+            );
+            setReservas(reservasFiltradas);
+        } else {
+            // Sin filtros, mostrar todas las reservas
+            setReservas(reservas);
+        }
+    };
 
   const fetchTodasLasReservas = () => {
     fetch(`http://localhost:8090/reservas/reservauser/${user_id}`, {
@@ -128,13 +121,13 @@ function Reserve() {
       .catch((error) => console.error(error));
   };
 
-  useEffect(() => {
+useEffect(() => {
     if (filtroBusqueda) {
-      filtrarReservas(); // Si el filtro está activado, se aplica el filtrado
+        filtrarReservas(); // Si el filtro está activado, se aplica el filtrado
     } else {
-      fetchTodasLasReservas(); // Si no, se obtienen todas las reservas
+        fetchTodasLasReservas(); // Si no, se obtienen todas las reservas
     }
-  }, [filtroBusqueda]);
+}, [filtroBusqueda]);
 
   const obtenerNombres = (reservasData) => {
     const hotelIds = [...new Set(reservasData.map((reserva) => reserva.hotel_id))];
