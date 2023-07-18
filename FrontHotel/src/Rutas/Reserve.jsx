@@ -83,10 +83,6 @@ function Reserve() {
             console.log(fechaDesdeFiltro);
             console.log(fechaHastaFiltro);
 
-          /*  const fechas = {
-                fecha_ingreso: fechaDesdeFiltro,
-                fecha_egreso: fechaHastaFiltro,
-            };*/
 
             try {
                 const response = await fetch("http://localhost:8090/reservas/byfecha", {
