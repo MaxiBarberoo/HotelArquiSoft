@@ -129,6 +129,11 @@ function LoginRegister() {
           </div>
         </div>
       </div>
+
+      <div className="contenedor-boton-volver">
+      <button onClick={() => navigate('/')} className="volver-button">Volver</button>
+      </div>
+
     </div>
   );
 }
