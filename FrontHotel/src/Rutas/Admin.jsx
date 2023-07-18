@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react"
 import '../Stylesheet/Admin.css'
 import Header from '../Componentes/Header'
 import HotelesAdmin from '../Componentes/HotelesAdmin'
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom'
+import DatePicker from 'react-datepicker'
+import 'react-datepicker/dist/react-datepicker.css'
 
 function Admin() {
   const [reservasTotales, setReservasTotales] = useState([]);
@@ -19,6 +21,124 @@ function Admin() {
   const [contadorReserva, setContadorReserva] = useState(1);
   const [todosAmenities, setTodosAmenities] = useState([]);
   const [eleccionDeAmenitie, setEleccionDeAmenitie] = useState(null);
+  const [filtroBusqueda, setfiltroBusqueda] = useState(1);
+  const [fechaDesdeFiltro, setFechaDesdeFiltro] = useState(null);
+  const [fechaHastaFiltro, setFechaHastaFiltro] = useState(null);
+  const [nombreHotel, setNombreHotel] = useState('');
+
+  const handleFechaDesdeChangeFiltro = (date) => {
+    setFechaDesdeFiltro(date);
+  }
+  const handleFechaHastaChangeFiltro = (date) => {
+    setFechaHastaFiltro(date);
+  }
+
+  const filtrarReservasFecha = async () => {
+    setReservasTotales([]);
+    if (fechaDesdeFiltro && fechaHastaFiltro) {
+      console.log("entró a filtros por fecha");
+      console.log(fechaDesdeFiltro);
+      console.log(fechaHastaFiltro);
+      try {
+        const response = await fetch("http://localhost:8090/reservas/byfecha", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`,
+          },
+          body: JSON.stringify({
+            fecha_ingreso: fechaDesdeFiltro,
+            fecha_egreso: fechaHastaFiltro,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data && data.length > 0) {
+              obtenerNombres(data);
+            } else {
+              setReservasTotales([]);
+            }
+          })
+          .catch((error) => console.error(error));
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      alert("Los campos están incompletos. Ingréselos nuevamente");
+      window.location.reload();
+    }
+  };
+
+  const filtrarReservasHotel = async () => {
+    setReservasTotales([]);
+    if (nombreHotel) {
+      const hotelCoincidente = hoteles.find((hotel) => hotel.name === nombreHotel);
+      if (hotelCoincidente) {
+        const hotelId = hotelCoincidente.id;
+        try {
+          const response = await fetch(`http://localhost:8090/reservas/hotel/${hotelId}`, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              if (data && data.length > 0) {
+                obtenerNombres(data);
+              } else {
+                setReservasTotales([]);
+              }
+            })
+            .catch((error) => console.error(error));
+
+        } catch (error) {
+          console.error(error);
+        }
+      } else {
+        alert("El nombre de hotel ingresado es incorrecto y no es posible filtrar. Inténtelo nuevamente.");
+        window.location.reload();
+      }
+    } else {
+      alert("El campo está incompleto. Ingréselo nuevamente.");
+      window.location.reload();
+    }
+  };
+
+  const fetchTodasLasReservas = () => {
+    fetch("http://localhost:8090/reservas", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.length > 0) {
+          obtenerNombres(data);
+        } else {
+          setReservasTotales([]);
+        }
+      })
+      .catch((error) => console.error(error));
+  };
+
+  useEffect(() => {
+    if (filtroBusqueda) {
+      if (fechaDesdeFiltro && fechaHastaFiltro) {
+        filtrarReservasFecha();
+      } else {
+        if (nombreHotel) {
+          filtrarReservasHotel();
+        } else {
+          fetchTodasLasReservas();
+        }
+      }
+    } else {
+      fetchTodasLasReservas();
+    }
+  }, [filtroBusqueda]);
+
 
   const HandleOpcionAmenitieChange = (event) => {
     event.preventDefault();
@@ -50,7 +170,7 @@ function Admin() {
       eleccionDeAmenitie <= 0 || eleccionDeAmenitie > 6 ||
       nuevoHotel.nombre === "" ||
       nuevoHotel.descripcion === "" ||
-      !nuevoHotel.imagenSeleccionada 
+      !nuevoHotel.imagenSeleccionada
     ) {
       alert("El nombre, descripción, una imagen y un amenitie son requeridos. Inténtelo nuevamente.");
       window.location.reload();
@@ -138,15 +258,15 @@ function Admin() {
   const handleImagenesChange = (event) => {
     const { files } = event.target;
     if (files && files.length > 0) {
-      const imagenFile = files[0]; 
+      const imagenFile = files[0];
       const reader = new FileReader();
       reader.onloadend = () => {
-        const buffer = new Uint8Array(reader.result); 
+        const buffer = new Uint8Array(reader.result);
         const byteArray = Array.from(buffer);
 
         setNuevoHotel((prevNuevoHotel) => ({
           ...prevNuevoHotel,
-          imagenSeleccionada: byteArray, 
+          imagenSeleccionada: byteArray,
         }));
       };
       reader.readAsArrayBuffer(imagenFile);
@@ -182,23 +302,6 @@ function Admin() {
     fetch('http://localhost:8090/hotels')
       .then((response) => response.json())
       .then((data) => setHoteles(data))
-      .catch((error) => console.error(error));
-  }, []);
-
-  useEffect(() => {
-    fetch('http://localhost:8090/reservas', {
-      method: 'GET',
-      headers: {
-        "Content-Type": 'application/json',
-        "Authorization": `${token}`
-      }
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data && data.length > 0) {
-          obtenerNombres(data);
-        }
-      })
       .catch((error) => console.error(error));
   }, []);
 
@@ -279,6 +382,26 @@ function Admin() {
       ) : (
         <p>No tiene reservas realizadas.</p>
       )}
+      <h2>Filtros de reservas:</h2>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        setfiltroBusqueda(filtroBusqueda + 1);
+      }}>
+        <h5>Filtrar por fecha:</h5>
+        <p>Fecha desde:</p>
+        <DatePicker selected={fechaDesdeFiltro} onChange={handleFechaDesdeChangeFiltro} />
+        <p>Fecha hasta:</p>
+        <DatePicker selected={fechaHastaFiltro} onChange={handleFechaHastaChangeFiltro} />
+        <button type="submit">Filtrar</button>
+      </form>
+      <form onSubmit={(e) => {
+        e.preventDefault();
+        setfiltroBusqueda(filtroBusqueda + 1);
+      }}>
+        <h5>Filtrar por nombre de hotel:</h5>
+        <input type="text" placeholder="Nombre del hotel" value={nombreHotel} onChange={(e) => setNombreHotel(e.target.value)} />
+        <button type="submit">Filtrar</button>
+      </form>
       <h2>Agregar nuevo hotel</h2>
       <div className="contenedor-crear-hoteles">
         <p>Nombre del hotel:</p>
