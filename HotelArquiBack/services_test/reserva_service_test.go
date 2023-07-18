@@ -12,7 +12,6 @@ import (
 	"time"
 )
 
-// Mock for the ReservaClientInterface
 type mockReservaClient struct {
 	mock.Mock
 }
@@ -91,9 +90,7 @@ func (m *mockHotelService) InsertHotel(hotelDto dto.HotelDto) (dto.HotelDto, e.A
 	return args.Get(0).(dto.HotelDto), nil
 }
 
-// Test GetReservaById
 func TestGetReservaById(t *testing.T) {
-	// Arrange
 	mockClient := new(mockReservaClient)
 
 	expectedReserva := model.Reserva{
@@ -106,13 +103,10 @@ func TestGetReservaById(t *testing.T) {
 
 	mockClient.On("GetReservaById", 1).Return(expectedReserva)
 
-	// Set the mocked client for the ReservaService
 	clients.ReservaClient = mockClient
 
-	// Act
 	reservaDto, err := services.ReservaService.GetReservaById(1)
 
-	// Assert
 	assert.NoError(t, err)
 	assert.Equal(t, expectedReserva.ID, reservaDto.Id)
 	assert.Equal(t, expectedReserva.FechaIn, reservaDto.FechaIngreso)
@@ -123,7 +117,6 @@ func TestGetReservaById(t *testing.T) {
 }
 
 func TestGetReservas(t *testing.T) {
-	// Arrange
 	mockClient := new(mockReservaClient)
 
 	expectedReservas := model.Reservas{
@@ -145,24 +138,19 @@ func TestGetReservas(t *testing.T) {
 
 	mockClient.On("GetReservas").Return(expectedReservas)
 
-	// Set the mocked client for the ReservaService
 	clients.ReservaClient = mockClient
 
-	// Act
 	reservasDto, err := services.ReservaService.GetReservas()
 
-	// Assert
 	assert.NoError(t, err)
 	assert.Len(t, reservasDto, 2)
 
-	// Check the first reserva
 	assert.Equal(t, expectedReservas[0].ID, reservasDto[0].Id)
 	assert.Equal(t, expectedReservas[0].FechaIn, reservasDto[0].FechaIngreso)
 	assert.Equal(t, expectedReservas[0].FechaOut, reservasDto[0].FechaEgreso)
 	assert.Equal(t, expectedReservas[0].UserId, reservasDto[0].UserId)
 	assert.Equal(t, expectedReservas[0].HotelId, reservasDto[0].HotelId)
 
-	// Check the second reserva
 	assert.Equal(t, expectedReservas[1].ID, reservasDto[1].Id)
 	assert.Equal(t, expectedReservas[1].FechaIn, reservasDto[1].FechaIngreso)
 	assert.Equal(t, expectedReservas[1].FechaOut, reservasDto[1].FechaEgreso)
@@ -174,10 +162,8 @@ func TestGetReservas(t *testing.T) {
 }
 
 func TestGetRooms(t *testing.T) {
-	// Arrange
 	mockClient := new(mockReservaClient)
 	mockHotel := new(mockHotelService)
-	// Sample data for the reservaDto
 	fechaIngreso := time.Now()
 	fechaEgreso := fechaIngreso.Add(time.Hour * 24)
 	reservaDto := dto.ReservaDto{
@@ -194,7 +180,6 @@ func TestGetRooms(t *testing.T) {
 		Desc:             "Test description",
 	}
 
-	// Sample data for the reserva (which will be passed to the client method)
 	reserva := model.Reserva{
 		FechaIn:  fechaIngreso,
 		FechaOut: fechaEgreso,
@@ -203,17 +188,13 @@ func TestGetRooms(t *testing.T) {
 		ID:       0,
 	}
 
-	// Set the expected count returned by the client method
 	mockClient.On("GetRooms", fechaIngreso, reserva).Return(5)
 	mockHotel.On("GetHotelById", 456).Return(expectedHotel, nil)
-	// Create a new instance of the service with the mock client
 	services.HotelService = mockHotel
 	clients.ReservaClient = mockClient
 
-	// Act
 	result := services.ReservaService.GetRooms(reservaDto)
 
-	// Assert
 	assert.True(t, result)
 
 	mockClient.AssertExpectations(t)
@@ -221,7 +202,6 @@ func TestGetRooms(t *testing.T) {
 }
 
 func TestGetReservasByUser(t *testing.T) {
-	// Arrange
 	mockClient := new(mockReservaClient)
 	userId := 123
 
@@ -244,24 +224,19 @@ func TestGetReservasByUser(t *testing.T) {
 
 	mockClient.On("GetReservasByUser", userId).Return(expectedReservas)
 
-	// Create a new instance of the service with the mock client
 	clients.ReservaClient = mockClient
 
-	// Act
 	reservasDto, err := services.ReservaService.GetReservasByUser(userId)
 
-	// Assert
 	assert.NoError(t, err)
 	assert.Len(t, reservasDto, 2)
 
-	// Check the first reserva
 	assert.Equal(t, expectedReservas[0].ID, reservasDto[0].Id)
 	assert.Equal(t, expectedReservas[0].FechaIn, reservasDto[0].FechaIngreso)
 	assert.Equal(t, expectedReservas[0].FechaOut, reservasDto[0].FechaEgreso)
 	assert.Equal(t, expectedReservas[0].UserId, reservasDto[0].UserId)
 	assert.Equal(t, expectedReservas[0].HotelId, reservasDto[0].HotelId)
 
-	// Check the second reserva
 	assert.Equal(t, expectedReservas[1].ID, reservasDto[1].Id)
 	assert.Equal(t, expectedReservas[1].FechaIn, reservasDto[1].FechaIngreso)
 	assert.Equal(t, expectedReservas[1].FechaOut, reservasDto[1].FechaEgreso)
@@ -272,7 +247,6 @@ func TestGetReservasByUser(t *testing.T) {
 }
 
 func TestGetReservasByFecha(t *testing.T) {
-	// Arrange
 	mockClient := new(mockReservaClient)
 
 	fechaIngreso := time.Now()
@@ -294,17 +268,13 @@ func TestGetReservasByFecha(t *testing.T) {
 
 	mockClient.On("GetReservasByFecha", mock.AnythingOfType("model.Reserva")).Return(expectedReservas)
 
-	// Create a new instance of the service with the mock client
 	clients.ReservaClient = mockClient
 
-	// Act
 	reservasDto, err := services.ReservaService.GetReservasByFecha(newReservaDto)
 
-	// Assert
 	assert.NoError(t, err)
 	assert.Len(t, reservasDto, 1)
 
-	// Check the first reserva
 	assert.Equal(t, expectedReservas[0].ID, reservasDto[0].Id)
 	assert.Equal(t, expectedReservas[0].FechaIn, reservasDto[0].FechaIngreso)
 	assert.Equal(t, expectedReservas[0].FechaOut, reservasDto[0].FechaEgreso)
@@ -315,7 +285,6 @@ func TestGetReservasByFecha(t *testing.T) {
 }
 
 func TestGetHotelsByFecha(t *testing.T) {
-	// Arrange
 	mockHotel := new(mockHotelService)
 	mockClient := new(mockReservaClient)
 	fechaIngreso := time.Now()
@@ -347,33 +316,24 @@ func TestGetHotelsByFecha(t *testing.T) {
 		HotelId:  expectedHotel1.Id,
 	}
 
-	// Mock the GetRooms function
-
-	// Mock the GetHotelById function
 	mockClient.On("GetRooms", fechaIngreso, reserva).Return(5)
 	mockHotel.On("GetHotelById", 1).Return(expectedHotel1, nil)
 	mockHotel.On("GetHotels").Return(expectedHotels, nil)
 
-	// Set the mocked hotel and reserva clients for the services package
 	services.HotelService = mockHotel
 	clients.ReservaClient = mockClient
 
-	// Act
 	reservasDto, err := services.ReservaService.GetHotelsByFecha(reservaDto)
-	// Assert
 	assert.NoError(t, err)
 	assert.Len(t, reservasDto, 1)
 	assert.Equal(t, expectedHotel1.Id, reservasDto[0].HotelId)
 
-	// Verify that the GetRooms function is called twice with the correct parameters
 	mockClient.AssertExpectations(t)
 
-	// Verify that the GetHotelById function is called for both hotels
 	mockHotel.AssertExpectations(t)
 }
 
 func TestGetReservasByHotelAndFecha(t *testing.T) {
-	// Arrange
 	mockClient := new(mockReservaClient)
 
 	fechaIngreso := time.Now()
@@ -396,17 +356,13 @@ func TestGetReservasByHotelAndFecha(t *testing.T) {
 
 	mockClient.On("GetReservasByHotelAndFecha", mock.AnythingOfType("model.Reserva")).Return(expectedReservas)
 
-	// Create a new instance of the service with the mock client
 	clients.ReservaClient = mockClient
 
-	// Act
 	reservasDto, err := services.ReservaService.GetReservasByHotelAndFecha(newReservaDto)
 
-	// Assert
 	assert.NoError(t, err)
 	assert.Len(t, reservasDto, 1)
 
-	// Check the first reserva
 	assert.Equal(t, expectedReservas[0].ID, reservasDto[0].Id)
 	assert.Equal(t, expectedReservas[0].FechaIn, reservasDto[0].FechaIngreso)
 	assert.Equal(t, expectedReservas[0].FechaOut, reservasDto[0].FechaEgreso)
@@ -417,7 +373,6 @@ func TestGetReservasByHotelAndFecha(t *testing.T) {
 }
 
 func TestGetReservasByHotelAndUser(t *testing.T) {
-	// Arrange
 	mockClient := new(mockReservaClient)
 
 	fechaIngreso := time.Now()
@@ -439,17 +394,13 @@ func TestGetReservasByHotelAndUser(t *testing.T) {
 
 	mockClient.On("GetReservasByHotelAndUser", mock.AnythingOfType("model.Reserva")).Return(expectedReservas)
 
-	// Create a new instance of the service with the mock client
 	clients.ReservaClient = mockClient
 
-	// Act
 	reservasDto, err := services.ReservaService.GetReservasByHotelAndUser(newReservaDto)
 
-	// Assert
 	assert.NoError(t, err)
 	assert.Len(t, reservasDto, 1)
 
-	// Check the first reserva
 	assert.Equal(t, expectedReservas[0].ID, reservasDto[0].Id)
 	assert.Equal(t, expectedReservas[0].FechaIn, reservasDto[0].FechaIngreso)
 	assert.Equal(t, expectedReservas[0].FechaOut, reservasDto[0].FechaEgreso)
@@ -460,7 +411,6 @@ func TestGetReservasByHotelAndUser(t *testing.T) {
 }
 
 func TestGetReservasByFechaAndUser(t *testing.T) {
-	// Arrange
 	mockClient := new(mockReservaClient)
 
 	fechaIngreso := time.Now()
@@ -483,17 +433,13 @@ func TestGetReservasByFechaAndUser(t *testing.T) {
 
 	mockClient.On("GetReservasByFechaAndUser", mock.AnythingOfType("model.Reserva")).Return(expectedReservas)
 
-	// Create a new instance of the service with the mock client
 	clients.ReservaClient = mockClient
 
-	// Act
 	reservasDto, err := services.ReservaService.GetReservasByFechaAndUser(newReservaDto)
 
-	// Assert
 	assert.NoError(t, err)
 	assert.Len(t, reservasDto, 1)
 
-	// Check the first reserva
 	assert.Equal(t, expectedReservas[0].ID, reservasDto[0].Id)
 	assert.Equal(t, expectedReservas[0].FechaIn, reservasDto[0].FechaIngreso)
 	assert.Equal(t, expectedReservas[0].FechaOut, reservasDto[0].FechaEgreso)
@@ -504,7 +450,6 @@ func TestGetReservasByFechaAndUser(t *testing.T) {
 }
 
 func TestGetReservasByHotelFechaAndUser(t *testing.T) {
-	// Arrange
 	mockClient := new(mockReservaClient)
 
 	fechaIngreso := time.Now()
@@ -528,17 +473,13 @@ func TestGetReservasByHotelFechaAndUser(t *testing.T) {
 
 	mockClient.On("GetReservasByHotelFechaAndUser", mock.AnythingOfType("model.Reserva")).Return(expectedReservas)
 
-	// Create a new instance of the service with the mock client
 	clients.ReservaClient = mockClient
 
-	// Act
 	reservasDto, err := services.ReservaService.GetReservasByHotelFechaAndUser(newReservaDto)
 
-	// Assert
 	assert.NoError(t, err)
 	assert.Len(t, reservasDto, 1)
 
-	// Check the first reserva
 	assert.Equal(t, expectedReservas[0].ID, reservasDto[0].Id)
 	assert.Equal(t, expectedReservas[0].FechaIn, reservasDto[0].FechaIngreso)
 	assert.Equal(t, expectedReservas[0].FechaOut, reservasDto[0].FechaEgreso)
@@ -549,7 +490,6 @@ func TestGetReservasByHotelFechaAndUser(t *testing.T) {
 }
 
 func TestGetReservasByHotel(t *testing.T) {
-	// Arrange
 	mockClient := new(mockReservaClient)
 	hotelId := 456
 
@@ -572,24 +512,19 @@ func TestGetReservasByHotel(t *testing.T) {
 
 	mockClient.On("GetReservasByHotel", hotelId).Return(expectedReservas)
 
-	// Create a new instance of the service with the mock client
 	clients.ReservaClient = mockClient
 
-	// Act
 	reservasDto, err := services.ReservaService.GetReservasByHotel(hotelId)
 
-	// Assert
 	assert.NoError(t, err)
 	assert.Len(t, reservasDto, 2)
 
-	// Check the first reserva
 	assert.Equal(t, expectedReservas[0].ID, reservasDto[0].Id)
 	assert.Equal(t, expectedReservas[0].FechaIn, reservasDto[0].FechaIngreso)
 	assert.Equal(t, expectedReservas[0].FechaOut, reservasDto[0].FechaEgreso)
 	assert.Equal(t, expectedReservas[0].UserId, reservasDto[0].UserId)
 	assert.Equal(t, expectedReservas[0].HotelId, reservasDto[0].HotelId)
 
-	// Check the second reserva
 	assert.Equal(t, expectedReservas[1].ID, reservasDto[1].Id)
 	assert.Equal(t, expectedReservas[1].FechaIn, reservasDto[1].FechaIngreso)
 	assert.Equal(t, expectedReservas[1].FechaOut, reservasDto[1].FechaEgreso)

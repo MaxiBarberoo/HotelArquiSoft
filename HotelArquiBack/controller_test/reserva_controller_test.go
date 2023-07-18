@@ -397,12 +397,12 @@ func TestGetReservasByHotelAndFecha(t *testing.T) {
 }
 
 func TestGetReservasByFechaAndUser(t *testing.T) {
-	// Create a new Gin router
+
 	router := gin.Default()
 
 	FechaI := time.Date(2023, time.July, 15, 0, 0, 0, 0, time.UTC)
 	FechaE := time.Date(2023, time.July, 17, 0, 0, 0, 0, time.UTC)
-	// Set up a mock implementation of the ReservaService
+
 	mockReservaService := &MockReservaService{}
 	mockReservasByHotelAndFechaDto := dto.ReservasDto{
 		{
@@ -412,7 +412,6 @@ func TestGetReservasByFechaAndUser(t *testing.T) {
 			FechaIngreso: FechaI,
 			FechaEgreso:  FechaE,
 		},
-		// Add more mock data as needed
 	}
 	mockReservaDto := dto.ReservaDto{
 		UserId:       1,
@@ -422,10 +421,8 @@ func TestGetReservasByFechaAndUser(t *testing.T) {
 	mockReservaService.On("GetReservasByFechaAndUser", mockReservaDto).Return(mockReservasByHotelAndFechaDto, nil)
 	services.ReservaService = mockReservaService
 
-	// Define the route and handler function
 	router.POST("/reservas/fechauser", controllerReserva.GetReservasByFechaAndUser)
 
-	// Create a test request for the route
 	requestBody, err := json.Marshal(mockReservaDto)
 	if err != nil {
 		t.Fatal(err)
@@ -435,7 +432,6 @@ func TestGetReservasByFechaAndUser(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Set the request content type header
 	req.Header.Set("Content-Type", "application/json")
 	var mockUserDto dto.UserDto
 	mockUserDto.Id = 1
@@ -450,38 +446,32 @@ func TestGetReservasByFechaAndUser(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Set the Authorization header with the JWT token
 	req.Header.Set("Authorization", tokenString)
-	// Create a response recorder to capture the response
+
 	resp := httptest.NewRecorder()
 
-	// Serve the request using the router
 	router.ServeHTTP(resp, req)
 
-	// Assert the response status code is http.StatusOK
 	assert.Equal(t, http.StatusOK, resp.Code)
 
-	// Parse the response body to retrieve the ReservasDto
 	var responseDto dto.ReservasDto
 	err = json.Unmarshal(resp.Body.Bytes(), &responseDto)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// Assert that the responseDto matches the expected mockReservasByFechaDto
 	assert.Equal(t, mockReservasByHotelAndFechaDto, responseDto)
 
-	// Assert that the ReservaService's GetReservasByFecha method was called with the correct parameter
 	mockReservaService.AssertCalled(t, "GetReservasByFechaAndUser", mockReservaDto)
 }
 
 func TestGetReservasByHotelAndUser(t *testing.T) {
-	// Create a new Gin router
+
 	router := gin.Default()
 
 	FechaI := time.Date(2023, time.July, 15, 0, 0, 0, 0, time.UTC)
 	FechaE := time.Date(2023, time.July, 17, 0, 0, 0, 0, time.UTC)
-	// Set up a mock implementation of the ReservaService
+
 	mockReservaService := &MockReservaService{}
 	mockReservasByHotelAndFechaDto := dto.ReservasDto{
 		{
@@ -491,7 +481,6 @@ func TestGetReservasByHotelAndUser(t *testing.T) {
 			FechaIngreso: FechaI,
 			FechaEgreso:  FechaE,
 		},
-		// Add more mock data as needed
 	}
 	mockReservaDto := dto.ReservaDto{
 		UserId:  1,
@@ -500,10 +489,8 @@ func TestGetReservasByHotelAndUser(t *testing.T) {
 	mockReservaService.On("GetReservasByHotelAndUser", mockReservaDto).Return(mockReservasByHotelAndFechaDto, nil)
 	services.ReservaService = mockReservaService
 
-	// Define the route and handler function
 	router.POST("/reservas/hoteluser", controllerReserva.GetReservasByHotelAndUser)
 
-	// Create a test request for the route
 	requestBody, err := json.Marshal(mockReservaDto)
 	if err != nil {
 		t.Fatal(err)
@@ -513,7 +500,6 @@ func TestGetReservasByHotelAndUser(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Set the request content type header
 	req.Header.Set("Content-Type", "application/json")
 	var mockUserDto dto.UserDto
 	mockUserDto.Id = 1
@@ -528,38 +514,30 @@ func TestGetReservasByHotelAndUser(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Set the Authorization header with the JWT token
 	req.Header.Set("Authorization", tokenString)
-	// Create a response recorder to capture the response
+
 	resp := httptest.NewRecorder()
 
-	// Serve the request using the router
 	router.ServeHTTP(resp, req)
 
-	// Assert the response status code is http.StatusOK
 	assert.Equal(t, http.StatusOK, resp.Code)
 
-	// Parse the response body to retrieve the ReservasDto
 	var responseDto dto.ReservasDto
 	err = json.Unmarshal(resp.Body.Bytes(), &responseDto)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// Assert that the responseDto matches the expected mockReservasByFechaDto
 	assert.Equal(t, mockReservasByHotelAndFechaDto, responseDto)
 
-	// Assert that the ReservaService's GetReservasByFecha method was called with the correct parameter
 	mockReservaService.AssertCalled(t, "GetReservasByHotelAndUser", mockReservaDto)
 }
 
 func TestGetReservasByHotelFechaAndUser(t *testing.T) {
-	// Create a new Gin router
 	router := gin.Default()
 
 	FechaI := time.Date(2023, time.July, 15, 0, 0, 0, 0, time.UTC)
 	FechaE := time.Date(2023, time.July, 17, 0, 0, 0, 0, time.UTC)
-	// Set up a mock implementation of the ReservaService
 	mockReservaService := &MockReservaService{}
 	mockReservasByHotelAndFechaDto := dto.ReservasDto{
 		{
@@ -569,7 +547,6 @@ func TestGetReservasByHotelFechaAndUser(t *testing.T) {
 			FechaIngreso: FechaI,
 			FechaEgreso:  FechaE,
 		},
-		// Add more mock data as needed
 	}
 	mockReservaDto := dto.ReservaDto{
 		UserId:       1,
@@ -580,10 +557,8 @@ func TestGetReservasByHotelFechaAndUser(t *testing.T) {
 	mockReservaService.On("GetReservasByHotelFechaAndUser", mockReservaDto).Return(mockReservasByHotelAndFechaDto, nil)
 	services.ReservaService = mockReservaService
 
-	// Define the route and handler function
 	router.POST("/reservas/hotelfechauser", controllerReserva.GetReservasByHotelFechaAndUser)
 
-	// Create a test request for the route
 	requestBody, err := json.Marshal(mockReservaDto)
 	if err != nil {
 		t.Fatal(err)
@@ -593,7 +568,6 @@ func TestGetReservasByHotelFechaAndUser(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Set the request content type header
 	req.Header.Set("Content-Type", "application/json")
 	var mockUserDto dto.UserDto
 	mockUserDto.Id = 1
@@ -608,35 +582,27 @@ func TestGetReservasByHotelFechaAndUser(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	// Set the Authorization header with the JWT token
 	req.Header.Set("Authorization", tokenString)
-	// Create a response recorder to capture the response
 	resp := httptest.NewRecorder()
 
-	// Serve the request using the router
 	router.ServeHTTP(resp, req)
 
-	// Assert the response status code is http.StatusOK
 	assert.Equal(t, http.StatusOK, resp.Code)
 
-	// Parse the response body to retrieve the ReservasDto
 	var responseDto dto.ReservasDto
 	err = json.Unmarshal(resp.Body.Bytes(), &responseDto)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// Assert that the responseDto matches the expected mockReservasByFechaDto
 	assert.Equal(t, mockReservasByHotelAndFechaDto, responseDto)
 
-	// Assert that the ReservaService's GetReservasByFecha method was called with the correct parameter
 	mockReservaService.AssertCalled(t, "GetReservasByHotelFechaAndUser", mockReservaDto)
 }
 
 func TestGetReservasByHotel(t *testing.T) {
 	router := gin.Default()
 
-	// Set up a mock implementation of the ReservaService
 	mockReservaService := &MockReservaService{}
 	mockReservasByHotelDto := dto.ReservasDto{
 		dto.ReservaDto{
@@ -646,44 +612,34 @@ func TestGetReservasByHotel(t *testing.T) {
 			FechaIngreso: time.Date(2023, time.July, 15, 0, 0, 0, 0, time.UTC),
 			FechaEgreso:  time.Date(2023, time.July, 17, 0, 0, 0, 0, time.UTC),
 		},
-		// Add more mock data as needed
 	}
 	mockReservaService.On("GetReservasByHotel", 1).Return(mockReservasByHotelDto, nil)
 	services.ReservaService = mockReservaService
 
-	// Define the route and handler function
 	router.GET("/reservas/hotel/:hotel_id", controllerReserva.GetReservasByHotel)
 
-	// Create a test request for the route
 	req, err := http.NewRequest(http.MethodGet, "/reservas/hotel/1", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// Create a response recorder to capture the response
 	resp := httptest.NewRecorder()
 
-	// Serve the request using the router
 	router.ServeHTTP(resp, req)
 
-	// Assert the response status code is http.StatusOK
 	assert.Equal(t, http.StatusOK, resp.Code)
 
-	// Parse the response body to retrieve the ReservasDto
 	var responseDto dto.ReservasDto
 	err = json.Unmarshal(resp.Body.Bytes(), &responseDto)
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// Assert that the responseDto matches the expected mockReservasByUserDto
 	assert.Equal(t, mockReservasByHotelDto, responseDto)
 
-	// Assert that the ReservaService's GetReservasByUser method was called with the correct parameter
 	mockReservaService.AssertCalled(t, "GetReservasByHotel", 1)
 }
 
-// Create a mock struct that implements the reservaServiceInterface
 type MockReservaService struct {
 	mock.Mock
 }
