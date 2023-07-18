@@ -13,28 +13,30 @@ function HotelesAdmin(props) {
             const imagenFile = files[0];
             const reader = new FileReader();
             reader.onloadend = () => {
-                const base64Data = reader.result.split(',')[1]; // Obtener el contenido en base64
-                setImagenSeleccionada(base64Data);
+                const buffer = new Uint8Array(reader.result); // Obtenemos el Uint8Array
+                const byteArray = Array.from(buffer); // Convertimos el Uint8Array a []byte
+                setImagenSeleccionada(byteArray);
             };
-            reader.readAsDataURL(imagenFile); // Leer la imagen como base64
+            reader.readAsArrayBuffer(imagenFile);
         }
-    };    
+    };
 
     const agregarImagen = () => {
         if (!imagenSeleccionada) {
             alert("Por favor, seleccione una imagen.");
             return;
         }
-    
+
         const imagenData = {
             hotel_id: props.hotelId,
-            contenido: imagenSeleccionada,
+            nombre: props.nombreHotel,
+            contenido: imagenSeleccionada, 
         };
-    
+
         fetch("http://localhost:8090/imagenes", {
             method: "POST",
             headers: {
-                Authorization: `${token}`,
+                Authorization: `${props.token}`,
                 "Content-Type": "application/json",
             },
             body: JSON.stringify(imagenData),
@@ -45,13 +47,11 @@ function HotelesAdmin(props) {
                 console.error(data.error);
             } else {
                 alert("Imagen agregada con éxito");
-                // Limpiar la imagen seleccionada después de agregarla
                 setImagenSeleccionada(null);
             }
         })
         .catch((error) => console.error(error));
     };
-    
 
     useEffect(() => {
         fetch('http://localhost:8090/hotels')
