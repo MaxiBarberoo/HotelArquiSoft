@@ -50,9 +50,9 @@ function Admin() {
       eleccionDeAmenitie <= 0 || eleccionDeAmenitie > 6 ||
       nuevoHotel.nombre === "" ||
       nuevoHotel.descripcion === "" ||
-      !nuevoHotel.imagenSeleccionada // Cambiamos la condición a una sola imagen seleccionada
+      !nuevoHotel.imagenSeleccionada 
     ) {
-      alert("El nombre, descripción y una imagen son requeridos. Inténtelo nuevamente.");
+      alert("El nombre, descripción, una imagen y un amenitie son requeridos. Inténtelo nuevamente.");
       window.location.reload();
     } else {
       const hotelData = {
@@ -123,7 +123,7 @@ function Admin() {
                     nombre: "",
                     descripcion: "",
                     cantidadHabitaciones: 0,
-                    imagenSeleccionada: null, // Limpiamos la imagen seleccionada
+                    imagenSeleccionada: null,
                   });
                   window.location.reload();
                 }
@@ -138,15 +138,15 @@ function Admin() {
   const handleImagenesChange = (event) => {
     const { files } = event.target;
     if (files && files.length > 0) {
-      const imagenFile = files[0]; // Tomamos solo la primera imagen seleccionada
+      const imagenFile = files[0]; 
       const reader = new FileReader();
       reader.onloadend = () => {
-        const buffer = new Uint8Array(reader.result); // Obtenemos el Uint8Array
-        const byteArray = Array.from(buffer); // Convertimos el Uint8Array a []byte
+        const buffer = new Uint8Array(reader.result); 
+        const byteArray = Array.from(buffer);
 
         setNuevoHotel((prevNuevoHotel) => ({
           ...prevNuevoHotel,
-          imagenSeleccionada: byteArray, // Almacenamos el []byte en el estado
+          imagenSeleccionada: byteArray, 
         }));
       };
       reader.readAsArrayBuffer(imagenFile);
