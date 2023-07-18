@@ -17,17 +17,42 @@ function Admin() {
   const { token } = useParams();
   const { user_id } = useParams();
   const [contadorReserva, setContadorReserva] = useState(1);
+  const [todosAmenities, setTodosAmenities] = useState([]);
+  const [eleccionDeAmenitie, setEleccionDeAmenitie] = useState(null);
+
+  const HandleOpcionAmenitieChange = (event) => {
+    event.preventDefault();
+    setEleccionDeAmenitie(event.target.value);
+  }
+
+  useEffect(() => {
+    const fetchTodosAmenities = async () => {
+      try {
+        const response = await fetch("http://localhost:8090/amenities");
+        if (response.ok) {
+          const data = await response.json();
+          setTodosAmenities(data);
+        } else {
+          throw new Error(`Error en la petición GET de las amenidades para el hotel ${props.hotelId}`);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    };
+    fetchTodosAmenities();
+  }, []);
 
   const crearNuevoHotel = (event) => {
     event.preventDefault();
     const cantiHabitaciones = parseInt(nuevoHotel.cantidadHabitaciones);
     if (
       nuevoHotel.cantidadHabitaciones <= 0 ||
+      eleccionDeAmenitie <= 0 || eleccionDeAmenitie > 6 ||
       nuevoHotel.nombre === "" ||
       nuevoHotel.descripcion === "" ||
-      !nuevoHotel.imagenSeleccionada // Cambiamos la condición a una sola imagen seleccionada
+      !nuevoHotel.imagenSeleccionada 
     ) {
-      alert("El nombre, descripción y una imagen son requeridos. Inténtelo nuevamente.");
+      alert("El nombre, descripción, una imagen y un amenitie son requeridos. Inténtelo nuevamente.");
       window.location.reload();
     } else {
       const hotelData = {
@@ -52,7 +77,7 @@ function Admin() {
             const hotelId = data.id;
             const imagenData = {
               hotel_id: hotelId,
-              contenido: nuevoHotel.imagenSeleccionada, 
+              contenido: nuevoHotel.imagenSeleccionada,
             };
 
             fetch("http://localhost:8090/imagenes", {
@@ -61,7 +86,7 @@ function Admin() {
                 Authorization: `${token}`,
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify(imagenData), 
+              body: JSON.stringify(imagenData),
             })
               .then((response) => response.json())
               .then((data) => {
@@ -69,12 +94,36 @@ function Admin() {
                   console.error(data.error);
                 } else {
                   setHoteles((prevHoteles) => [...prevHoteles, data]);
+                  const amenitieElegidaId = parseInt(eleccionDeAmenitie);
+
+                  const amenitieData = {
+                    hotel_id: hotelId,
+                    amenitie_id: amenitieElegidaId,
+                  };
+
+                  fetch("http://localhost:8090/amenitiehotel/assign", {
+                    method: "POST",
+                    headers: {
+                      Authorization: `${token}`,
+                      "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(amenitieData),
+                  })
+                    .then((response) => response.json())
+                    .then((data) => {
+                      if (data.error) {
+                        console.error(data.error);
+                      } else {
+                        setEleccionDeAmenitie(null);
+                      }
+                    })
+                    .catch((error) => console.error(error));
                   alert("Se ha creado un nuevo hotel con éxito");
                   setNuevoHotel({
                     nombre: "",
                     descripcion: "",
                     cantidadHabitaciones: 0,
-                    imagenSeleccionada: null, // Limpiamos la imagen seleccionada
+                    imagenSeleccionada: null,
                   });
                   window.location.reload();
                 }
@@ -89,15 +138,15 @@ function Admin() {
   const handleImagenesChange = (event) => {
     const { files } = event.target;
     if (files && files.length > 0) {
-      const imagenFile = files[0]; // Tomamos solo la primera imagen seleccionada
+      const imagenFile = files[0]; 
       const reader = new FileReader();
       reader.onloadend = () => {
-        const buffer = new Uint8Array(reader.result); // Obtenemos el Uint8Array
-        const byteArray = Array.from(buffer); // Convertimos el Uint8Array a []byte
+        const buffer = new Uint8Array(reader.result); 
+        const byteArray = Array.from(buffer);
 
         setNuevoHotel((prevNuevoHotel) => ({
           ...prevNuevoHotel,
-          imagenSeleccionada: byteArray, // Almacenamos el []byte en el estado
+          imagenSeleccionada: byteArray, 
         }));
       };
       reader.readAsArrayBuffer(imagenFile);
@@ -134,7 +183,9 @@ function Admin() {
       .then((response) => response.json())
       .then((data) => setHoteles(data))
       .catch((error) => console.error(error));
+  }, []);
 
+  useEffect(() => {
     fetch('http://localhost:8090/reservas', {
       method: 'GET',
       headers: {
@@ -150,28 +201,6 @@ function Admin() {
       })
       .catch((error) => console.error(error));
   }, []);
-
-  useEffect(() => {
-    const fetchAmenitiesForHotels = async () => {
-      const hotelsWithAmenities = await Promise.all(
-          amenities.map(async (amenitie) => {
-            const response = await fetch(`http://localhost:8090/amenities/${amenitie.id}`);
-            if (response.ok) {
-              const amenitiesData = await response.json();
-              return { ...amenitie, amenities: amenitiesData };
-            } else {
-              console.error(`Error en la petición GET de amenities para el hotel ${hotel.id}`);
-              return amenitie;
-            }
-          })
-      );
-      setHoteles(hotelsWithAmenities);
-    };
-
-    if (amenities.length > 0) {
-      fetchAmenitiesForHotels();
-    }
-  }, [hoteles]);
 
   const obtenerNombres = (reservasData) => {
     const hotelIds = [...new Set(reservasData.map((reserva) => reserva.hotel_id))];
@@ -260,7 +289,7 @@ function Admin() {
           onChange={handleNombreHotelChange}
           placeholder="Nombre del hotel"
         />
-
+        <p>Descripcion:</p>
         <input
           type="text"
           maxLength={500}
@@ -269,7 +298,7 @@ function Admin() {
           onChange={handleDescripcionHotelChange}
           placeholder="Descripción"
         />
-
+        <p>Cantidad de habitaciones:</p>
         <input
           type="number"
           name="cantidadHabitaciones"
@@ -277,13 +306,20 @@ function Admin() {
           onChange={handleCantidadHabitacionesChange}
           placeholder="Cantidad de habitaciones"
         />
-
+        <p>Imagen:</p>
         <input
           type="file"
           name="imagen"
           onChange={handleImagenesChange}
         />
-
+        <p>Amenities para cargar:</p>
+        <ol>
+          {todosAmenities.sort((a, b) => a.id - b.id).map(amenitie => (
+            <li key={amenitie.id}>{amenitie.tipo}</li>
+          ))}
+        </ol>
+        <p>Elija el número de amenitie a cargar para el hotel:</p>
+        <input type="number" onChange={HandleOpcionAmenitieChange}></input>
         <button className="boton-crear-hotel" onClick={crearNuevoHotel}>Crear Hotel</button>
       </div>
       <div className="contenedor-hoteles-admin">

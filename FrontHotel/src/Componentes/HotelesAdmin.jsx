@@ -16,8 +16,8 @@ function HotelesAdmin(props) {
             const imagenFile = files[0];
             const reader = new FileReader();
             reader.onloadend = () => {
-                const buffer = new Uint8Array(reader.result); // Obtenemos el Uint8Array
-                const byteArray = Array.from(buffer); // Convertimos el Uint8Array a []byte
+                const buffer = new Uint8Array(reader.result); 
+                const byteArray = Array.from(buffer); 
                 setImagenSeleccionada(byteArray);
             };
             reader.readAsArrayBuffer(imagenFile);
@@ -145,11 +145,11 @@ function HotelesAdmin(props) {
                     const data = await response.json();
                     setAmenities(data);
 
-                    const amenityIds = data.map(amenity => amenity.amenitie_id); // Obtener los IDs de las amenidades
-                    const amenityTypes = await fetchAmenityTypes(amenityIds); // Obtener los tipos de amenidades
+                    const amenityIds = data.map(amenity => amenity.amenitie_id); 
+                    const amenityTypes = await fetchAmenityTypes(amenityIds); 
                     const amenitiesWithTypes = data.map((amenity, index) => ({
                         ...amenity,
-                        tipo: amenityTypes[index] // Agregar el tipo de amenidad al objeto de amenidad
+                        tipo: amenityTypes[index] 
                     }));
                     setAmenities(amenitiesWithTypes);
                 } else {
@@ -170,7 +170,7 @@ function HotelesAdmin(props) {
             const response = await fetch(`http://localhost:8090/amenities/${amenityId}`);
             if (response.ok) {
                 const data = await response.json();
-                return data.tipo; // Suponiendo que el tipo se encuentra en la propiedad "tipo"
+                return data.tipo; 
             } else {
                 throw new Error(`Error en la petición GET de la amenidad ${amenityId}`);
             }
