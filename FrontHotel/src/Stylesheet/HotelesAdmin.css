@@ -1,0 +1,36 @@
+.contenedor-hoteles {
+    background-color: white;
+    height: auto;
+    padding: 10px;
+    margin-top: 80px;
+    margin-bottom: 20px;
+    text-align: center;
+    /* Ajustar según el ancho deseado */
+    margin-left: auto;
+    /* Centrar horizontalmente */
+    margin-right: auto;
+    /* Centrar horizontalmente */
+    border: 1px solid #888888;
+    /* Agregado: recuadro */
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+    /* Sombra */
+    border-radius: 10px;
+  }
+  
+  .nombre-hotel1 {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 5px; /* Agregado para separar del siguiente párrafo */
+  }
+  
+  .cantidad-piezas,
+  .descripcion-hotel {
+    font-size: 14px;
+    color: #888888;
+    text-align: justify;
+    margin-top: 5px;
+  }
+  
+  .contenedor-hoteles p {
+    margin: 0;
+  }

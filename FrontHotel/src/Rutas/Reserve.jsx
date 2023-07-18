@@ -74,6 +74,7 @@ function Reserve() {
     }
   };
 
+<<<<<<< HEAD
     const filtrarReservas = async () => {
         setReservas([]);
         if (nombreHotel !== '' && fechaDesdeFiltro && fechaHastaFiltro) {
@@ -102,6 +103,44 @@ function Reserve() {
             setReservas(reservas);
         }
     };
+=======
+  const filtrarReservas = async () => {
+    setReservas([]);
+    if (nombreHotel !== '' && fechaDesdeFiltro && fechaHastaFiltro) {
+      // Lógica para filtrar por nombre de hotel y fechas
+      // Implementa aquí el código necesario para esta opción
+    } else if (fechaDesdeFiltro && fechaHastaFiltro) {
+      console.log("entró a filtros por fecha");
+      console.log(fechaDesdeFiltro);
+      console.log(fechaHastaFiltro);
+
+      const fechas = {
+        fecha_ingreso: fechaDesdeFiltro,
+        fecha_egreso: fechaHastaFiltro,
+      };
+
+      try {
+        const response = await fetch("http://localhost:8090/reservas/byfecha", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            "Authorization": `${token}`,
+          },
+          body: JSON.stringify({ fechas }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+      } catch (error) {
+        console.error(error);
+      }
+    } else if (nombreHotel) {
+    } else {
+      console.log("entró todasreservas");
+      fetchTodasLasReservas();
+    }
+  };
+>>>>>>> 225df97bb33eb05628f2c15cb7a581f73aac34b9
 
   const fetchTodasLasReservas = () => {
     fetch(`http://localhost:8090/reservas/reservauser/${user_id}`, {
@@ -194,7 +233,7 @@ useEffect(() => {
       <h4 className="titulo-reservas">Mis reservas:</h4>
       <form onSubmit={(e) => {
         e.preventDefault();
-        setfiltroBusqueda(filtroBusqueda+1);
+        setfiltroBusqueda(filtroBusqueda + 1);
       }}>
         <h5>Filtrar por fecha:</h5>
         <p>Fecha desde:</p>
@@ -239,10 +278,12 @@ useEffect(() => {
           hotelesDisponibles.map((hotel) => (
             <div key={hotel.id}>
               <HotelesR
-                nombreHotel={hotel.name}
+                key={hotel.id}
+                hotelId={hotel.id}
                 piezas={hotel.cantHabitaciones}
                 descripcion={hotel.descripcion}
-                hotelId={hotel.id}
+                amenities={hotel.amenities}
+                nombreHotel={hotel.name}
                 userId={user_id}
                 fechaDesde={fechaDesde}
                 fechaHasta={fechaHasta}

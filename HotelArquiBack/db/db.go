@@ -9,11 +9,12 @@ import (
 	userClient "HotelArquiSoft/HotelArquiBack/clients/user"
 	"HotelArquiSoft/HotelArquiBack/model"
 	"fmt"
+	"os"
+
 	"github.com/jinzhu/gorm"
 	_ "github.com/jinzhu/gorm/dialects/mysql"
 	log "github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"
-	"os"
 )
 
 var (
@@ -230,8 +231,7 @@ func init() {
 	DBName := "pruebaHash"
 	DBUser := "root"
 	DBPass := "arquisoft1"
-	//DBPass := os.Getenv("MVC_DB_PASS")
-	DBHost := "localhost"
+	DBHost := "db"
 	// ------------------------
 
 	db, err = gorm.Open("mysql", DBUser+":"+DBPass+"@tcp("+DBHost+":3306)/"+DBName+"?charset=utf8&parseTime=True")

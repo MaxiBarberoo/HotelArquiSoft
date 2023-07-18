@@ -6,6 +6,7 @@ import "../Stylesheet/Home.css";
 
 function Home() {
   const [hoteles, setHoteles] = useState([]);
+  const [amenities, setAmenities] = useState([]);
   const navigate = useNavigate();
 
   const handleRedirectSubmit = (event) => {
@@ -63,21 +64,21 @@ function Home() {
   useEffect(() => {
     const fetchAmenitiesForHotels = async () => {
       const hotelsWithAmenities = await Promise.all(
-          hoteles.map(async (hotel) => {
-            const response = await fetch(`http://localhost:8090/amenities/${hotel.id}`);
+          amenities.map(async (amenitie) => {
+            const response = await fetch(`http://localhost:8090/amenities/${amenitie.id}`);
             if (response.ok) {
               const amenitiesData = await response.json();
-              return { ...hotel, amenities: amenitiesData };
+              return { ...amenitie, amenities: amenitiesData };
             } else {
               console.error(`Error en la petición GET de amenities para el hotel ${hotel.id}`);
-              return hotel;
+              return amenitie;
             }
           })
       );
       setHoteles(hotelsWithAmenities);
     };
 
-    if (hoteles.length > 0) {
+    if (amenities.length > 0) {
       fetchAmenitiesForHotels();
     }
   }, [hoteles]);
