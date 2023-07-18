@@ -17,6 +17,11 @@ type reservaServiceInterface interface {
 	GetReservasByUser(userId int) (dto.ReservasDto, e.ApiError)
 	GetReservasByFecha(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError)
 	GetHotelsByFecha(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError)
+	GetReservasByHotel(hotelId int) (dto.ReservasDto, e.ApiError)
+	GetReservasByHotelAndFecha(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError)
+	GetReservasByHotelAndUser(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError)
+	GetReservasByFechaAndUser(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError)
+	GetReservasByHotelFechaAndUser(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError)
 }
 
 var (
@@ -161,6 +166,120 @@ func (s *reservaService) GetHotelsByFecha(reservaDto dto.ReservaDto) (dto.Reserv
 		if s.GetRooms(reservaDto) {
 			reservasDto = append(reservasDto, reservaDto)
 		}
+	}
+
+	return reservasDto, nil
+}
+
+func (s *reservaService) GetReservasByHotel(hotelId int) (dto.ReservasDto, e.ApiError) {
+	var reservas model.Reservas = reservaClient.ReservaClient.GetReservasByHotel(hotelId)
+	var reservasDto dto.ReservasDto
+
+	for _, reserva := range reservas {
+		var reservaDto dto.ReservaDto
+
+		reservaDto.FechaIngreso = reserva.FechaIn
+		reservaDto.FechaEgreso = reserva.FechaOut
+		reservaDto.HotelId = reserva.HotelId
+		reservaDto.UserId = reserva.UserId
+		reservaDto.Id = reserva.ID
+		reservasDto = append(reservasDto, reservaDto)
+	}
+
+	return reservasDto, nil
+}
+
+func (s *reservaService) GetReservasByHotelAndFecha(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError) {
+	var reserva model.Reserva
+
+	reserva.FechaIn = reservaDto.FechaIngreso
+	reserva.FechaOut = reservaDto.FechaEgreso
+	reserva.HotelId = reservaDto.HotelId
+
+	var reservas model.Reservas = reservaClient.ReservaClient.GetReservasByHotelAndFecha(reserva)
+	var reservasDto dto.ReservasDto
+
+	for _, reserva = range reservas {
+		var reservaDto dto.ReservaDto
+
+		reservaDto.FechaIngreso = reserva.FechaIn
+		reservaDto.FechaEgreso = reserva.FechaOut
+		reservaDto.HotelId = reserva.HotelId
+		reservaDto.UserId = reserva.UserId
+		reservaDto.Id = reserva.ID
+		reservasDto = append(reservasDto, reservaDto)
+	}
+
+	return reservasDto, nil
+}
+
+func (s *reservaService) GetReservasByHotelAndUser(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError) {
+	var reserva model.Reserva
+
+	reserva.HotelId = reservaDto.HotelId
+	reserva.UserId = reservaDto.UserId
+
+	var reservas model.Reservas = reservaClient.ReservaClient.GetReservasByHotelAndUser(reserva)
+	var reservasDto dto.ReservasDto
+
+	for _, reserva = range reservas {
+		var reservaDto dto.ReservaDto
+
+		reservaDto.FechaIngreso = reserva.FechaIn
+		reservaDto.FechaEgreso = reserva.FechaOut
+		reservaDto.HotelId = reserva.HotelId
+		reservaDto.UserId = reserva.UserId
+		reservaDto.Id = reserva.ID
+		reservasDto = append(reservasDto, reservaDto)
+	}
+
+	return reservasDto, nil
+}
+
+func (s *reservaService) GetReservasByFechaAndUser(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError) {
+	var reserva model.Reserva
+
+	reserva.FechaIn = reservaDto.FechaIngreso
+	reserva.FechaOut = reservaDto.FechaEgreso
+	reserva.UserId = reservaDto.UserId
+
+	var reservas model.Reservas = reservaClient.ReservaClient.GetReservasByFechaAndUser(reserva)
+	var reservasDto dto.ReservasDto
+
+	for _, reserva = range reservas {
+		var reservaDto dto.ReservaDto
+
+		reservaDto.FechaIngreso = reserva.FechaIn
+		reservaDto.FechaEgreso = reserva.FechaOut
+		reservaDto.HotelId = reserva.HotelId
+		reservaDto.UserId = reserva.UserId
+		reservaDto.Id = reserva.ID
+		reservasDto = append(reservasDto, reservaDto)
+	}
+
+	return reservasDto, nil
+}
+
+func (s *reservaService) GetReservasByHotelFechaAndUser(reservaDto dto.ReservaDto) (dto.ReservasDto, e.ApiError) {
+	var reserva model.Reserva
+
+	reserva.FechaIn = reservaDto.FechaIngreso
+	reserva.FechaOut = reservaDto.FechaEgreso
+	reserva.HotelId = reservaDto.HotelId
+	reserva.UserId = reservaDto.UserId
+
+	var reservas model.Reservas = reservaClient.ReservaClient.GetReservasByHotelFechaAndUser(reserva)
+	var reservasDto dto.ReservasDto
+
+	for _, reserva = range reservas {
+		var reservaDto dto.ReservaDto
+
+		reservaDto.FechaIngreso = reserva.FechaIn
+		reservaDto.FechaEgreso = reserva.FechaOut
+		reservaDto.HotelId = reserva.HotelId
+		reservaDto.UserId = reserva.UserId
+		reservaDto.Id = reserva.ID
+		reservasDto = append(reservasDto, reservaDto)
 	}
 
 	return reservasDto, nil

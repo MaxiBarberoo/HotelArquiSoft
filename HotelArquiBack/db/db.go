@@ -89,6 +89,65 @@ func insertInitialData() {
 			log.Error("Failed to insert hotel:", err.Error())
 		}
 	}
+
+	// Amenties por hotel
+	amenitiehotel := []model.AmenitieHotel{
+		{
+			AmenitieId: 1,
+			HotelId:    1,
+		},
+		{
+			AmenitieId: 4,
+			HotelId:    1,
+		},
+		{
+			AmenitieId: 3,
+			HotelId:    1,
+		},
+		{
+			AmenitieId: 2,
+			HotelId:    2,
+		},
+		{
+			AmenitieId: 1,
+			HotelId:    2,
+		},
+		{
+			AmenitieId: 3,
+			HotelId:    2,
+		},
+		{
+			AmenitieId: 3,
+			HotelId:    3,
+		},
+		{
+			AmenitieId: 4,
+			HotelId:    3,
+		},
+		{
+			AmenitieId: 1,
+			HotelId:    4,
+		},
+		{
+			AmenitieId: 2,
+			HotelId:    4,
+		},
+		{
+			AmenitieId: 5,
+			HotelId:    5,
+		},
+		{
+			AmenitieId: 6,
+			HotelId:    5,
+		},
+	}
+
+	for _, amenitiehotel := range amenitiehotel {
+		if err := db.Create(&amenitiehotel).Error; err != nil {
+			log.Error("Failed to insert amenitiehotel:", err.Error())
+		}
+	}
+
 	// Insert hotels
 	hotels := []model.Hotel{
 		{

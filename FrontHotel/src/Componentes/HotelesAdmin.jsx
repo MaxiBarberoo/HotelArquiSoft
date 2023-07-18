@@ -1,13 +1,59 @@
 import React, { useEffect, useRef, useState } from 'react';
-import '../Stylesheet/Hoteles.css';
+import '../Stylesheet/HotelesAdmin.css';
 
-function Hoteles(props) {
+function HotelesAdmin(props) {
     const [hotels, setHotels] = useState([]);
     const [amenities, setAmenities] = useState([]);
     const hotelIdRef = useRef(props.hotelId);
+    const [imagenSeleccionada, setImagenSeleccionada] = useState(null);
+
+    const handleImagenesChange = (event) => {
+        const { files } = event.target;
+        if (files && files.length > 0) {
+            const imagenFile = files[0];
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const base64Data = reader.result.split(',')[1]; // Obtener el contenido en base64
+                setImagenSeleccionada(base64Data);
+            };
+            reader.readAsDataURL(imagenFile); // Leer la imagen como base64
+        }
+    };    
+
+    const agregarImagen = () => {
+        if (!imagenSeleccionada) {
+            alert("Por favor, seleccione una imagen.");
+            return;
+        }
+    
+        const imagenData = {
+            hotel_id: props.hotelId,
+            contenido: imagenSeleccionada,
+        };
+    
+        fetch("http://localhost:8090/imagenes", {
+            method: "POST",
+            headers: {
+                Authorization: `${token}`,
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(imagenData),
+        })
+        .then((response) => response.json())
+        .then((data) => {
+            if (data.error) {
+                console.error(data.error);
+            } else {
+                alert("Imagen agregada con éxito");
+                // Limpiar la imagen seleccionada después de agregarla
+                setImagenSeleccionada(null);
+            }
+        })
+        .catch((error) => console.error(error));
+    };
+    
 
     useEffect(() => {
-        // Obtener los IDs de los hoteles mediante una solicitud fetch
         fetch('http://localhost:8090/hotels')
             .then(response => response.json())
             .then(data => {
@@ -88,8 +134,15 @@ function Hoteles(props) {
                     <li key={amenitie.id}>{amenitie.tipo}</li>
                 ))}
             </ul>
+            <p>Cargar imagen:</p>
+            <input
+                type="file"
+                name="imagen"
+                onChange={handleImagenesChange}
+            />
+            <button className="boton-subir-imagen" onClick={agregarImagen}>Agregar imagen</button>
         </div>
     );
 }
 
-export default Hoteles;
+export default HotelesAdmin;

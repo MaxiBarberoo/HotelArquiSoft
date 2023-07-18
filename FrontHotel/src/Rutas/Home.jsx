@@ -6,6 +6,7 @@ import "../Stylesheet/Home.css";
 
 function Home() {
   const [hoteles, setHoteles] = useState([]);
+  const [amenities, setAmenities] = useState([]);
   const navigate = useNavigate();
 
   const handleRedirectSubmit = (event) => {
@@ -60,6 +61,29 @@ function Home() {
   }, []);
 
 
+  useEffect(() => {
+    const fetchAmenitiesForHotels = async () => {
+      const hotelsWithAmenities = await Promise.all(
+          amenities.map(async (amenitie) => {
+            const response = await fetch(`http://localhost:8090/amenities/${amenitie.id}`);
+            if (response.ok) {
+              const amenitiesData = await response.json();
+              return { ...amenitie, amenities: amenitiesData };
+            } else {
+              console.error(`Error en la petición GET de amenities para el hotel ${hotel.id}`);
+              return amenitie;
+            }
+          })
+      );
+      setHoteles(hotelsWithAmenities);
+    };
+
+    if (amenities.length > 0) {
+      fetchAmenitiesForHotels();
+    }
+  }, [hoteles]);
+
+
 
   return (
     <div>
@@ -70,13 +94,15 @@ function Home() {
       <h2>Hoteles disponibles:</h2>
       <div className="contenedor-de-hoteles">
         {hoteles.map((hotel) => (
-          <Hoteles
-            key={hotel.id}
-            imagenesURLs={hotel.imagenesURLs}
-            nombreHotel={hotel.name}
-            piezas={hotel.cantHabitaciones}
-            descripcion={hotel.descripcion}
-          />
+            <Hoteles
+                key={hotel.id}
+                hotelId={hotel.id}
+                imagenesURLs={hotel.imagenesURLs}
+                nombreHotel={hotel.name}
+                piezas={hotel.cantHabitaciones}
+                descripcion={hotel.descripcion}
+                amenities={hotel.amenities}
+            />
         ))}
       </div>
     </div>

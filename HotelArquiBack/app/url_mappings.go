@@ -23,6 +23,7 @@ func mapUrls() {
 	router.GET("/amenities/:id", amenitieController.GetAmenitieById)
 	router.GET("/amenitiehotel/:hotel_id", amenitieHotelController.SearchAmenitiesByHotel)
 	router.GET("/imagenes/:hotel_id", imagenesController.GetImagenesByHotel)
+	router.GET("/reservas/hotel/:hotel_id", reservaController.GetReservasByHotel)
 
 	router.POST("/users/auth", userController.UserAuth)
 	router.POST("/imagenes", imagenesController.InsertImagen)
@@ -34,6 +35,10 @@ func mapUrls() {
 	router.POST("reservas/byfecha", reservaController.GetReservasByFecha)
 	router.POST("amenitiehotel/assign", amenitieHotelController.AssignAmenitieToHotel)
 	router.POST("/reservas/:id", reservaController.GetReservaById)
+	router.POST("/reservas/hoteluser", reservaController.GetReservasByHotelAndUser)
+	router.POST("/reservas/fechauser", reservaController.GetReservasByFechaAndUser)
+	router.POST("/reservas/fechahotel", reservaController.GetReservasByHotelAndFecha)
+	router.POST("/reservas/hotelfechauser", reservaController.GetReservasByHotelFechaAndUser)
 	router.GET("/reservas/reservauser/:user_id", reservaController.GetReservasByUser)
 	log.Info("Finishing mappings configurations")
 }
